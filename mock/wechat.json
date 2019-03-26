@@ -1,0 +1,40 @@
+{
+    "appid": {
+        "success": {
+            "code": 0,
+            "msg": "",
+            "content": {
+                "apppid": "mock_appid"
+            }
+        },
+        "fail": {
+            "code": -2,
+            "msg": "未获取到appid",
+            "content": {
+                "appid": null
+            }
+        }
+    },
+    "loginopenid": {
+        "success": {
+            "code": 0,
+            "msg": "",
+            "content": {
+                "token": "success_mock_token",
+                "openid": "success_mock_openid"
+            }
+        },
+        "nologin": {
+            "code": 0,
+            "msg": "",
+            "content": {
+                "openid": "nologin_mock_openid"
+            }
+        },
+        "noauth": {
+            "code": "-2",
+            "msg": "用户网页授权获取openid失败",
+            "content": null
+        }
+    }
+}

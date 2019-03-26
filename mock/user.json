@@ -1,0 +1,19 @@
+{
+    "register": {
+        "success": {
+            "code": 0,
+            "msg": "",
+            "content": {
+                "openid": "mock_openid",
+                "token":"mock_logintoken"
+            }
+        },
+        "fail": {
+            "code": -2,
+            "msg": "注册失败",
+            "content": {
+                "openid": "mock_openid"
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+.re-valid-err{
+    box-shadow: 2px 0px 0px 0px #f70000;
+}
+.weui-input{
+    border-radius : 0;
+  }
+.weui-cells{
+    /* font-size: 12px; */
+}
+.weui-empty{
+    color:grey;
+}
+.img-qrcode{
+    width: 200px;
+    padding: 8px;
+    box-shadow: 0 0 0px 1px #d6d2d2;
+    box-sizing: border-box;
+}
+.weui-dialog__hd{
+    padding-bottom: 0;
+}

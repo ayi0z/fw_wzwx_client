@@ -1,0 +1,38 @@
+{
+    "unittype": {
+        "code": 0,
+        "msg": "",
+        "content":[
+            {
+                "value":1,
+                "text": "收获单位"
+            },
+            {
+                "value":2,
+                "text": "发货单位"
+            }
+        ]
+    },
+    "units":{
+        "code": 0,
+        "msg": "",
+        "content":[
+            {
+                "value":1,
+                "text": "联合国秘书室"
+            },
+            {
+                "value":2,
+                "text": "白宫警卫厅"
+            },
+            {
+                "value":3,
+                "text": "南韩海上自卫办公室"
+            },
+            {
+                "value":4,
+                "text": "北方魂店裁决司"
+            }
+        ]
+    }
+}
