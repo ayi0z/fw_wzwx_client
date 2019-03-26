@@ -15,8 +15,8 @@ export default new Vuex.Store({
       msg:'正在加载'
     },
     authSate:'wxwx2019',
-    user:{
-      token:undefined,
+    userToken:{
+      loginToken:undefined,
       openid:undefined
     }
   },
@@ -40,8 +40,8 @@ export default new Vuex.Store({
         state.Loading = Object.assign({}, state.Loading, toast)
       }
     },
-    update_user(state, user){
-      state.user = Object.assign({}, state.user, user)
+    userToken(state, utoken){
+      state.userToken = Object.assign({}, state.userToken, utoken)
     }
   },
   actions: {
@@ -57,8 +57,8 @@ export default new Vuex.Store({
     close_loading({commit}){
       commit('loading', false)
     },
-    update_user({commit}, user){
-      commit('update_user', user)
+    update_usertoken({commit}, utoken){
+      commit('userToken', utoken)
     }
   }
 })

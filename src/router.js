@@ -58,7 +58,6 @@ const VRouter = new Router({
     }, {
       path: '/invoice/einvoice',
       name: 'einvoice',
-      props: true,
       component: () => import('./views/invoice/EInvoice.vue'),
       meta: { requiresLogin: true }
     }, {
@@ -83,14 +82,14 @@ VRouter.beforeEach((to, from, next) => {
   if (to.query.code && store.state.authSate == to.query.state) {
     axios.post(api.wechat_loginopenid, { code: to.query.code })
       .then((res) => {
-        store.dispatch('update_user', res.data.content)
+        store.dispatch('update_usertoken', res.data.content)
         next({ path: to.path })
       })
       .catch((err) => {
         next({ name: 'warn', params: { msg: err.data.msg } })
       });
   } else if (to.meta.requiresLogin || to.meta.requiresAuth) {
-    if (!store.state.user.openid) {
+    if (!store.state.userToken.openid) {
       axios.get(api.wechat_appid)
         .then((result) => {
           const appid = result.data.content.appid
@@ -99,7 +98,7 @@ VRouter.beforeEach((to, from, next) => {
         }).catch((err) => {
           console.log(err)
         });
-    } else if (to.meta.requiresLogin && !store.state.user.token) {
+    } else if (to.meta.requiresLogin && !store.state.userToken.loginToken) {
       next({ path: '/user/reg', query: { redirect_url: to.fullPath } })
     } else { next() }
 

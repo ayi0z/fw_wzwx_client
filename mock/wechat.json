@@ -20,7 +20,7 @@
             "code": 0,
             "msg": "",
             "content": {
-                "token": "success_mock_token",
+                "loginToken": "success_mock_token",
                 "openid": "success_mock_openid"
             }
         },
