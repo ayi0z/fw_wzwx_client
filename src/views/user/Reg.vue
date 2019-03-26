@@ -27,7 +27,7 @@
                     <label class="weui-label">用户类型</label>
                 </div>
                 <div class="weui-cell__bd">
-                   <select v-re-valid="{regexp:/^1|2|3$/}" v-model="form.用户类型" class="weui-select" v-empty-class="'weui-empty'">
+                   <select v-re-valid="{regexp:/^1|2|3$/}" v-model="form.类型" class="weui-select" v-empty-class="'weui-empty'">
                         <option selected value=''>请选择用户类型</option>
                         <option value="1">司机</option>
                         <option value="2">物流管理员</option>
@@ -64,18 +64,18 @@ export default {
   data: function () {
     return {
       form:{
-        user_account: '',
-        user_pwd: '',
         身份证:'',
         邮箱:'',
         手机号:'',
-        用户类型:''
+        类型:'',
+        用户名: '',
+        密码: ''
       }
     }
   },
   computed:{
     isNeedPwd(){
-      return this.form.用户类型 == '2' || this.form.用户类型 == '3'
+      return this.form.类型 == '2' || this.form.类型 == '3'
     }
   },
   methods: {
@@ -87,7 +87,7 @@ export default {
       this.$axios.post(api.user_reg, { ...this.form })
         .then((res) => {
           if(res.data.code == 0){
-            this.$store.dispatch('update_user', res.data.content)
+            this.$store.dispatch('update_usertoken', res.data.content)
             let tourl = this.$route.query.redirect_url || '/'
             this.$router.replace(tourl)
           }
