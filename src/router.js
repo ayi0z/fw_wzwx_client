@@ -13,8 +13,10 @@ const VRouter = new Router({
       path: '/',
       name: 'mock',
       component: () => import('./views/Wemock.vue')
-    },
-    {
+    }, {
+      path: '/user/auth',
+      name: 'userauth'
+    },  {
       path: '/user/reg',
       name: 'userreg',
       component: () => import('./views/user/Reg.vue'),
@@ -82,26 +84,24 @@ VRouter.beforeEach((to, from, next) => {
   if (to.query.code && store.state.authSate == to.query.state) {
     axios.post(api.wechat_loginopenid, { code: to.query.code })
       .then((res) => {
-        store.dispatch('update_usertoken', res.data.content)
-        next({ path: to.path })
+        if(res.data.code == 0){
+          store.dispatch('update_usertoken', res.data.content)
+          next({ path: to.path })
+        }else{
+          next({ name: 'warn', params: { msg: res.data.msg } })
+        }
       })
-      .catch((err) => {
-        next({ name: 'warn', params: { msg: err.data.msg } })
-      });
-  } else if (to.meta.requiresLogin || to.meta.requiresAuth) {
+  }else if (to.name == 'userauth' || to.path == '/user/auth' || to.meta.requiresLogin || to.meta.requiresAuth) {
     if (!store.state.userToken.openid) {
       axios.get(api.wechat_appid)
         .then((result) => {
           const appid = result.data.content.appid
-          window.location.href = window.location.href + `?code=1234132&state=${store.state.authSate}&appid=${appid}`
+          window.location.replace(window.location.href + `?code=1234132&state=${store.state.authSate}&appid=${appid}`)
           // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_url}&response_type=code&scope=snsapi_userinfo&state=${this.$store.state.authSate}#wechat_redirect`
-        }).catch((err) => {
-          console.log(err)
         });
     } else if (to.meta.requiresLogin && !store.state.userToken.loginToken) {
       next({ path: '/user/reg', query: { redirect_url: to.fullPath } })
     } else { next() }
-
   } else { next() }
 })
 export default VRouter

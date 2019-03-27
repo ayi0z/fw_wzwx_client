@@ -7,17 +7,17 @@ module.exports ={
   devServer: {
     port:4000,
     before(app){
-      app.post('/api/wechat/loginopenid', (req, res)=>{
-        console.log(req)
-        res.json(wechat.loginopenid.success)
-      })
+      // app.post('/api/wechat/loginopenid', (req, res)=>{
+      //   console.log(req)
+      //   res.json(wechat.loginopenid.success)
+      // })
       app.get('/api/wechat/appid', (req, res)=>{
         res.json(wechat.appid.success)
       })
 
-      app.post('/api/user', (req, res)=>{
-        res.json(user.register.success)
-      })
+      // app.post('/api/user', (req, res)=>{
+      //   res.json(user.register.success)
+      // })
 
       app.post('/api/vehicle/bind', (req, res)=>{
         res.json(vehicle.bind.success)
@@ -41,13 +41,13 @@ module.exports ={
         res.json(ws.units)
       })
     },
-    // proxy: {
-    //   '/api': {
-    //     target: 'https://localhost:5001/api',
-    //     pathRewrite:{
-    //       '^/api':''
-    //     }
-    //   }
-    // }
+    proxy: {
+      '/api': {
+        target: 'https://localhost:5001/api',
+        pathRewrite:{
+          '^/api':''
+        }
+      }
+    }
   }
 }
