@@ -1,13 +1,30 @@
 export default {
     install(Vue, opt) {
         Vue.directive('empty-class', {
-            inserted: function (el, binding) {
-                check(el, binding)
-                el.addEventListener("change", function () { check(el, binding) });
+            componentUpdated: function (el, binding, vnode) {
+                check(el, binding, vnode)
+                el.addEventListener("change", function () { check(el, binding, vnode) });
 
-                function check(el, binding) {
+                function seeVal(obj, key){
+                    try {
+                        return new Function('da', 'return da.'+key)(obj)
+                    } catch (error) {
+                        return undefined
+                    }
+                }
+
+                function check(el, binding, vnode) {
+                    let elValue = el.value
+                    let vmo = vnode.data.directives.find(d=>d.rawName == 'v-model');
+                    if(vmo){
+                        let vmoExp = vmo.expression
+                        if(vmoExp){
+                            elValue = seeVal(vnode.context, vmoExp) || vmo.value
+                        }
+                    }
+
                     let classname = binding.value, 
-                        isEmpty = el.value && el.value.trim()
+                        isEmpty = elValue && elValue.toString().trim()
 
                     if (!isEmpty) {
                         el.classList.add(classname)

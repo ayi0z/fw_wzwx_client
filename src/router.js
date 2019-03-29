@@ -35,12 +35,12 @@ const VRouter = new Router({
       path: '/qrcode/veno',
       name: 'veno',
       component: () => import('./views/qrcode/VeNo.vue'),
-      meta: { requiresLogin: true }
+      // meta: { requiresLogin: true }
     }, {
       path: '/qrcode/weigh',
       name: 'weigh',
       component: () => import('./views/qrcode/Weigh.vue'),
-      meta: { requiresLogin: true }
+      // meta: { requiresLogin: true }
     }, {
       path: '/plan/report',
       name: 'planreport',
@@ -63,7 +63,17 @@ const VRouter = new Router({
       component: () => import('./views/invoice/EInvoice.vue'),
       meta: { requiresLogin: true }
     }, {
-      path: '/warn/:msg',
+      path: '/admin/menugroup',
+      name: 'menugroup',
+      component: () => import('./views/admin/MenuGroup.vue'),
+      // meta: { requiresLogin: true }
+    }, {
+      path: '/admin/menu',
+      name: 'menu',
+      component: () => import('./views/admin/Menu.vue'),
+      // meta: { requiresLogin: true }
+    }, {
+      path: '/warn/:code/:msg',
       name: 'warn',
       props: true,
       component: () => import('./views/notic/Warn.vue')
@@ -96,9 +106,13 @@ VRouter.beforeEach((to, from, next) => {
       axios.get(api.wechat_appid)
         .then((result) => {
           const appid = result.data.content.appid
-          window.location.replace(window.location.href + `?code=1234132&state=${store.state.authSate}&appid=${appid}`)
-          // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_url}&response_type=code&scope=snsapi_userinfo&state=${this.$store.state.authSate}#wechat_redirect`
-        });
+          if(appid){
+            console.log(window.location.href)
+            window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${window.location.href}&response_type=code&scope=snsapi_userinfo&state=${store.state.authSate}#wechat_redirect`)
+          }else{
+            next({ name: 'warn', params: { msg: "无法授权" } })
+          }
+       });
     } else if (to.meta.requiresLogin && !store.state.userToken.loginToken) {
       next({ path: '/user/reg', query: { redirect_url: to.fullPath } })
     } else { next() }

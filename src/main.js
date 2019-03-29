@@ -7,7 +7,7 @@ import axios from 'axios'
 import qs from 'qs'
 import 'weui'
 import '@/assets/main.css'
-import { api, coderouter } from '@/config'
+import { api, coderouter, menu_targets } from '@/config'
 import fixInputBug from '@/plugins/fix-input-bug'
 import reValid from '@/plugins/re-valid'
 import emptyClass from '@/plugins/empty-class'
@@ -16,6 +16,7 @@ Vue.prototype.$weui = weui
 Vue.prototype.$axios = axios
 Vue.prototype.$api = api
 Vue.prototype.$coderouter = coderouter
+Vue.prototype.$menu_targets = menu_targets
 
 Vue.use(fixInputBug)
 Vue.use(reValid)
@@ -43,16 +44,14 @@ axios.interceptors.request.use(function(config){
 
 axios.interceptors.response.use(function(response){
   store.dispatch('close_loading')
-  if(response.data.code == 0)
+  if(response.data.code != 0)
   {
-    return response
-  } else{
-    store.dispatch('close_loading')
     let cr = coderouter[response.data.code]
     let pathname = cr ? cr.router : 'warn'
     let msg = cr ? cr.msg : response.data.msg
-    router.push({ name: pathname, params: { msg: msg } })
+    router.push({ name: pathname, params: { code:response.data.code, msg: msg } })
   }
+  return response
 }, function(error){
   store.dispatch('close_loading')
   router.replace({ name: 'error', params: { code: error.response.status, statustxt: error.response.statusText }})

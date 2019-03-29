@@ -66,7 +66,7 @@
                         <p>{{rule.label}}</p>
                     </div>
                     <div class="weui-cell__ft">
-                        <input type="radio" class="weui-check" :value="rule.value" v-model="form.皮重规则" :id="rule.value">
+                        <input type="radio" class="weui-check" v-model="form.皮重规则" :id="rule.value">
                         <span class="weui-icon-checked"></span>
                     </div>
                 </label>

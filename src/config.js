@@ -2,8 +2,11 @@ module.exports = {
     api:{
         wechat_appid: '/api/wechat/appid',
         wechat_loginopenid: '/api/wechat/loginopenid',
+        wechat_tags: '/api/wechat/tags',
+        wechat_menu: '/api/wechat/menu',
 
-        user_reg: '/api/user',
+        user: '/api/user',
+        qrcode: '/api/qrcode',
 
         // 绑定车牌/单位/司机
         vehicle_bind:'/api/vehicle/bind',
@@ -16,6 +19,17 @@ module.exports = {
         
         ws_unittype:'/api/ws/unittype',
         ws_unit:'/api/ws/units'
+    },
+    menu_targets:{
+        用户注册: '/user/reg',
+        车号绑定: '/vehicle/bind',
+        绑定列表: '/vehicle/bindlist',
+        车号二维码: '/qrcode/veno',
+        计量委托二维码: '/qrcode/weigh',
+        过磅记录: '/plan/planlog',
+        委托填报: '/plan/planreport',
+        电子发票: '/invoice/einvoice',
+        菜单管理: '/admin/menugroup'
     },
     coderouter:{
         "-40101": {
@@ -38,9 +52,10 @@ module.exports = {
             router: 'warn',
             msg: '注册用户名或密码错误'
         },
-        "-40106": {
+        "-50101": {
             router: 'warn',
-            msg: '无法为用户设置标签，连接微信服务器错误'
+            msg: '连接微信服务器错误'
         }
     }
 }
+

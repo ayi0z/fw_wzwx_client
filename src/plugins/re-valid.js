@@ -1,20 +1,33 @@
 export default {
     install(Vue, opt) {
         Vue.directive('re-valid', {
-            inserted: function (el, binding, vnode) {
+            inserted:function (el, binding, vnode) {
                 if (!vnode.context['isReValidPassed']) {
                     vnode.context['isReValidPassed'] = function () {
                         for (let a = 0, els = document.querySelectorAll("*[data-re-valid]"); a < els.length; a++) {
-                            if (els[a].getAttribute("data-re-valid") == 'false') {
-                                return false
+                            if(els[a].offsetParent != null){
+                                if (els[a].getAttribute("data-re-valid") == 'false') {
+                                    return false
+                                }
                             }
                         }
                         return true
                     }
                 }
 
+                binding.def.componentUpdated(el, binding, vnode)
+            },
+            componentUpdated: function (el, binding, vnode) {
                 check(el, binding, vnode)
-                el.addEventListener("change", function () { check(el, binding, vnode) });
+                // el.addEventListener("change", function () { check(el, binding, vnode) });
+
+                function seeVal(obj, key){
+                    try {
+                        return new Function('da', 'return da.'+key)(obj)
+                    } catch (error) {
+                        return undefined
+                    }
+                }
 
                 function check(el, binding, vnode) {
                     //binding.value 可能是 function, {}, 或正则字面量表达式
@@ -23,12 +36,34 @@ export default {
                     } else {
                         let { regexp, h } = binding.value || {}
                         regexp = regexp || (Object.prototype.toString.call(binding.value) == '[object RegExp]' ? binding.value : undefined)
-                        let passed = !regexp || regexp.test(el.value);
+                        
+                        let elValue = el.value
+                        let vmo = vnode.data.directives.find(d=>d.rawName == 'v-model');
+                        if(vmo){
+                            let vmoExp = vmo.expression
+                            if(vmoExp){
+                                elValue = seeVal(vnode.context, vmoExp) || vmo.value
+                            }
+                        }
+                        
+                        
+                        let passed = !regexp || regexp.test(elValue);
+
+                        console.log()
 
                         const isrequired = passed && el.getAttribute('required')
-                        passed = isrequired ? (el.value && el.value.trim()) : passed
+                        passed = isrequired ? (elValue && elValue.toString().trim()) : passed
+
+                        const minlen = passed && el.getAttribute('minlength')
+                        passed = minlen ? elValue.replace(/[^\x00-\xff]/g, 'aa').length >= minlen : passed
+
+                        const maxlen = passed && el.getAttribute('maxlength')
+                        passed = maxlen ? elValue.replace(/[^\x00-\xff]/g, 'aa').length <= maxlen : passed
+
                         // 校验结果写入 el 的data属性
                         el.setAttribute('data-re-valid', passed || false)
+
+
 
                         // 指令参数指定了校验不通过时的classname，如果指令参数没有设置，则添加默认classname
                         const errcss = binding.arg || 're-valid-err'

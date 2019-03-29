@@ -11,7 +11,7 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd"><label class="weui-label">邮箱</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" v-re-valid="{regexp:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-])+\.([a-zA-Z]{2,4})$/}" v-model="form.邮箱" placeholder="请输入邮箱"/>
+                    <input class="weui-input" type="email" v-re-valid="{regexp:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-])+\.([a-zA-Z]{2,4})$/}" v-model="form.邮箱" placeholder="请输入邮箱"/>
                 </div>
             </div>
             <div class="weui-cell">
@@ -19,7 +19,7 @@
                     <label class="weui-label">手机号</label>
                 </div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" v-re-valid="{regexp:/^1[34578]\d{9}$/}" v-model="form.手机号" placeholder="请输入手机号"/>
+                    <input class="weui-input" type="tel" v-re-valid="{regexp:/^1[34578]\d{9}$/}" v-model="form.手机号" placeholder="请输入手机号"/>
                 </div>
             </div>
             <div class="weui-cell">
@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import { api } from '@/config'
 export default {
   name: 'reg',
   data: function () {
@@ -78,17 +77,27 @@ export default {
       return this.form.类型 == '2' || this.form.类型 == '3'
     }
   },
+  created(){
+    this.$axios.get(this.$api.user+'/'+this.$store.state.userToken.openid)
+        .then(res=>{
+          if(res.data.code == 0){
+            if(res.data.content){
+              this.form = res.data.content
+            }
+          }
+        })
+  },
   methods: {
     doregister: function(){
       // if(!this.isReValidPassed()){
       //   this.$weui.topTips('请检查红色标记数据是否正确')
       //   return
       // }
-      this.$axios.post(api.user_reg, { ...this.form })
+      this.$axios.post(this.$api.user, { ...this.form })
         .then((res) => {
           if(res.data.code == 0){
             this.$store.dispatch('update_usertoken', res.data.content)
-            let tourl = this.$route.query.redirect_url || '/'
+            let tourl = this.$route.query.redirect_url || '/vehicle/bind'
             this.$router.replace(tourl)
           }
         })

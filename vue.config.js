@@ -1,5 +1,5 @@
 const wechat = require('./mock/wechat.json')
-const user = require('./mock/user.json')
+// const user = require('./mock/user.json')
 const vehicle = require('./mock/vehicle.json')
 const ws = require('./mock/ws.json')
 
@@ -11,9 +11,9 @@ module.exports ={
       //   console.log(req)
       //   res.json(wechat.loginopenid.success)
       // })
-      app.get('/api/wechat/appid', (req, res)=>{
-        res.json(wechat.appid.success)
-      })
+      // app.get('/api/wechat/appid', (req, res)=>{
+      //   res.json(wechat.appid.success)
+      // })
 
       // app.post('/api/user', (req, res)=>{
       //   res.json(user.register.success)

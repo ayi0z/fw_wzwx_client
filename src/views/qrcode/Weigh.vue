@@ -1,11 +1,11 @@
 <template>
     <div class="page">
             <div class="page__bd">
-                <div class="weui-cells">
+                <div class="weui-cells" v-for="da in datas" :key="da.id">
                     <div class="weui-cell">
                         <div class="weui-cell__hd"><label class="weui-label">过磅品名</label></div>
                         <div class="weui-cell__bd">
-                          物资A    
+                          {{da.品名}}    
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -13,7 +13,7 @@
                             <label class="weui-label">发货单位</label>
                         </div>
                         <div class="weui-cell__bd">
-                            发单方
+                            {{da.发货单位}}
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -21,7 +21,7 @@
                             <label class="weui-label">收货单位</label>
                         </div>
                         <div class="weui-cell__bd">
-                            收单方
+                            {{da.收货单位}}
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -29,53 +29,15 @@
                             <label class="weui-label">车牌号</label>
                         </div>
                         <div class="weui-cell__bd">
-                           京A66666
+                           {{da.车牌号}}
                         </div>
                     </div>
                     <div class="weui-panel__ft">
                         <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link"
-                            @click="doQrCode">
+                            @click="doQrCode(da)">
                             <div class="weui-cell__bd">生成二维码</div>
                             <span class="weui-cell__ft"></span>
                         </a>
-                    </div>
-                </div>
-                <div class="weui-cells">
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd"><label class="weui-label">过磅品名</label></div>
-                        <div class="weui-cell__bd">
-                          物资A    
-                        </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd">
-                            <label class="weui-label">发货单位</label>
-                        </div>
-                        <div class="weui-cell__bd">
-                            发单方
-                        </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd">
-                            <label class="weui-label">收货单位</label>
-                        </div>
-                        <div class="weui-cell__bd">
-                            收单方
-                        </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd">
-                            <label class="weui-label">车牌号</label>
-                        </div>
-                        <div class="weui-cell__bd">
-                           京A66666
-                        </div>
-                    </div>
-                    <div class="weui-panel__ft">
-                        <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link" @click="doQrCode">
-                            <div class="weui-cell__bd">生成二维码</div>
-                            <span class="weui-cell__ft"></span>
-                        </a>    
                     </div>
                 </div>
                 <qr-dialog v-show="qrcode.showing" :url="qrcode.url" :alt="qrcode.alt" @close="(va) => {qrcode.showing=va}"></qr-dialog>
@@ -93,17 +55,31 @@ export default {
                 showing:false,
                 url:'',
                 alt:''
-            }
+            },
+            datas:[
+                {
+                    id:111,
+                    品名:'物资A',
+                    发货单位:'发单B',
+                    收货单位:'收单A',
+                    车牌号:'京A8888'
+                }
+            ]
         }
     },
     components:{
         'qr-dialog': QrDialog
     },
     methods: {
-        doQrCode(){
-            this.qrcode.showing = true
-            this.qrcode.url = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553585154237&di=79f59d8aed335931c7332bdd9d6dd4ad&imgtype=0&src=http%3A%2F%2Fimg.jiaodong.net%2Fpic%2F003%2F004%2F130%2F00300413046_2e324920.gif'
-            this.qrcode.alt = '计量委托二维码'
+        doQrCode(da){
+            this.$axios.post(this.$api.qrcode, {...da})
+                .then(res=>{
+                    if(res.data.code == 0){
+                        this.qrcode.showing = true
+                        this.qrcode.alt = da.品名
+                        this.qrcode.url = `data:image/jpeg;base64,${res.data.content}`
+                    }
+                })
         }
     }
 }
