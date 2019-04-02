@@ -16,8 +16,9 @@
             <div class="weui-cells">
                 <div class="weui-cell weui-cell_select">
                     <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required v-model="form.单位类型">
-                            <option value="">请选择业务类型</option>
+                        <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required
+                                v-model="form.单位类型" @change="doLoadUnits">
+                            <option value="">请选择业务单位类型</option>
                             <option v-for="type in unittypes" :key="type.value" :value="type.value">{{type.text}}</option>
                         </select>
                     </div>
@@ -42,12 +43,13 @@
 </template>
 
 <script>
+import { unittypes } from '@/config'
 export default {
     name: "bind",
     data: function(){
         return {
             units:[],
-            unittypes:[],
+            unittypes:unittypes,
             form:{
                 车号:'',
                 业务单位:'',
@@ -55,27 +57,39 @@ export default {
             }
         }
     },
-    created(){
-        this.$axios.get(this.$api.ws_unittype)
-            .then((res) => {
-                if(res.data.code == 0){
-                    this.unittypes = res.data.content
-                }
-            })
-        this.$axios.get(this.$api.ws_unit)
-            .then((res) => {
-                if(res.data.code == 0){
-                    this.units = res.data.content
-                }
-            })
+    mounted(){
+
+        if(!this.form.单位类型){
+            this.units = []
+            this.form.单位类型 = ''
+            return
+        }
+
+        this.doLoadUnits()
     },
     methods:{
+        doLoadUnits(){
+            this.$axios.get(this.$api.ws_units, {
+                params:{
+                    utype: this.form.单位类型
+                },
+                data: { utype: this.form.单位类型}
+            }).then((res) => {
+                    if(res.data.code == 0){
+                        this.units = res.data.content
+                    }
+                })
+        },
         doSave(){
             if(!this.isReValidPassed()){
               this.$weui.topTips('请检查红色标记数据是否正确')
               return
             }
-            this.$axios.post(this.$api.vehicle_bind, { ...this.form })
+            this.$axios.post(this.$api.ws_units, { 
+                carno: this.form.车号,
+                unit: this.form.业务单位,
+                utype: this.form.单位类型
+             })
                 .then((res) => {
                     if(res.data.code == 0){
                         this.$store.dispatch('success', true)

@@ -17,32 +17,50 @@
                     <a href="javascript:" class="weui-search-bar__cancel-btn" @click="searchBar.focus_searchBar = false">取消</a>
                 </div>
                 <div class="weui-cells searchbar-result" v-show="searchBar.focus_searchBar">
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd"><label class="weui-label">品名</label></div>
-                        <div class="weui-cell__bd">
-                            <input class="weui-input" type="text" v-model="query.proname" placeholder="输入品名查询"/>
+                    <div class="weui-tab">
+                        <div class="weui-navbar">
+                            <div class="weui-navbar__item" @click="doChangeQueryType(0)"
+                                :class="query.querytype==0 ? 'weui-bar__item_on':''">
+                                按车牌
+                            </div>
+                            <div class="weui-navbar__item" @click="doChangeQueryType(1)"
+                                :class="query.querytype==1 ? 'weui-bar__item_on':''">
+                                按单位
+                            </div>
                         </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd">
-                            <label class="weui-label">收货单位</label>
-                        </div>
-                        <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.aunit">
-                                <option selected value=''>请选择收货单位</option>
-                                <option v-for="unit in searchBar.units" :key="unit.value" :value="unit.value">{{unit.text}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd">
-                            <label class="weui-label">发货单位</label>
-                        </div>
-                        <div class="weui-cell__bd">
-                            <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.bunit">
-                                <option selected value=''>请选择发货单位</option>
-                                <option v-for="unit in searchBar.units" :key="unit.value" :value="unit.value">{{unit.text}}</option>
-                            </select>
+                        <div class="weui-tab__panel">
+                            <div class="weui-cells" v-show="query.querytype == 0">
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd"><label class="weui-label">车牌号</label></div>
+                                    <div class="weui-cell__bd">
+                                        <input class="weui-input" type="text" v-model="query.CarNo" placeholder="输入车牌号"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="weui-cells" v-show="query.querytype == 1">
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd">
+                                        <label class="weui-label">单位类型</label>
+                                    </div>
+                                    <div class="weui-cell__bd">
+                                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.DptType">
+                                            <option selected value=''>请选择单位类型</option>
+                                            <option v-for="type in searchBar.unittypes" :key="type.value" :value="type.value">{{type.text}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd">
+                                        <label class="weui-label">业务单位</label>
+                                    </div>
+                                    <div class="weui-cell__bd">
+                                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.Dpt">
+                                            <option selected value=''>请选择业务单位</option>
+                                            <option v-for="unit in searchBar.units" :key="unit.value" :value="unit.value">{{unit.text}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -50,7 +68,7 @@
                             <label class="weui-label">开始时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.bdate"/>
+                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.BgDT"/>
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -58,7 +76,13 @@
                             <label class="weui-label">结束时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.edate"/>
+                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.EdDT"/>
+                        </div>
+                    </div>
+                    <div class="weui-cell weui-cell_switch">
+                        <div class="weui-cell__bd">查询全部</div>
+                        <div class="weui-cell__ft">
+                            <input class="weui-switch" v-model="query.IsAll" type="checkbox"/>
                         </div>
                     </div>
                 </div>
@@ -81,26 +105,29 @@
 </template>
 
 <script>
+import { unittypes } from '@/config'
 export default {
     name: 'veno',
     data(){
         return {
             searchBar:{
                 focus_searchBar: false,
+                unittypes: unittypes,
                 units:[]
             },
             query:{
-                proname:'',
-                bdate:'',
-                edate:'',
-                aunit:'',
-                bunit:''
-            },
-            datas:[]
+                querytype: 0,
+                CarNo:'',
+                BgDT:'',
+                EdDT:'',
+                Dpt:'',
+                DptType:'',
+                IsAll: false
+            }
         }
     },
     created(){
-        this.$axios.get(this.$api.ws_unit)
+        this.$axios.get(this.$api.ws_units)
             .then((res)=>{
                 if(res.data.code == 0){
                     this.searchBar.units = res.data.content
@@ -108,8 +135,16 @@ export default {
             })
     },
     methods:{
+        doChangeQueryType(type){
+            this.query.querytype = type
+        },
         doSearch(){
-            console.log(this.query)
+            this.$axios.get(this.$api.ws_carplan, {params: this.query})
+                .then((res)=>{
+                    if(res.data.code == 0){
+                        this.searchBar.units = res.data.content
+                    }
+                })
         },
         doViewDetail(id){
             console.log(id)
@@ -141,4 +176,8 @@ export default {
         text-align:center
     .weui-search-bar__box
         padding:0
+    .weui-tab__panel
+        padding-bottom:0
+    .searchbar-result .weui-cells
+        margin-top:0
 </style>

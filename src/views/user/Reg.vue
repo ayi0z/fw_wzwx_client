@@ -3,12 +3,6 @@
     <div class="page__bd">
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">身份证</label></div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" v-re-valid="{regexp:/^\d{17}[0-9Xx]|\d{15}$/}" v-model="form.身份证" placeholder="请输入身份证"/>
-                </div>
-            </div>
-            <div class="weui-cell">
                 <div class="weui-cell__hd"><label class="weui-label">邮箱</label></div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" type="email" v-re-valid="{regexp:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-])+\.([a-zA-Z]{2,4})$/}" v-model="form.邮箱" placeholder="请输入邮箱"/>
@@ -35,18 +29,24 @@
                     </select>
                 </div>
             </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">身份证</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" v-model="form.身份证" placeholder="请输入身份证"/>
+                </div>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form" v-if="isNeedPwd">
             <div class="weui-cell">
                 <div class="weui-cell__hd"><label class="weui-label">用户名</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" v-re-valid required v-model="form.user_account" placeholder="请输入用户名"/>
+                    <input class="weui-input" type="text" v-re-valid required v-model="form.用户名" placeholder="请输入用户名"/>
                 </div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd"><label class="weui-label">密码</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="password" v-re-valid="{regexp: /^[0-9a-zA-Z_\-]{4,16}$/ }" v-model="form.user_pwd" placeholder="请输入密码"/>
+                    <input class="weui-input" type="password" v-re-valid="{regexp: /^[0-9a-zA-Z_\-]{4,16}$/ }" v-model="form.密码" placeholder="请输入密码"/>
                 </div>
             </div>
         </div>
@@ -78,8 +78,7 @@ export default {
     }
   },
   created(){
-    this.$axios.get(this.$api.user+'/'+this.$store.state.userToken.openid)
-        .then(res=>{
+    this.$axios.get(this.$api.user+'/'+this.$store.state.userToken.openid).then(res=>{
           if(res.data.code == 0){
             if(res.data.content){
               this.form = res.data.content
@@ -89,18 +88,20 @@ export default {
   },
   methods: {
     doregister: function(){
-      // if(!this.isReValidPassed()){
-      //   this.$weui.topTips('请检查红色标记数据是否正确')
-      //   return
-      // }
-      this.$axios.post(this.$api.user, { ...this.form })
-        .then((res) => {
-          if(res.data.code == 0){
-            this.$store.dispatch('update_usertoken', res.data.content)
-            let tourl = this.$route.query.redirect_url || '/vehicle/bind'
-            this.$router.replace(tourl)
-          }
-        })
+      if(!this.isReValidPassed()){
+        this.$weui.topTips('请检查红色标记数据是否正确')
+        return
+      }
+      this.$axios.post(this.$api.user, { 
+          ...this.form
+        }).then((res) => {
+            if(res.data.code == 0){
+              this.$store.dispatch('success', true)
+              this.$store.dispatch('update_usertoken', res.data.content)
+              let tourl = this.$route.query.redirect_url || '/vehicle/bind'
+              this.$router.replace(tourl)
+            }
+          })
     }
   }
 }

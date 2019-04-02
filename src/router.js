@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
 import axios from 'axios'
-import { api } from './config'
 
 Vue.use(Router)
 
@@ -11,6 +10,11 @@ const VRouter = new Router({
   routes: [
     {
       path: '/',
+      name: 'welcome',
+      props: true,
+      component: () => import('./views/Welcome.vue')
+    }, {
+      path: '/mock',
       name: 'mock',
       component: () => import('./views/Wemock.vue')
     }, {
@@ -66,12 +70,12 @@ const VRouter = new Router({
       path: '/admin/menugroup',
       name: 'menugroup',
       component: () => import('./views/admin/MenuGroup.vue'),
-      // meta: { requiresLogin: true }
+      meta: { requiresLogin: true }
     }, {
       path: '/admin/menu',
       name: 'menu',
       component: () => import('./views/admin/Menu.vue'),
-      // meta: { requiresLogin: true }
+      meta: { requiresLogin: true }
     }, {
       path: '/warn/:code/:msg',
       name: 'warn',
@@ -91,8 +95,12 @@ const VRouter = new Router({
 })
 
 VRouter.beforeEach((to, from, next) => {
-  if (to.query.code && store.state.authSate == to.query.state) {
-    axios.post(api.wechat_loginopenid, { code: to.query.code })
+  if(to.name != 'welcome'
+     && !Vue.prototype.$hasInit){
+    next({ name: 'welcome', query: { redirect_url: to.fullPath } })
+  } else if (to.query.code 
+          && store.state.authSate == to.query.state) {
+    axios.post(Vue.prototype.$api.wechat_loginopenid, { code: to.query.code })
       .then((res) => {
         if(res.data.code == 0){
           store.dispatch('update_usertoken', res.data.content)
@@ -101,19 +109,23 @@ VRouter.beforeEach((to, from, next) => {
           next({ name: 'warn', params: { msg: res.data.msg } })
         }
       })
-  }else if (to.name == 'userauth' || to.path == '/user/auth' || to.meta.requiresLogin || to.meta.requiresAuth) {
+  }else if (to.name == 'userauth' 
+         || to.path == '/user/auth' 
+         || to.meta.requiresLogin 
+         || to.meta.requiresAuth) {
     if (!store.state.userToken.openid) {
-      axios.get(api.wechat_appid)
+      // 获取appid
+      axios.get(Vue.prototype.$api.wechat_appid)
         .then((result) => {
           const appid = result.data.content.appid
           if(appid){
-            console.log(window.location.href)
             window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${window.location.href}&response_type=code&scope=snsapi_userinfo&state=${store.state.authSate}#wechat_redirect`)
           }else{
             next({ name: 'warn', params: { msg: "无法授权" } })
           }
        });
-    } else if (to.meta.requiresLogin && !store.state.userToken.loginToken) {
+    } else if (to.meta.requiresLogin 
+            && !store.state.userToken.loginToken) {
       next({ path: '/user/reg', query: { redirect_url: to.fullPath } })
     } else { next() }
   } else { next() }

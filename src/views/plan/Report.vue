@@ -1,39 +1,21 @@
 <template>
     <div class="page">
         <div class="page__bd">
-            <div class="weui-cells">
-                <div class="weui-cell weui-cell_vcode">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">批号</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" v-model="form.批号">
-                    </div>
-                    <div class="weui-cell__ft">
-                        <button class="weui-vcode-btn" @click="doNewNo">新增批号</button>
-                    </div>
-                </div>
-            </div>
             <div class="weui-cells weui-cells_form">
                 <div class="weui-cell">
                     <div class="weui-cell__hd">
                         <label class="weui-label">车牌号</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" v-model="form.车牌号" placeholder="请输入车牌号" />
+                        <input class="weui-input" type="text" v-model="form.CarNo" placeholder="请输入车牌号" />
                     </div>
                 </div>
-                <div class="weui-cell weui-cell_select">
+                <div class="weui-cell weui-cells_form">
                     <div class="weui-cell__hd">
                         <label class="weui-label">品名</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="form.品名">
-                            <option value="">请选择品名</option>
-                            <option value="1">品1</option>
-                            <option value="2">品2</option>
-                            <option value="3">品3</option>
-                        </select>
+                        <input class="weui-input" type="text" v-model="form.MartiralName" placeholder="请输入品名" />
                     </div>
                 </div>
                 <div class="weui-cell weui-cell_select">
@@ -41,7 +23,7 @@
                         <label class="weui-label">发货单位</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="form.发货单位">
+                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="form.OutDpt">
                             <option value="">请选择发货单位</option>
                             <option  v-for="unit in datas.units" :key="unit.value" :value="unit.value">{{unit.text}}</option>
                         </select>
@@ -52,7 +34,7 @@
                         <label class="weui-label">收货单位</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="form.收货单位">
+                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="form.InDpt">
                             <option value="">请选择收货单位</option>
                             <option  v-for="unit in datas.units" :key="unit.value" :value="unit.value">{{unit.text}}</option>
                         </select>
@@ -66,7 +48,7 @@
                         <p>{{rule.label}}</p>
                     </div>
                     <div class="weui-cell__ft">
-                        <input type="radio" class="weui-check" v-model="form.皮重规则" :id="rule.value">
+                        <input type="radio" class="weui-check" :value="rule.value" v-model="form.TraeType" :id="rule.value">
                         <span class="weui-icon-checked"></span>
                     </div>
                 </label>
@@ -76,7 +58,7 @@
                     <div class="weui-cell__bd">长期有效</div>
                     <div class="weui-cell__ft">
                         <label for="switchCP" class="weui-switch-cp">
-                            <input id="switchCP" class="weui-switch-cp__input" type="checkbox" v-model="form.长期有效" checked="checked" >
+                            <input id="switchCP" class="weui-switch-cp__input" type="checkbox" v-model="form.LongTime" checked="checked" >
                             <div class="weui-switch-cp__box"></div>
                         </label>
                     </div>
@@ -113,18 +95,19 @@ export default {
                 units:[]
             },
             form:{
-                批号:'',
-                车牌号:'',
-                品名:'',
-                发货单位:'',
-                收货单位:'',
-                皮重规则:'',
-                长期有效:'',
+                CarNo:'',
+                MartiralName:'',
+                OutDpt:'',
+                InDpt:'',
+                TraeType:'',
+                LongTime:true,
+                PlanType:'',
+                Tasktype:''
             }
         }
     },
     created(){
-        this.$axios.get(this.$api.ws_unit)
+        this.$axios.get(this.$api.ws_units)
             .then((res)=>{
                 if(res.data.code == 0){
                     this.datas.units = res.data.content
@@ -132,11 +115,14 @@ export default {
             })
     },
     methods:{
-        doNewNo(){
-            this.form.批号 = Math.round(Math.random()*100000)
-        },
         doSave(){
             console.log(this.form)
+            this.$axios.post(this.$api.ws_carplan, {...this.form})
+                .then(res=>{
+                    if(res.data.code == 0){
+                        this.$store.dispatch('success', true)
+                    }
+                })
         }
     }
 }
