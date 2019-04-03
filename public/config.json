@@ -1,6 +1,7 @@
 {
     "api":{
         "baseurl":"https://localhost:5001",
+
         "wechat_appid": "/api/wechat/appid",
         "wechat_loginopenid": "/api/wechat/loginopenid",
         "wechat_tags": "/api/wechat/tags",
@@ -8,23 +9,22 @@
 
         "user": "/api/user",
 
-        "qrcode": "/api/qrcode",
-
-        "vehicle_bind":"/api/vehicle/bind",
-        "vehicle_unbind":"/api/vehicle/unbind",
-        "vehicle_nos":"/api/vehicle/nos",
-        
+        "ws_qrcode": "/api/weis/qrcode",
+        "ws_bindcarunit":"/api/weis/carunits",
+        "ws_cars": "/api/weis/cars",
         "ws_units": "/api/weis/units",
         "ws_carplan": "/api/weis/carplan",
-        "ws_userole": "/api/weis/userole"
+        "ws_mycarplan": "/api/weis/mycarplan",
+        "ws_userole": "/api/weis/userole",
+        "ws_einvoice":"/api/weis/einvoice"
     },
     "menu_targets":{
         "用户注册": "/user/reg",
         "车号绑定": "/vehicle/bind",
         "绑定列表": "/vehicle/bindlist",
-        "车号二维码": "/qrcode/veno",
-        "计量委托二维码": "/qrcode/weigh",
-        "过磅记录": "/plan/planlog",
+        "车牌号": "/qrcode/veno",
+        "过磅记录": "/qrcode/weigh",
+        "委托计划": "/plan/planlog",
         "委托填报": "/plan/planreport",
         "电子发票": "/invoice/einvoice",
         "菜单管理": "/admin/menugroup"

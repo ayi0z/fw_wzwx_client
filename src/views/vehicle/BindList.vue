@@ -34,7 +34,7 @@ export default {
         }
     },
     created(){
-        this.$axios.get(this.$api.vehicle_bindlist)
+        this.$axios.get(this.$api.ws_bindcarunit)
             .then((res) => {
                 console.log(res)
                 if(res.data.code == 0){
@@ -49,11 +49,11 @@ export default {
                 this.$weui.topTips('请选择解绑单位')
                 return
             }
-            this.$axios.post(this.$api.vehicle_unbind)
-            .then((res) => {
-                console.log(res)
-                this.$store.dispatch('success', true)
-            })
+            this.$axios.delete(this.$api.ws_units)
+                .then((res) => {
+                    console.log(res)
+                    this.$store.dispatch('success', true)
+                })
         }
     }
 }

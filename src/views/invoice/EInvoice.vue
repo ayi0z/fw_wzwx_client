@@ -17,21 +17,10 @@
                 <div class="weui-cells searchbar-result" v-show="searchBar.focus_searchBar">
                     <div class="weui-cell">
                         <div class="weui-cell__hd">
-                            <label class="weui-label">车牌号</label>
-                        </div>
-                        <div class="weui-cell__bd">
-                            <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.No">
-                                <option selected value=''>请选择绑定的车辆</option>
-                                <option v-for="no in searchBar.Nos" :key="no.Id" :value="no.Id">{{no.车号}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd">
                             <label class="weui-label">开始时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.bdate"/>
+                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.BgDT"/>
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -39,7 +28,13 @@
                             <label class="weui-label">结束时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.edate"/>
+                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.EdDT"/>
+                        </div>
+                    </div>
+                    <div class="weui-cell weui-cell_switch">
+                        <div class="weui-cell__bd">仅查询未开票记录</div>
+                        <div class="weui-cell__ft">
+                            <input class="weui-switch" v-model="query.filter" type="checkbox"/>
                         </div>
                     </div>
                 </div>
@@ -50,28 +45,16 @@
                 <div class="weui-panel__bd">
                     <div class="weui-cells__title">选择将要开票的支付记录：</div>
                     <div class="weui-cells weui-cells_checkbox">
-                        <label class="weui-cell weui-check__label" for="s11">
+                        <label class="weui-cell weui-check__label" v-for="da in form.datas" :key="da.Id" :for="da.Id">
                             <div class="weui-cell__hd">
-                                <input type="checkbox" class="weui-check" :value="1" v-model="form.checkedvalues" id="s11"/>
+                                <input type="checkbox" class="weui-check" :value="da.Id" v-model="form.checkedvalues" :id="da.Id"/>
                                 <i class="weui-icon-checked"></i>
                             </div>
                             <div class="weui-cell__bd">
-                                <p>京A88888</p>
+                                <p>{{da.过磅申请号}}</p>
                             </div>
                             <div class="weui-cell__ft">
-                                <p>2019年3月22日</p>
-                            </div>
-                        </label>
-                        <label class="weui-cell weui-check__label" for="s12">
-                            <div class="weui-cell__hd">
-                                <input type="checkbox" class="weui-check" :value="2" v-model="form.checkedvalues" id="s12"/>
-                                <i class="weui-icon-checked"></i>
-                            </div>
-                            <div class="weui-cell__bd">
-                                <p>京A66666</p>
-                            </div>
-                            <div class="weui-cell__ft">
-                                <p>2019年3月22日</p>
+                                <p>{{desc(da)}}</p>
                             </div>
                         </label>
                     </div>
@@ -99,7 +82,7 @@
                     </div>
                     <div class="weui-dialog__ft">
                         <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="dialogShowing = false">取消</a>
-                        <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="doSave">去开票</a>
+                        <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="doSubmit">去开票</a>
                     </div>
                 </div>
             </div>
@@ -116,33 +99,43 @@ export default {
     data(){
         return {
             searchBar:{
-                focus_searchBar: false,
-                Nos:[]
+                focus_searchBar: false
             },
             query:{
-                No:'',
-                bdate:'',
-                edate:''
+                IsAll:true,
+                BgDT:'',
+                EdDT:'',
+                filter: true
             },
             form:{
-                checkedvalues:[]
+                checkedvalues:[],
+                datas:[]
             },
             dialogShowing:false
         }
     },
-    created(){
-        this.$axios.get(this.$api.vehicle_nos)
-            .then((res)=>{
-                if(res.data.code == 0){
-                    this.searchBar.Nos = res.data.content
-                }
-            })
-    },
     methods:{
-        doSearch(){
-            console.log(this.query)
+        desc(da){
+            if(!da.是否缴款){
+                return "未缴款"
+            } else if(da.是否开票){
+                return "已开票"
+            } else {
+                return "点击开票"
+            }
         },
-        doSave(){
+        doSearch(){
+            this.query.IsAll = !this.query.filter
+            this.$axios.get(this.$api.ws_einvoice, {params:this.query})
+                .then(res=>{
+                    if(res.data.code == 0){
+                        this.searchBar.focus_searchBar = false
+                        this.form.datas = res.data.content
+                    }
+                })
+            
+        },
+        doSubmit(){
             console.log(this.form.checkedvalues)
             // this.$router.push({name:'plandetail', params:{id:'1'}})
         },

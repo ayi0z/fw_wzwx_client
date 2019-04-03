@@ -18,7 +18,10 @@ export default new Vuex.Store({
     userToken:{
       loginToken:undefined,
       openid:undefined
-    }
+    },
+    carplan_detail:null,
+    planlog_datas:[],
+    mycarnos:[],
   },
   mutations: {
     success(state, toast){
@@ -42,6 +45,15 @@ export default new Vuex.Store({
     },
     userToken(state, utoken){
       state.userToken = Object.assign({}, state.userToken, utoken)
+    },
+    carplan_detail(state, plan){
+      state.carplan_detail = plan
+    },
+    mycarnos(state, cars){
+      state.mycarnos = cars
+    },
+    planlog_datas(state, datas){
+      state.planlog_datas = datas
     }
   },
   actions: {
@@ -59,6 +71,15 @@ export default new Vuex.Store({
     },
     update_usertoken({commit}, utoken){
       commit('userToken', utoken)
+    },
+    carplan_detail({commit}, plan){
+      commit('carplan_detail', plan)
+    },
+    mycarnos({commit}, cars){
+      commit('mycarnos', cars)
+    },
+    planlog_datas({commit}, datas){
+      commit('planlog_datas', datas)
     }
   }
 })

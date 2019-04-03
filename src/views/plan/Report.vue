@@ -7,7 +7,7 @@
                         <label class="weui-label">车牌号</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" v-model="form.CarNo" placeholder="请输入车牌号" />
+                        <input class="weui-input" type="text" v-re-valid required v-model="form.CarNo" placeholder="请输入车牌号" />
                     </div>
                 </div>
                 <div class="weui-cell weui-cells_form">
@@ -15,7 +15,7 @@
                         <label class="weui-label">品名</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" v-model="form.MartiralName" placeholder="请输入品名" />
+                        <input class="weui-input" type="text" v-re-valid required v-model="form.MartiralName" placeholder="请输入品名" />
                     </div>
                 </div>
                 <div class="weui-cell weui-cell_select">
@@ -23,9 +23,9 @@
                         <label class="weui-label">发货单位</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="form.OutDpt">
+                        <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required v-model="form.OutDpt">
                             <option value="">请选择发货单位</option>
-                            <option  v-for="unit in datas.units" :key="unit.value" :value="unit.value">{{unit.text}}</option>
+                            <option  v-for="unit in datas.outunits" :key="unit.value" :value="unit.名称">{{unit.名称}}</option>
                         </select>
                     </div>
                 </div>
@@ -34,9 +34,9 @@
                         <label class="weui-label">收货单位</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="form.InDpt">
+                        <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required v-model="form.InDpt">
                             <option value="">请选择收货单位</option>
-                            <option  v-for="unit in datas.units" :key="unit.value" :value="unit.value">{{unit.text}}</option>
+                            <option  v-for="unit in datas.inunits" :key="unit.value" :value="unit.名称">{{unit.名称}}</option>
                         </select>
                     </div>
                 </div>
@@ -72,34 +72,22 @@
 </template>
 
 <script>
+import { weighruls } from '@/config'
 export default {
     name:'PlanReport',
     data:function(){
         return{
             datas:{
-                weighruls:[
-                    {
-                        value:1,
-                        label:'一车一皮'
-                    },{
-                        value:2,
-                        label:'日皮'
-                    },{
-                        value:3,
-                        label:'班皮'
-                    },{
-                        value:4,
-                        label:'周皮'
-                    }
-                ],
-                units:[]
+                weighruls:weighruls,
+                inunits:[],
+                outunits:[]
             },
             form:{
                 CarNo:'',
                 MartiralName:'',
                 OutDpt:'',
                 InDpt:'',
-                TraeType:'',
+                TraeType:'1',
                 LongTime:true,
                 PlanType:'',
                 Tasktype:''
@@ -107,20 +95,39 @@ export default {
         }
     },
     created(){
-        this.$axios.get(this.$api.ws_units)
+        this.$axios.get(this.$api.ws_units, { params:{utype:'收货单位'} })
             .then((res)=>{
                 if(res.data.code == 0){
-                    this.datas.units = res.data.content
+                    this.datas.inunits = res.data.content
+                }
+            })
+        this.$axios.get(this.$api.ws_units, { params:{utype:'发货单位'} })
+            .then((res)=>{
+                if(res.data.code == 0){
+                    this.datas.outunits = res.data.content
                 }
             })
     },
     methods:{
         doSave(){
-            console.log(this.form)
+            if(!this.isReValidPassed()){
+                this.$weui.topTips('请检查红色标记数据是否正确')
+                return
+            }
             this.$axios.post(this.$api.ws_carplan, {...this.form})
                 .then(res=>{
                     if(res.data.code == 0){
                         this.$store.dispatch('success', true)
+                        this.form = {
+                                        CarNo:'',
+                                        MartiralName:'',
+                                        OutDpt:'',
+                                        InDpt:'',
+                                        TraeType:'',
+                                        LongTime:true,
+                                        PlanType:'',
+                                        Tasktype:''
+                                    }
                     }
                 })
         }

@@ -19,7 +19,7 @@
                         <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required
                                 v-model="form.单位类型" @change="doLoadUnits">
                             <option value="">请选择业务单位类型</option>
-                            <option v-for="type in unittypes" :key="type.value" :value="type.value">{{type.text}}</option>
+                            <option v-for="type in unittypes" :key="type.value" :value="type.text">{{type.text}}</option>
                         </select>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                     <div class="weui-cell__bd">
                         <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required v-model="form.业务单位">
                             <option value="">请选择业务单位</option>
-                            <option v-for="unit in units" :key="unit.value" :value="unit.value">{{unit.text}}</option>
+                            <option v-for="unit in units" :key="unit.Id" :value="unit.名称">{{unit.名称}}</option>
                         </select>
                     </div>
                 </div>
@@ -58,7 +58,6 @@ export default {
         }
     },
     mounted(){
-
         if(!this.form.单位类型){
             this.units = []
             this.form.单位类型 = ''

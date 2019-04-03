@@ -7,7 +7,7 @@ import Vue from 'vue'
 export default {
     name:'welcome',
     created(){
-        this.$axios.get('./config.json')
+        this.$axios.get('config.json',{baseURL:'./'})
             .then(res=>{
                 const { api, menu_targets } = res.data
                 this.$axios.defaults.baseURL = api.baseurl

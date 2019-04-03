@@ -39,12 +39,12 @@ const VRouter = new Router({
       path: '/qrcode/veno',
       name: 'veno',
       component: () => import('./views/qrcode/VeNo.vue'),
-      // meta: { requiresLogin: true }
+      meta: { requiresLogin: true }
     }, {
       path: '/qrcode/weigh',
       name: 'weigh',
       component: () => import('./views/qrcode/Weigh.vue'),
-      // meta: { requiresLogin: true }
+      meta: { requiresLogin: true }
     }, {
       path: '/plan/report',
       name: 'planreport',

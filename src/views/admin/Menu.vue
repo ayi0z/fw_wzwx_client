@@ -199,7 +199,6 @@ export default {
             if(!menu.button.length){
                 return
             }
-            console.log(menu)
             this.$axios.post(this.$api.wechat_menu, {...menu})
                 .then(res=>{
                     if(res.data.code == 0){

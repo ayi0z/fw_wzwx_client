@@ -5,9 +5,7 @@
                 <div class="weui-search-bar" :class="searchBar.focus_searchBar ? 'weui-search-bar_focusing':''">
                     <form class="weui-search-bar__form">
                         <div class="weui-search-bar__box">
-                            <!-- <i class="weui-icon-search"></i> -->
                             <a href="javascript:;" class="weui-btn weui-btn_default weui-search-bar__input" @click="doSearch">搜索</a>
-                            <!-- <a href="javascript:" class="weui-icon-clear"></a> -->
                         </div>
                         <label class="weui-search-bar__label" @click="searchBar.focus_searchBar = !searchBar.focus_searchBar">
                             <i class="weui-icon-search"></i>
@@ -33,7 +31,10 @@
                                 <div class="weui-cell">
                                     <div class="weui-cell__hd"><label class="weui-label">车牌号</label></div>
                                     <div class="weui-cell__bd">
-                                        <input class="weui-input" type="text" v-model="query.CarNo" placeholder="输入车牌号"/>
+                                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.CarNo">
+                                            <option selected value=''>请选择车牌号</option>
+                                            <option v-for="car in carnos" :key="car" :value="car">{{car}}</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -43,9 +44,9 @@
                                         <label class="weui-label">单位类型</label>
                                     </div>
                                     <div class="weui-cell__bd">
-                                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.DptType">
+                                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.DptType" @change="doLoadUnits">
                                             <option selected value=''>请选择单位类型</option>
-                                            <option v-for="type in searchBar.unittypes" :key="type.value" :value="type.value">{{type.text}}</option>
+                                            <option v-for="type in searchBar.unittypes" :key="type.value" :value="type.text">{{type.text}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -56,7 +57,7 @@
                                     <div class="weui-cell__bd">
                                         <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.Dpt">
                                             <option selected value=''>请选择业务单位</option>
-                                            <option v-for="unit in searchBar.units" :key="unit.value" :value="unit.value">{{unit.text}}</option>
+                                            <option v-for="unit in searchBar.units" :key="unit.value" :value="unit.名称">{{unit.名称}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -80,9 +81,9 @@
                         </div>
                     </div>
                     <div class="weui-cell weui-cell_switch">
-                        <div class="weui-cell__bd">查询全部</div>
+                        <div class="weui-cell__bd">仅查询未使用计划</div>
                         <div class="weui-cell__ft">
-                            <input class="weui-switch" v-model="query.IsAll" type="checkbox"/>
+                            <input class="weui-switch" v-model="query.filter" type="checkbox"/>
                         </div>
                     </div>
                 </div>
@@ -91,12 +92,15 @@
         <div class="page__bd">
             <div class="weui-panel search-result-panel">
                 <div class="weui-panel__bd">
-                    <div class="weui-media-box weui-media-box_text">
-                        <p class="weui-media-box__desc">【品名】收货单位名称</p>
-                        <ul class="weui-media-box__info">
-                            <li class="weui-media-box__info__meta">2019年3月22日</li>
-                            <li class="weui-media-box__info__meta weui-media-box__info__meta_extra weui-cell__ft" @click.self="doViewDetail(1)">查看更多</li>
-                        </ul>
+
+                    <div class="weui-cells">
+                        <a class="weui-cell weui-cell_access" href="javascript:;"
+                           v-for="da in datas" :key="da.过磅申请号" @click="doViewDetail(da)">
+                            <div class="weui-cell__bd">
+                                <p>{{da.过磅申请号}}</p>
+                            </div>
+                            <div class="weui-cell__ft">{{da.车号}}</div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -122,33 +126,57 @@ export default {
                 EdDT:'',
                 Dpt:'',
                 DptType:'',
-                IsAll: false
-            }
+                IsAll: true,
+                filter: true
+            },
+            datas:[]
         }
     },
     created(){
-        this.$axios.get(this.$api.ws_units)
-            .then((res)=>{
-                if(res.data.code == 0){
-                    this.searchBar.units = res.data.content
-                }
-            })
+        if(!this.$store.state.mycarnos || this.$store.state.mycarnos.length == 0){
+            this.$axios.get(this.$api.ws_cars)
+                .then((res)=>{
+                    if(res.data.code == 0){
+                        this.$store.dispatch("mycarnos", res.data.content)
+                    }
+                })
+        }
+        
+        this.datas = this.$store.state.planlog_datas
+    },
+    computed:{
+        carnos(){
+            return this.$store.state.mycarnos;
+        }
     },
     methods:{
         doChangeQueryType(type){
             this.query.querytype = type
         },
+        doLoadUnits(){
+            if(this.query.DptType){
+                this.$axios.get(this.$api.ws_units, {params: {utype:this.query.DptType}})
+                    .then((res)=>{
+                        if(res.data.code == 0){
+                            this.searchBar.units = res.data.content
+                        }
+                    })
+            }
+        },
         doSearch(){
+            this.query.IsAll = !this.query.filter
             this.$axios.get(this.$api.ws_carplan, {params: this.query})
                 .then((res)=>{
                     if(res.data.code == 0){
-                        this.searchBar.units = res.data.content
+                        this.searchBar.focus_searchBar = false
+                        this.datas = res.data.content
+                        this.$store.dispatch("planlog_datas", res.data.content)
                     }
                 })
         },
-        doViewDetail(id){
-            console.log(id)
-            this.$router.push({name:'plandetail', params:{id:'1'}})
+        doViewDetail(da){
+            this.$store.dispatch("carplan_detail", da)
+            this.$router.push({name:'plandetail', params:{id: da.过磅申请号}})
         },
     }
 }

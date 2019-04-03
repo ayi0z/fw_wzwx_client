@@ -3,9 +3,9 @@
         <div class="page__bd">
             <div class="weui-cells">
                 <a class="weui-cell weui-cell_access" href="javascript:;"
-                    v-for="item in form.Nos" :key="item.Id" @click="doQrCode(item.Id)">
+                    v-for="cno in form.CarNos" :key="cno" @click="doQrCode(cno)">
                     <div class="weui-cell__bd">
-                        <p>{{item.车号}}</p>
+                        <p>{{cno}}</p>
                     </div>
                     <div class="weui-cell__ft">点击生成二维码</div>
                 </a>
@@ -22,7 +22,7 @@ export default {
     data(){
         return {
             form:{
-                Nos:[]
+                CarNos:[]
             },
             qrcode:{
                 showing:false,
@@ -35,22 +35,20 @@ export default {
         'qr-dialog': QrDialog
     },
     created(){
-        // vehicle_nos
-        this.$axios.get(this.$api.vehicle_nos)
+        this.$axios.get(this.$api.ws_cars)
             .then((res)=>{
                 if(res.data.code == 0){
-                    this.form.Nos = res.data.content
+                    this.form.CarNos = res.data.content
                 }
             })
     },
     methods:{
-        doQrCode(id){
-            this.$axios.post(this.$api.qrcode, {id})
+        doQrCode(cno){
+            this.$axios.post(this.$api.ws_qrcode, {enstr:cno})
                 .then(res=>{
-                    console.log(res)
                     if(res.data.code == 0){
                         this.qrcode.showing = true
-                        this.qrcode.alt = this.form.Nos.find(c=>c.Id == id).车号
+                        this.qrcode.alt = cno
                         this.qrcode.url = `data:image/jpeg;base64,${res.data.content}`
                     }
                 })

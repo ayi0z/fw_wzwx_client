@@ -39,7 +39,7 @@
             </a>
             <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('planlog')">
                 <div class="weui-cell__bd">
-                    <p>过磅记录查询</p>
+                    <p>委托计划查询</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
