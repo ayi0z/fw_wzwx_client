@@ -63,7 +63,7 @@ axios.interceptors.response.use(function(response){
   store.dispatch('close_loading')
   router.replace({ name: 'error', 
     params: { 
-      code: error.response ? error.response.status : '', 
+      code: error.response ? error.response.status : error, 
       statustxt: error.response ? error.response.statusText : '' 
     }
   })

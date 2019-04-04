@@ -1,5 +1,8 @@
 <template>
-    <div>正在初始化界面,请稍后...</div>
+    <div>
+        <img src="@/assets/logo.png" alt="">
+        <div class="init">正在初始化...</div>
+    </div>
 </template>
 
 <script>
@@ -19,3 +22,16 @@ export default {
     }
 }
 </script>
+<style lang="stylus" scoped>
+    img
+        width 100%
+    .init
+        bottom: 0;
+        position: absolute;
+        margin: auto auto 50% auto;
+        width: 100%;
+        text-align: center;
+        color: #98a5a5;
+        font-size: 18px;
+        text-shadow: 0px 19px 20px #47c5ff;
+</style>

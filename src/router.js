@@ -45,7 +45,13 @@ const VRouter = new Router({
       name: 'weigh',
       component: () => import('./views/qrcode/Weigh.vue'),
       meta: { requiresLogin: true }
-    }, {
+    },{
+      path: '/qrcode/weighdetail',
+      name: 'weighdetail',
+      props: true,
+      component: () => import('./views/qrcode/WeighDetail.vue'),
+      meta: { requiresLogin: true }
+    },{
       path: '/plan/report',
       name: 'planreport',
       component: () => import('./views/plan/Report.vue'),
@@ -119,7 +125,8 @@ VRouter.beforeEach((to, from, next) => {
         .then((result) => {
           const appid = result.data.content.appid
           if(appid){
-            window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${window.location.href}&response_type=code&scope=snsapi_userinfo&state=${store.state.authSate}#wechat_redirect`)
+            const ruri = encodeURIComponent(window.location.href)
+            window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${ruri}&response_type=code&scope=snsapi_userinfo&state=${store.state.authSate}#wechat_redirect`)
           }else{
             next({ name: 'warn', params: { msg: "无法授权" } })
           }

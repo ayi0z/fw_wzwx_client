@@ -20,8 +20,10 @@ export default new Vuex.Store({
       openid:undefined
     },
     carplan_detail:null,
+    weigh_detail:null,
     planlog_datas:[],
     mycarnos:[],
+    myweighs:[]
   },
   mutations: {
     success(state, toast){
@@ -49,8 +51,14 @@ export default new Vuex.Store({
     carplan_detail(state, plan){
       state.carplan_detail = plan
     },
+    weigh_detail(state, plan){
+      state.weigh_detail = plan
+    },
     mycarnos(state, cars){
       state.mycarnos = cars
+    },
+    myweighs(state, datas){
+      state.myweighs = datas
     },
     planlog_datas(state, datas){
       state.planlog_datas = datas
@@ -75,8 +83,14 @@ export default new Vuex.Store({
     carplan_detail({commit}, plan){
       commit('carplan_detail', plan)
     },
+    weigh_detail({commit}, plan){
+      commit('weigh_detail', plan)
+    },
     mycarnos({commit}, cars){
       commit('mycarnos', cars)
+    },
+    myweighs({commit}, datas){
+      commit('myweighs', datas)
     },
     planlog_datas({commit}, datas){
       commit('planlog_datas', datas)

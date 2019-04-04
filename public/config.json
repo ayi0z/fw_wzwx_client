@@ -1,6 +1,6 @@
 {
     "api":{
-        "baseurl":"https://localhost:5001",
+        "baseurl":"http://localhost:5000",
 
         "wechat_appid": "/api/wechat/appid",
         "wechat_loginopenid": "/api/wechat/loginopenid",

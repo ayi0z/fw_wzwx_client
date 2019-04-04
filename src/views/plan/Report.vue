@@ -141,4 +141,8 @@ export default {
         padding: 0 15px
     .weui-select
         padding-left:0
+    .re-valid-err
+        box-shadow: inset -2px 0px 0px 0px #f70000
+        border-radius :0
+        width: 99%
 </style>

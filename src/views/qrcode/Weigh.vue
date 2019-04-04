@@ -85,6 +85,13 @@
                     </div>
                     <div class="weui-panel__ft">
                         <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link"
+                            @click="doViewDetail(da)">
+                            <div class="weui-cell__bd">点击查看详情</div>
+                            <span class="weui-cell__ft"></span>
+                        </a>
+                    </div>
+                    <div class="weui-panel__ft">
+                        <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link"
                             @click="doQrCode(da.车号, da.过磅申请号)">
                             <div class="weui-cell__bd">生成二维码</div>
                             <span class="weui-cell__ft"></span>
@@ -130,12 +137,7 @@ export default {
                     }
                 })
         }
-        
-    },
-    computed:{
-        carnos(){
-            return this.$store.state.mycarnos;
-        }
+        this.datas = this.$store.state.myweighs
     },
     methods: {
         doSearch(){
@@ -143,6 +145,7 @@ export default {
                 .then(res=>{
                     if(res.data.code == 0){
                         this.searchBar.focus_searchBar = false
+                        this.$store.dispatch("myweighs", res.data.content)
                         this.datas = res.data.content
                     }
                 })
@@ -156,6 +159,10 @@ export default {
                         this.qrcode.url = `data:image/jpeg;base64,${res.data.content}`
                     }
                 })
+        },
+        doViewDetail(da){
+            this.$store.dispatch("weigh_detail", da)
+            this.$router.push({name:'weighdetail'})
         }
     }
 }

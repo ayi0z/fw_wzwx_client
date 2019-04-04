@@ -9,58 +9,55 @@
         </table>
     </div>
     <p class="weui-btn-area">
-        <a href="javascript:;" class="weui-btn weui-btn_warn" @click="doDel(da.过磅申请号)">删除</a>
+        <a href="javascript:;" class="weui-btn weui-btn_primary" @click="doQrCode(da.车号, da.过磅申请号)">生成二维码</a>
         <a href="javascript:history.back();" class="weui-btn weui-btn_primary">返回</a>
     </p>
-    <dialog-confirm :showing="dialog.showing" :title="dialog.title" :msg="dialog.msg" @cancel="dialog.cancel" @confirm="dialog.confirm"></dialog-confirm>
+    <qr-dialog v-show="qrcode.showing" :url="qrcode.url" :alt="qrcode.alt" @close="(va) => {qrcode.showing=va}"></qr-dialog>
 </div>
 </template>
 <script>
-import DialogConfirm from '@/components/Dialog-Confirm'
+import QrDialog from '@/components/Dialog-Img'
 import { tasktype, weightype } from "@/config";
 export default {
-  name: 'PlanDetail',
+  name: 'WeighDetail',
   components:{
-    'dialog-confirm': DialogConfirm
+    'qr-dialog': QrDialog
   },
-  props:['id'],
   data(){
       return {
-            a:null,
+            da:null,
             dialog:{
                 showing:false,
                 title:'郑重提醒',
                 msg:'',
                 cancel:() => this.dialog.showing = false,
                 confirm:()=>console.log('confirm')
+            },
+            qrcode:{
+                showing:false,
+                url:'',
+                alt:''
             }
       }
   },
   created(){
-      this.da = this.$store.state.carplan_detail
+      this.da = this.$store.state.weigh_detail
       this.da.任务类型 = tasktype[this.da.任务类型]
       this.da.过磅类型 = weightype[`C${this.da.过磅类型}`]
-      this.da.处理标识 = this.da.处理标识 ? "已处理" : "未处理"
-      this.da.长期有效 = this.da.长期有效 ? "是" : "否"
+      this.da.是否缴款 = this.da.处理标识 ? "已缴款" : "未缴款"
+      this.da.是否开票 = this.da.是否开票 ? "已开票" : "未开票"
   },
   methods:{
-        doConfirmDel(id){
-            this.$axios.delete(this.$api.ws_carplan,{data:{PlanId:id}})
-                .then((res) => {
+        doQrCode(cno, id){
+            this.$axios.post(this.$api.ws_qrcode, {enstr:`${cno}^^^${id}`})
+                .then(res=>{
                     if(res.data.code == 0){
-                        this.$store.dispatch('success', true)
-                        history.back()
+                        this.qrcode.showing = true
+                        this.qrcode.alt = `${cno} ${id}`
+                        this.qrcode.url = `data:image/jpeg;base64,${res.data.content}`
                     }
                 })
-            this.dialog.showing = false
-        },
-        doDel(id){
-          if(id){
-                this.dialog.msg = '此操作将删除该过磅委托，且不可恢复。是否确认删除？'
-                this.dialog.confirm = () => { this.doConfirmDel(id) } 
-                this.dialog.showing = true
-          }
-      }
+        }
   }
 }
 </script>

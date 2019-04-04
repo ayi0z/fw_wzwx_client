@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="weui-btn-area">
-            <a class="weui-btn weui-btn_primary" href="javascript:" @click="doregister">注册</a>
+            <a class="weui-btn weui-btn_primary" href="javascript:" @click="doregister">提交</a>
         </div>
     </div>
 </div>
