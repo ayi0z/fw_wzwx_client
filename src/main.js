@@ -23,14 +23,15 @@ Vue.use(emptyClass)
 Vue.config.productionTip = false
 Vue.prototype.$hasInit = false
 
-store.dispatch('update_usertoken', {
-  // loginToken:'testtoken',
-  openid:'testopenid'
-})
+// store.dispatch('update_usertoken', {
+//   // loginToken:'testtoken',
+//   openid:'testopenid'
+// })
 axios.interceptors.request.use(function(config){
   store.dispatch('open_loading')
   config.transformRequest = data => qs.stringify(data)
   config.headers = {
+    ...config.headers,
     'Content-Type': 'application/x-www-form-urlencoded'
   }
   if (store.state.userToken.loginToken) {

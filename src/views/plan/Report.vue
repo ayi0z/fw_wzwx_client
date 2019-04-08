@@ -25,7 +25,7 @@
                     <div class="weui-cell__bd">
                         <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required v-model="form.OutDpt">
                             <option value="">请选择发货单位</option>
-                            <option  v-for="unit in datas.outunits" :key="unit.value" :value="unit.名称">{{unit.名称}}</option>
+                            <option  v-for="unit in outunits" :key="unit.单位" :value="unit.单位">{{unit.单位}}</option>
                         </select>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="weui-cell__bd">
                         <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required v-model="form.InDpt">
                             <option value="">请选择收货单位</option>
-                            <option  v-for="unit in datas.inunits" :key="unit.value" :value="unit.名称">{{unit.名称}}</option>
+                            <option  v-for="unit in inunits" :key="unit.单位" :value="unit.单位">{{unit.单位}}</option>
                         </select>
                     </div>
                 </div>
@@ -78,9 +78,9 @@ export default {
     data:function(){
         return{
             datas:{
-                weighruls:weighruls,
-                inunits:[],
-                outunits:[]
+                weighruls:weighruls
+                // inunits:[],
+                // outunits:[]
             },
             form:{
                 CarNo:'',
@@ -95,18 +95,34 @@ export default {
         }
     },
     created(){
-        this.$axios.get(this.$api.ws_units, { params:{utype:'收货单位'} })
-            .then((res)=>{
-                if(res.data.code == 0){
-                    this.datas.inunits = res.data.content
-                }
-            })
-        this.$axios.get(this.$api.ws_units, { params:{utype:'发货单位'} })
-            .then((res)=>{
-                if(res.data.code == 0){
-                    this.datas.outunits = res.data.content
-                }
-            })
+        // this.$axios.get(this.$api.ws_units, { params:{utype:'收货单位'} })
+        //     .then((res)=>{
+        //         if(res.data.code == 0){
+        //             this.datas.inunits = res.data.content
+        //         }
+        //     })
+        // this.$axios.get(this.$api.ws_units, { params:{utype:'发货单位'} })
+        //     .then((res)=>{
+        //         if(res.data.code == 0){
+        //             this.datas.outunits = res.data.content
+        //         }
+        //     })
+        if(!this.$store.state.mydpts || this.$store.state.mydpts.length == 0){
+            this.$axios.get(this.$api.ws_dpts)
+                .then((res)=>{
+                    if(res.data.code == 0){
+                        this.$store.dispatch("mydpts", res.data.content)
+                    }
+                })
+        }
+    },
+    computed:{
+        inunits(){
+            return this.$store.state.mydpts ? this.$store.state.mydpts.filter(c=>c.单位类型 == '收货单位') : []
+        },
+        outunits(){
+            return this.$store.state.mydpts ? this.$store.state.mydpts.filter(c=>c.单位类型 == '发货单位') : []
+        }
     },
     methods:{
         doSave(){

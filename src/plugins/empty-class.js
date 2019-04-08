@@ -1,5 +1,5 @@
 export default {
-    install(Vue, opt) {
+    install(Vue) {
         Vue.directive('empty-class', {
             componentUpdated: function (el, binding, vnode) {
                 check(el, binding, vnode)
@@ -19,7 +19,7 @@ export default {
                     if(vmo){
                         let vmoExp = vmo.expression
                         if(vmoExp){
-                            elValue = seeVal(vnode.context, vmoExp) || vmo.value
+                            elValue = seeVal(vnode.context, vmoExp)
                         }
                     }
 

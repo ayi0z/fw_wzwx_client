@@ -17,7 +17,7 @@
 </template>
 <script>
 import DialogConfirm from '@/components/Dialog-Confirm'
-import { tasktype, weightype } from "@/config";
+import { tasktype, weightype, plantype } from "@/config";
 export default {
   name: 'PlanDetail',
   components:{
@@ -38,10 +38,13 @@ export default {
   },
   created(){
       this.da = this.$store.state.carplan_detail
-      this.da.任务类型 = tasktype[this.da.任务类型]
-      this.da.过磅类型 = weightype[`C${this.da.过磅类型}`]
-      this.da.处理标识 = this.da.处理标识 ? "已处理" : "未处理"
-      this.da.长期有效 = this.da.长期有效 ? "是" : "否"
+      if(this.da){
+        this.da.任务类型 = tasktype[this.da.任务类型]
+        this.da.过磅类型 = weightype[`C${this.da.过磅类型}`]
+        this.da.委托类型 = plantype[`C${this.da.委托类型}`]
+        this.da.处理标识 = this.da.处理标识 ? "已处理" : "未处理"
+        this.da.长期有效 = this.da.长期有效 ? "是" : "否"
+      }
   },
   methods:{
         doConfirmDel(id){

@@ -24,7 +24,7 @@
          <div class="weui-btn-area">
             <a class="weui-btn weui-btn_warn" href="javascript:" @click="doDelAllMenu">删除所有菜单</a>
         </div>
-        <dialog-confirm :showing="dialog.showing" :title="dialog.title" :msg="dialog.msg" @cancel="dialog.cancel" @confirm="dialog.confirm"></dialog-confirm>
+        <dialog-confirm :showing="dialog.showing" inputholder="请输入微信菜单管理口令" :title="dialog.title" :msg="dialog.msg" @cancel="dialog.cancel" @confirm="dialog.confirm"></dialog-confirm>
     </div>
 </template>
 
@@ -58,8 +58,8 @@ export default {
             });
     },
     methods:{
-        doConfirmDelAllMenu(){
-            this.$axios.delete(this.$api.wechat_menu)
+        doConfirmDelAllMenu(mgrtoken){
+            this.$axios.delete(this.$api.wechat_menu, { headers:{ menumgrtoken:mgrtoken } })
                 .then(res=>{
                     if(res.data.code == 0){
                         this.$store.dispatch('success', true)

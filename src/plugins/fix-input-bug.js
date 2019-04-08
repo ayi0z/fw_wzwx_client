@@ -1,5 +1,5 @@
 export default {
-    install(Vue, opt){
+    install(Vue){
         Vue.prototype.fixInputBug = function(){
             let els = document.querySelectorAll('input,select,textarea');
             for(let el of els){

@@ -1,5 +1,5 @@
 export default {
-    install(Vue, opt) {
+    install(Vue) {
         Vue.directive('re-valid', {
             inserted:function (el, binding, vnode) {
                 if (!vnode.context['isReValidPassed']) {
@@ -42,18 +42,16 @@ export default {
                         if(vmo){
                             let vmoExp = vmo.expression
                             if(vmoExp){
-                                elValue = seeVal(vnode.context, vmoExp) || vmo.value
+                                elValue = seeVal(vnode.context, vmoExp)
                             }
                         }
-                        
-                        
+                                            
                         let passed = !regexp || regexp.test(elValue);
-
-                        console.log()
 
                         const isrequired = passed && el.getAttribute('required')
                         passed = isrequired ? (elValue && elValue.toString().trim()) : passed
 
+                        elValue = elValue == null ? "" : elValue
                         const minlen = passed && el.getAttribute('minlength')
                         passed = minlen ? elValue.replace(/[^\x00-\xff]/g, 'aa').length >= minlen : passed
 

@@ -44,7 +44,7 @@
                                         <label class="weui-label">单位类型</label>
                                     </div>
                                     <div class="weui-cell__bd">
-                                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.DptType" @change="doLoadUnits">
+                                        <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.DptType">
                                             <option selected value=''>请选择单位类型</option>
                                             <option v-for="type in searchBar.unittypes" :key="type.value" :value="type.text">{{type.text}}</option>
                                         </select>
@@ -57,7 +57,7 @@
                                     <div class="weui-cell__bd">
                                         <select class="weui-select" v-empty-class="'weui-empty'" v-model="query.Dpt">
                                             <option selected value=''>请选择业务单位</option>
-                                            <option v-for="unit in searchBar.units" :key="unit.value" :value="unit.名称">{{unit.名称}}</option>
+                                            <option v-for="unit in dpts" :key="unit.单位" :value="unit.单位">{{unit.单位}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -141,27 +141,28 @@ export default {
                     }
                 })
         }
+        if(!this.$store.state.mydpts || this.$store.state.mydpts.length == 0){
+            this.$axios.get(this.$api.ws_dpts)
+                .then((res)=>{
+                    if(res.data.code == 0){
+                        this.$store.dispatch("mydpts", res.data.content)
+                    }
+                })
+        }
         
         this.datas = this.$store.state.planlog_datas
     },
     computed:{
         carnos(){
             return this.$store.state.mycarnos;
+        },
+        dpts(){
+            return this.$store.state.mydpts ? this.$store.state.mydpts.filter(c=>c.单位类型 == this.query.DptType) : []
         }
     },
     methods:{
         doChangeQueryType(type){
             this.query.querytype = type
-        },
-        doLoadUnits(){
-            if(this.query.DptType){
-                this.$axios.get(this.$api.ws_units, {params: {utype:this.query.DptType}})
-                    .then((res)=>{
-                        if(res.data.code == 0){
-                            this.searchBar.units = res.data.content
-                        }
-                    })
-            }
         },
         doSearch(){
             this.query.IsAll = !this.query.filter

@@ -1,7 +1,6 @@
 {
     "api":{
         "baseurl":"http://localhost:5000",
-
         "wechat_appid": "/api/wechat/appid",
         "wechat_loginopenid": "/api/wechat/loginopenid",
         "wechat_tags": "/api/wechat/tags",
@@ -10,8 +9,9 @@
         "user": "/api/user",
 
         "ws_qrcode": "/api/weis/qrcode",
-        "ws_bindcarunit":"/api/weis/carunits",
+        "ws_carnodpts":"/api/weis/carnodpts",
         "ws_cars": "/api/weis/cars",
+        "ws_dpts": "/api/weis/dpts",
         "ws_units": "/api/weis/units",
         "ws_carplan": "/api/weis/carplan",
         "ws_mycarplan": "/api/weis/mycarplan",

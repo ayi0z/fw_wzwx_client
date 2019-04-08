@@ -23,7 +23,8 @@ export default new Vuex.Store({
     weigh_detail:null,
     planlog_datas:[],
     mycarnos:[],
-    myweighs:[]
+    myweighs:[],
+    mydpts:[]
   },
   mutations: {
     success(state, toast){
@@ -60,6 +61,9 @@ export default new Vuex.Store({
     myweighs(state, datas){
       state.myweighs = datas
     },
+    mydpts(state, datas){
+      state.mydpts = datas
+    },
     planlog_datas(state, datas){
       state.planlog_datas = datas
     }
@@ -91,6 +95,9 @@ export default new Vuex.Store({
     },
     myweighs({commit}, datas){
       commit('myweighs', datas)
+    },
+    mydpts({commit}, datas){
+      commit('mydpts', datas)
     },
     planlog_datas({commit}, datas){
       commit('planlog_datas', datas)

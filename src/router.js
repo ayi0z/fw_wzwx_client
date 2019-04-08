@@ -76,12 +76,12 @@ const VRouter = new Router({
       path: '/admin/menugroup',
       name: 'menugroup',
       component: () => import('./views/admin/MenuGroup.vue'),
-      meta: { requiresLogin: true }
+      // meta: { requiresLogin: true }
     }, {
       path: '/admin/menu',
       name: 'menu',
       component: () => import('./views/admin/Menu.vue'),
-      meta: { requiresLogin: true }
+      // meta: { requiresLogin: true }
     }, {
       path: '/warn/:code/:msg',
       name: 'warn',

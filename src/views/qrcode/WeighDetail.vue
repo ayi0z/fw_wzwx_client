@@ -42,10 +42,12 @@ export default {
   },
   created(){
       this.da = this.$store.state.weigh_detail
-      this.da.任务类型 = tasktype[this.da.任务类型]
-      this.da.过磅类型 = weightype[`C${this.da.过磅类型}`]
-      this.da.是否缴款 = this.da.处理标识 ? "已缴款" : "未缴款"
-      this.da.是否开票 = this.da.是否开票 ? "已开票" : "未开票"
+      if(this.da){
+        this.da.任务类型 = tasktype[this.da.任务类型]
+        this.da.过磅类型 = weightype[`C${this.da.过磅类型}`]
+        this.da.是否缴款 = this.da.处理标识 ? "已缴款" : "未缴款"
+        this.da.是否开票 = this.da.是否开票 ? "已开票" : "未开票"
+      }
   },
   methods:{
         doQrCode(cno, id){

@@ -128,6 +128,11 @@ export default {
     components:{
         'qr-dialog': QrDialog
     },
+    computed:{
+        carnos(){
+            return this.$store.state.mycarnos   
+        }
+    },
     created(){
         if(!this.$store.state.mycarnos || this.$store.state.mycarnos.length == 0){
             this.$axios.get(this.$api.ws_cars)

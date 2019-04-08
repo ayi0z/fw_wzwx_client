@@ -5,10 +5,6 @@
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                     {{groupname}}
-                    <!-- <select class="weui-select" v-empty-class="'weui-empty'" v-model="form.matchrule.group_id">
-                        <option value="">请选择权限</option>
-                        <option v-for="tag in datas.tags" :key="tag.id" :value="tag.id">{{tag.name}}</option>
-                    </select> -->
                 </div>
             </div>
         </div>
@@ -51,16 +47,19 @@
         <div class="weui-btn-area" v-show="canEidt">
             <a class="weui-btn weui-btn_primary" href="javascript:" @click="doSyncToWC">同步到公众号</a>
         </div>
+        <dialog-confirm :showing="dialog.showing" inputholder="请输入微信菜单管理口令" :title="dialog.title" :msg="dialog.msg" @cancel="dialog.cancel" @confirm="dialog.confirm"></dialog-confirm>
         <dialog-menu-edit @del="doDel" @confirm="doConfirmNew" :showing="dialogMEdit.showing" :title="dialogMEdit.title" :btn="dialogMEdit.btn"></dialog-menu-edit>
     </div>
 </template>
 
 <script>
 import DialogMenuEdit from '@/components/Dialog-MenuEdit'
+import DialogConfirm from '@/components/Dialog-Confirm'
 export default {
     name:'wechatmenu',
     components:{
-        "dialog-menu-edit" : DialogMenuEdit
+        "dialog-menu-edit" : DialogMenuEdit,
+        'dialog-confirm': DialogConfirm
     },
     data(){
         return{
@@ -74,6 +73,13 @@ export default {
                     type:'view',
                     url:''
                 }
+            },
+            dialog:{
+                showing:false,
+                title:'郑重提醒',
+                msg:'',
+                cancel:() => this.dialog.showing = false,
+                confirm:()=>console.log('confirm')
             },
             form:{
                  button:[
@@ -179,6 +185,16 @@ export default {
             this.dialogMEdit.showing = true
             this.dialogMEdit.title = pname
         },
+        doConfirmSyncToWC(menu, mgrtoken){
+            this.$axios.post(this.$api.wechat_menu, {...menu}, { headers:{ menumgrtoken:mgrtoken } })
+                .then(res=>{
+                    if(res.data.code == 0){
+                        this.$store.dispatch('success', true)
+                        this.$router.back()
+                    }
+                })
+            this.dialog.showing = false
+        },
         doSyncToWC(){
             if(!this.isReValidPassed()){
                 this.$weui.topTips('请检查红色标记数据是否正确')
@@ -199,13 +215,10 @@ export default {
             if(!menu.button.length){
                 return
             }
-            this.$axios.post(this.$api.wechat_menu, {...menu})
-                .then(res=>{
-                    if(res.data.code == 0){
-                        this.$store.dispatch('success', true)
-                        this.$router.back()
-                    }
-                })
+
+            this.dialog.msg = '此操作将同步更新微信公众号中的菜单。'
+            this.dialog.confirm = (confirmcxt) => { this.doConfirmSyncToWC(menu, confirmcxt) }
+            this.dialog.showing = true
         }
     }
 }
