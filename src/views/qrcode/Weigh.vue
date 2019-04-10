@@ -46,6 +46,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="weui-footer"  v-if="!datas || datas.length===0">
+                    <p class="weui-footer__text">未检索到数据</p>
+                </div>
                 <div class="weui-cells" v-for="da in datas" :key="da.Id">
                     <div class="weui-cell">
                         <div class="weui-cell__hd"><label class="weui-label">过磅申请号</label></div>

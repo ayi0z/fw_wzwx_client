@@ -24,9 +24,13 @@ export default new Vuex.Store({
     planlog_datas:[],
     mycarnos:[],
     myweighs:[],
-    mydpts:[]
+    mydpts:[],
+    debugs:[]
   },
   mutations: {
+    debugs(state, datas){
+      state.debugs.push(datas)
+    },
     success(state, toast){
       let type = typeof(toast)
       if(type == 'boolean'){

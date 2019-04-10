@@ -6,7 +6,7 @@ import axios from 'axios'
 Vue.use(Router)
 
 const VRouter = new Router({
-  // mode:'history',
+  mode:'history',
   routes: [
     {
       path: '/',
@@ -76,12 +76,10 @@ const VRouter = new Router({
       path: '/admin/menugroup',
       name: 'menugroup',
       component: () => import('./views/admin/MenuGroup.vue'),
-      // meta: { requiresLogin: true }
     }, {
       path: '/admin/menu',
       name: 'menu',
       component: () => import('./views/admin/Menu.vue'),
-      // meta: { requiresLogin: true }
     }, {
       path: '/warn/:code/:msg',
       name: 'warn',
@@ -101,40 +99,47 @@ const VRouter = new Router({
 })
 
 VRouter.beforeEach((to, from, next) => {
-  if(to.name != 'welcome'
-     && !Vue.prototype.$hasInit){
+  if(to.name != 'welcome' && !Vue.prototype.$hasInit){
     next({ name: 'welcome', query: { redirect_url: to.fullPath } })
-  } else if (to.query.code 
-          && store.state.authSate == to.query.state) {
-    axios.post(Vue.prototype.$api.wechat_loginopenid, { code: to.query.code })
-      .then((res) => {
-        if(res.data.code == 0){
-          store.dispatch('update_usertoken', res.data.content)
-          next({ path: to.path })
-        }else{
-          next({ name: 'warn', params: { msg: res.data.msg } })
-        }
-      })
+  } else if (to.query.code && store.state.authSate == to.query.state) {
+      axios.post(Vue.prototype.$api.wechat_loginopenid, { code: to.query.code })
+            .then((res) => {
+              if(res.data.code == 0){
+                store.dispatch('update_usertoken', res.data.content)
+                next({ path: to.path })
+              }else{
+                next({ name: 'warn', params: { msg: res.data.msg } })
+              }
+            })
   }else if (to.name == 'userauth' 
          || to.path == '/user/auth' 
          || to.meta.requiresLogin 
          || to.meta.requiresAuth) {
-    if (!store.state.userToken.openid) {
-      // 获取appid
-      axios.get(Vue.prototype.$api.wechat_appid)
-        .then((result) => {
-          const appid = result.data.content.appid
-          if(appid){
-            const ruri = encodeURIComponent(window.location.href)
-            window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${ruri}&response_type=code&scope=snsapi_userinfo&state=${store.state.authSate}#wechat_redirect`)
-          }else{
-            next({ name: 'warn', params: { msg: "无法授权" } })
-          }
-       });
-    } else if (to.meta.requiresLogin 
-            && !store.state.userToken.loginToken) {
-      next({ path: '/user/reg', query: { redirect_url: to.fullPath } })
-    } else { next() }
+    
+          // store.commit('debugs', to.name )
+          if (!store.state.userToken.openid) {
+            // store.commit('debugs', "to weserver" )
+              // 获取appid
+              axios.get(Vue.prototype.$api.wechat_appid)
+                .then((result) => {
+                  const appid = result.data.content.appid
+                  if(appid){
+                    const ruri = encodeURIComponent(`${window.location.origin}${to.fullPath}`)
+                    const authuri  = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${ruri}&response_type=code&scope=snsapi_userinfo&state=${store.state.authSate}&connect_redirect=1#wechat_redirect`
+                    // store.commit('debugs', "appid:"+appid+" rurl:"+ authuri)
+                    window.location.replace(authuri)
+                  }else{
+                    next({ name: 'warn', params: { msg: "无法授权" } })
+                  }
+              });
+          } else if (to.meta.requiresLogin 
+                  && !store.state.userToken.loginToken) {
+                    // store.commit('debugs', "to login" )
+            next({ path: '/user/reg', query: { redirect_url: to.fullPath } })
+          } else { 
+            // store.commit('debugs', "just go on:" +  to.name)
+            next() }
+          
   } else { next() }
 })
 export default VRouter

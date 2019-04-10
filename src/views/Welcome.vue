@@ -1,7 +1,7 @@
 <template>
     <div>
         <img src="@/assets/logo.png" alt="">
-        <div class="init">正在初始化...</div>
+        <div class="init">{{msg}}</div>
     </div>
 </template>
 
@@ -9,16 +9,25 @@
 import Vue from 'vue'
 export default {
     name:'welcome',
+    data(){
+        return {
+            msg:'正在初始化...'
+        }
+    },
     created(){
         this.$axios.get('config.json',{baseURL:'./'})
-            .then(res=>{
-                const { api, menu_targets } = res.data
-                this.$axios.defaults.baseURL = api.baseurl
-                Vue.prototype.$api = api
-                Vue.prototype.$menu_targets = menu_targets
-                Vue.prototype.$hasInit = true
-                this.$router.replace(this.$route.query.redirect_url || '/mock')
-            })
+                    .then(res=>{
+                        const { api, menu_targets } = res.data
+                        this.$axios.defaults.baseURL = api.baseurl
+                        Vue.prototype.$api = api
+                        Vue.prototype.$menu_targets = menu_targets
+                        Vue.prototype.$hasInit = true
+                        this.msg = "初始化成功"
+                        this.$router.replace(this.$route.query.redirect_url || '/warn/404/页面不存在')
+                    })
+                    .catch(err=>{
+                        this.msg = "初始化配置读取失败"
+                    })
     }
 }
 </script>

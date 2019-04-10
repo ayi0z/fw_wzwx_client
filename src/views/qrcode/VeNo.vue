@@ -2,6 +2,9 @@
     <div class="page">
         <div class="page__bd">
             <div class="weui-cells">
+                <div class="weui-footer"  v-if="!form.CarNos || form.CarNos.length===0">
+                    <p class="weui-footer__text">没有绑定车号</p>
+                </div>
                 <a class="weui-cell weui-cell_access" href="javascript:;"
                     v-for="cno in form.CarNos" :key="cno" @click="doQrCode(cno)">
                     <div class="weui-cell__bd">

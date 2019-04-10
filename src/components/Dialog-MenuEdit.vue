@@ -33,7 +33,7 @@ export default {
     name:'menuedit',
     data(){
         return{
-            lochref: window.location.origin + '/#',
+            lochref: window.location.origin,
             form:{
                 type:'view',
                 name:'',

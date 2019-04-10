@@ -3,6 +3,8 @@
     <router-view/>
     <loading></loading>
     <success></success>
+    <div>
+    </div>
   </div>
 
 </template>
@@ -14,6 +16,11 @@ export default {
   components:{
     loading,
     success
+  },
+  computed:{
+    debugs(){
+      return this.$store.state.debugs
+    }
   }
 }
 </script>

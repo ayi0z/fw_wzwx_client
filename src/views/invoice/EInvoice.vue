@@ -43,7 +43,10 @@
         <div class="page__bd">
             <div class="weui-panel search-result-panel">
                 <div class="weui-panel__bd">
-                    <div class="weui-cells__title">选择将要开票的支付记录：</div>
+                    <div class="weui-footer" v-if="!form.datas || form.datas.length===0">
+                        <p class="weui-footer__text">未检索到数据</p>
+                    </div>
+                    <div class="weui-cells__title" v-if="form.datas && form.datas.length>0">选择将要开票的支付记录：</div>
                     <div class="weui-cells weui-cells_checkbox">
                         <label class="weui-cell weui-check__label" v-for="da in form.datas" :key="da.Id" :for="da.Id">
                             <div class="weui-cell__hd">
@@ -86,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <div class="weui-btn-area">
+            <div class="weui-btn-area" v-show="form.checkedvalues && form.checkedvalues.length>0">
                 <a class="weui-btn weui-btn_primary" href="javascript:" @click="dialogShowing = true">提交</a>
             </div>
         </div>

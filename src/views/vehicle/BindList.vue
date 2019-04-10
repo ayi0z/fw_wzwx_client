@@ -1,6 +1,9 @@
 <template>
     <div class="page">
         <div class="page__bd">
+            <div class="weui-footer"  v-if="!datas || datas.length===0">
+                <p class="weui-footer__text">没有绑定车号</p>
+            </div>
             <template v-for="data in datas">
                 <div class="weui-cells weui-cells_checkbox" :key="'c'+data.Key">
                     <label class="weui-cell weui-check__label carno-checkbox" :for="'ch'+data.Key">
@@ -88,7 +91,7 @@ export default {
 <style lang="stylus" scoped>
     .carno-checkbox
         background-color: #e4e4e4;
-        box-shadow: 0px 0px 12px 0px #2c3235;
+        box-shadow: 0px 0px 12px 0px #2c3235
     .weui-cell:before
         border-top none
     .weui-cells 
