@@ -38,7 +38,7 @@ export default {
         'qr-dialog': QrDialog
     },
     created(){
-        this.$axios.get(this.$api.ws_cars)
+        this.$axios.get(this.$api.ws_mycars)
             .then((res)=>{
                 if(res.data.code == 0){
                     this.form.CarNos = res.data.content

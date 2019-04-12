@@ -4,17 +4,17 @@ import router from './router'
 import store from './store'
 import weui from 'weui.js'
 import axios from 'axios'
-import coderouter from './config'
 import qs from 'qs'
 import 'weui'
 import '@/assets/main.css'
 import fixInputBug from '@/plugins/fix-input-bug'
 import reValid from '@/plugins/re-valid'
 import emptyClass from '@/plugins/empty-class'
+import util from './util'
 
+Vue.prototype.$util = util
 Vue.prototype.$weui = weui
 Vue.prototype.$axios = axios
-Vue.prototype.$coderouter = coderouter
 
 Vue.use(fixInputBug)
 Vue.use(reValid)
@@ -23,10 +23,10 @@ Vue.use(emptyClass)
 Vue.config.productionTip = false
 Vue.prototype.$hasInit = false
 
-// store.dispatch('update_usertoken', {
-//   // loginToken:'testtoken',
-//   openid:'testopenid'
-// })
+store.dispatch('update_usertoken', {
+  openid:'oTAOO5pehW2x3PpuJQ3UeSMlKWhw',
+  loginToken:'CfDJ8KvKTqVkC65KgMmOTwaYfMb2wxUevDx7ZNUYp_UHCW8BjEDKdWP96bOKOARs2d1w_g_IyW1Tz1ecl-RPFgxZujdENMZA7HxMxx3HcrOtzEN6uTj2HqZ-LmGMfRQq5J-vp8UT-pNXrc0TaZ8EDSdT8iDj8660ynrGqCZ-6KBmkxnU_ByfMSxw5hTCb7LWsOhtwoZFXAC_mTnhUAWAr1zYDAFYSsBGEXC-VMSYtWaN99tsDcDupgWYbMucSR5X4zNGc06V_B9ZicEtjFmW4J2uhUU'
+})
 axios.interceptors.request.use(function(config){
   store.dispatch('open_loading')
   config.transformRequest = data => qs.stringify(data)
@@ -54,10 +54,8 @@ axios.interceptors.response.use(function(response){
 
   if(response.data.code && response.data.code != 0)
   {
-    let cr = Vue.prototype.$coderouter[response.data.code]
-    let pathname = cr ? cr.router : 'warn'
-    let msg = response.data.msg ||  (cr ? cr.msg : '')
-    router.push({ name: pathname, params: { code:response.data.code, msg: msg } })
+    let msg = response.data.msg ||  ''
+    router.push({ name: 'warn', params: { code:response.data.code, msg: msg } })
   }
   return response
 }, function(error){

@@ -39,6 +39,7 @@ export default {
                         
                         let elValue = el.value
                         let vmo = vnode.data.directives.find(d=>d.rawName == 'v-model');
+                        vmo = vmo ? vmo : vnode.data.model
                         if(vmo){
                             let vmoExp = vmo.expression
                             if(vmoExp){

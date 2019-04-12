@@ -18,9 +18,6 @@ const VRouter = new Router({
       name: 'mock',
       component: () => import('./views/Wemock.vue')
     }, {
-      path: '/user/auth',
-      name: 'userauth'
-    },  {
       path: '/user/reg',
       name: 'userreg',
       component: () => import('./views/user/Reg.vue'),
@@ -36,6 +33,36 @@ const VRouter = new Router({
       component: () => import('./views/vehicle/BindList.vue'),
       meta: { requiresLogin: true }
     }, {
+      path: '/vehicle/bindcar',
+      name: 'bindcar',
+      component: () => import('./views/vehicle/BindCar.vue'),
+      meta: { requiresLogin: true }
+    }, {
+      path: '/vehicle/bindcarlist',
+      name: 'bindcarlist',
+      component: () => import('./views/vehicle/BindCarList.vue'),
+      meta: { requiresLogin: true }
+    }, {
+      path: '/vehicle/binddpt',
+      name: 'binddpt',
+      component: () => import('./views/vehicle/BindDpt.vue'),
+      meta: { requiresLogin: true }
+    }, {
+      path: '/vehicle/binddptlist',
+      name: 'binddptlist',
+      component: () => import('./views/vehicle/BindDptList.vue'),
+      meta: { requiresLogin: true }
+    },  {
+      path: '/vehicle/bindmartiral',
+      name: 'bindmartiral',
+      component: () => import('./views/vehicle/BindMartiral.vue'),
+      meta: { requiresLogin: true }
+    },  {
+      path: '/vehicle/bindmartirallist',
+      name: 'bindmartirallist',
+      component: () => import('./views/vehicle/BindMartiralList.vue'),
+      meta: { requiresLogin: true }
+    },  {
       path: '/qrcode/veno',
       name: 'veno',
       component: () => import('./views/qrcode/VeNo.vue'),
@@ -100,25 +127,19 @@ const VRouter = new Router({
 
 VRouter.beforeEach((to, from, next) => {
   if(to.name != 'welcome' && !Vue.prototype.$hasInit){
-    next({ name: 'welcome', query: { redirect_url: to.fullPath } })
+    next({ name: 'welcome', query: { redirect_url: to.fullPath }, replace: true })
   } else if (to.query.code && store.state.authSate == to.query.state) {
       axios.post(Vue.prototype.$api.wechat_loginopenid, { code: to.query.code })
             .then((res) => {
               if(res.data.code == 0){
                 store.dispatch('update_usertoken', res.data.content)
-                next({ path: to.path })
+                next({ path: to.path, replace: true })
               }else{
-                next({ name: 'warn', params: { msg: res.data.msg } })
+                next({ name: 'warn', params: { msg: res.data.msg }, replace: true })
               }
             })
-  }else if (to.name == 'userauth' 
-         || to.path == '/user/auth' 
-         || to.meta.requiresLogin 
-         || to.meta.requiresAuth) {
-    
-          // store.commit('debugs', to.name )
+  }else if (to.meta.requiresLogin || to.meta.requiresAuth) {
           if (!store.state.userToken.openid) {
-            // store.commit('debugs', "to weserver" )
               // 获取appid
               axios.get(Vue.prototype.$api.wechat_appid)
                 .then((result) => {
@@ -126,7 +147,6 @@ VRouter.beforeEach((to, from, next) => {
                   if(appid){
                     const ruri = encodeURIComponent(`${window.location.origin}${to.fullPath}`)
                     const authuri  = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${ruri}&response_type=code&scope=snsapi_userinfo&state=${store.state.authSate}&connect_redirect=1#wechat_redirect`
-                    // store.commit('debugs', "appid:"+appid+" rurl:"+ authuri)
                     window.location.replace(authuri)
                   }else{
                     next({ name: 'warn', params: { msg: "无法授权" } })
@@ -134,12 +154,10 @@ VRouter.beforeEach((to, from, next) => {
               });
           } else if (to.meta.requiresLogin 
                   && !store.state.userToken.loginToken) {
-                    // store.commit('debugs', "to login" )
-            next({ path: '/user/reg', query: { redirect_url: to.fullPath } })
-          } else { 
-            // store.commit('debugs', "just go on:" +  to.name)
-            next() }
+            next({ path: '/user/reg', query: { redirect_url: to.fullPath }, replace: true })
+          } else {
+            next({replace: true}) }
           
-  } else { next() }
+  } else { next({replace: true}) }
 })
 export default VRouter

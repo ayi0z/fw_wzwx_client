@@ -1,9 +1,6 @@
 <template>
     <div class="page">
         <div class="page__bd">
-            <div class="weui-footer"  v-if="!datas || datas.length===0">
-                <p class="weui-footer__text">没有绑定车号</p>
-            </div>
             <template v-for="data in datas">
                 <div class="weui-cells weui-cells_checkbox" :key="'c'+data.Key">
                     <label class="weui-cell weui-check__label carno-checkbox" :for="'ch'+data.Key">
@@ -29,21 +26,34 @@
                     </label> 
                 </div>
             </template>
-            <div class="weui-btn-area">
-                <a class="weui-btn weui-btn_primary" v-show="checkedunits.length>0" href="javascript:" @click="doUnbind">立即解绑</a>
-            </div>
+            <load-tip :datas="datas"></load-tip>
+            <btn-tab-bar :buttons="btns"></btn-tab-bar>
         </div>
     </div>
 </template>
 
 <script>
+import ListLoadTip from '@/components/ListLoadTip'
+import BtnTabBar from '@/components/BtnTabBar'
 export default {
     name:'bindlist',
+    components:{
+        "load-tip":ListLoadTip,
+         "btn-tab-bar":BtnTabBar
+    },
     data: function(){
         return{
             checkedcarnos:[],
             checkedunits:[],
-            datas:[]
+            datas:[],
+            btns:[
+                {
+                    text:'立即解绑',
+                    action:()=>{
+                        this.doUnbind()
+                    }
+                }
+            ]
         }
     },
     created(){

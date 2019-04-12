@@ -79,8 +79,6 @@ export default {
         return{
             datas:{
                 weighruls:weighruls
-                // inunits:[],
-                // outunits:[]
             },
             form:{
                 CarNo:'',
@@ -95,20 +93,8 @@ export default {
         }
     },
     created(){
-        // this.$axios.get(this.$api.ws_units, { params:{utype:'收货单位'} })
-        //     .then((res)=>{
-        //         if(res.data.code == 0){
-        //             this.datas.inunits = res.data.content
-        //         }
-        //     })
-        // this.$axios.get(this.$api.ws_units, { params:{utype:'发货单位'} })
-        //     .then((res)=>{
-        //         if(res.data.code == 0){
-        //             this.datas.outunits = res.data.content
-        //         }
-        //     })
         if(!this.$store.state.mydpts || this.$store.state.mydpts.length == 0){
-            this.$axios.get(this.$api.ws_dpts)
+            this.$axios.get(this.$api.ws_mydpts)
                 .then((res)=>{
                     if(res.data.code == 0){
                         this.$store.dispatch("mydpts", res.data.content)

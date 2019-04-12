@@ -11,11 +11,20 @@
     color:grey;
 }
 .img-qrcode{
-    width: 200px;
+    width: 10em;
     padding: 8px;
     box-shadow: 0 0 0px 1px #d6d2d2;
     box-sizing: border-box;
 }
 .weui-dialog__hd{
     padding-bottom: 0;
+}
+.weui-search-bar__label{
+    color: #4CAF50;
+}
+.weui-icon-search{
+    color: #4CAF50;
+}
+.weui-btn_default{
+    color: #4CAF50;
 }

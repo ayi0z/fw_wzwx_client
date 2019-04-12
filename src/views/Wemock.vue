@@ -11,12 +11,54 @@
             </a>
             <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bind')">
                 <div class="weui-cell__bd">
-                    <p>绑定车牌号</p>
+                    <p>车号和单位绑定</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
             </a>
             <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindlist')">
+                <div class="weui-cell__bd">
+                    <p>车号和单位绑定列表</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('binddpt')">
+                <div class="weui-cell__bd">
+                    <p>单位绑定</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('binddptlist')">
+                <div class="weui-cell__bd">
+                    <p>单位绑定列表</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindmartiral')">
+                <div class="weui-cell__bd">
+                    <p>品名绑定</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindmartirallist')">
+                <div class="weui-cell__bd">
+                    <p>品名绑定列表</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindcar')">
+                <div class="weui-cell__bd">
+                    <p>车号绑定</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindcarlist')">
                 <div class="weui-cell__bd">
                     <p>车号绑定列表</p>
                 </div>

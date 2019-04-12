@@ -1,6 +1,6 @@
 {
     "api":{
-        "baseurl":"http://wgwzjl.baosteel.com:8081",
+        "baseurl":"http://c758f02e.ngrok.io",
         "wechat_appid": "/api/wechat/appid",
         "wechat_loginopenid": "/api/wechat/loginopenid",
         "wechat_tags": "/api/wechat/tags",
@@ -8,20 +8,24 @@
 
         "user": "/api/user",
 
+        "ws_userole": "/api/weis/userole",
         "ws_qrcode": "/api/weis/qrcode",
+        "ws_mycars": "/api/weis/mycars",
         "ws_carnodpts":"/api/weis/carnodpts",
-        "ws_cars": "/api/weis/cars",
         "ws_dpts": "/api/weis/dpts",
-        "ws_units": "/api/weis/units",
+        "ws_mydpts": "/api/weis/mydpts",
         "ws_carplan": "/api/weis/carplan",
         "ws_mycarplan": "/api/weis/mycarplan",
-        "ws_userole": "/api/weis/userole",
+        "ws_martiral": "/api/weis/martiral",
+        "ws_mymartiral": "/api/weis/mymartiral",
         "ws_einvoice":"/api/weis/einvoice"
     },
     "menu_targets":{
         "用户注册": "/user/reg",
-        "车号绑定": "/vehicle/bind",
-        "绑定列表": "/vehicle/bindlist",
+        "车号单位绑定": "/vehicle/bind",
+        "车号单位绑定列表": "/vehicle/bindlist",
+        "单位绑定": "/vehicle/binddpt",
+        "单位绑定列表": "/vehicle/binddptlist",
         "车牌号": "/qrcode/veno",
         "过磅记录": "/qrcode/weigh",
         "委托计划": "/plan/planlog",

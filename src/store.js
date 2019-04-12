@@ -25,7 +25,8 @@ export default new Vuex.Store({
     mycarnos:[],
     myweighs:[],
     mydpts:[],
-    debugs:[]
+    debugs:[],
+    wctags:[]
   },
   mutations: {
     debugs(state, datas){
@@ -70,6 +71,9 @@ export default new Vuex.Store({
     },
     planlog_datas(state, datas){
       state.planlog_datas = datas
+    },
+    wctags(state, datas){
+      state.wctags = datas
     }
   },
   actions: {
@@ -105,6 +109,9 @@ export default new Vuex.Store({
     },
     planlog_datas({commit}, datas){
       commit('planlog_datas', datas)
+    },
+    wctags({commit}, datas){
+      commit('wctags', datas)
     }
   }
 })

@@ -5,11 +5,11 @@
                 <div class="weui-search-bar" :class="searchBar.focus_searchBar ? 'weui-search-bar_focusing':''">
                     <form class="weui-search-bar__form">
                         <div class="weui-search-bar__box">
-                            <a href="javascript:;" class="weui-btn weui-btn_default weui-search-bar__input" @click="doSearch">搜索</a>
+                            <a href="javascript:;" class="weui-btn weui-btn_default weui-search-bar__input" @click="doSearch">点击搜索</a>
                         </div>
                         <label class="weui-search-bar__label" @click="searchBar.focus_searchBar = !searchBar.focus_searchBar">
                             <i class="weui-icon-search"></i>
-                            <span>搜索</span>
+                            <span>点击设置搜索条件</span>
                         </label>
                     </form>
                     <a href="javascript:" class="weui-search-bar__cancel-btn" @click="searchBar.focus_searchBar = false">取消</a>
@@ -106,8 +106,8 @@ export default {
             },
             query:{
                 IsAll:true,
-                BgDT:'',
-                EdDT:'',
+                BgDT:this.$util.DateFilter(new Date(), -2),
+                EdDT:this.$util.DateFilter(new Date()),
                 filter: true
             },
             form:{

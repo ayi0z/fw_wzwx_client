@@ -21,11 +21,9 @@
                     <label class="weui-label">用户类型</label>
                 </div>
                 <div class="weui-cell__bd">
-                   <select v-re-valid="{regexp:/^1|2|3$/}" v-model="form.类型" class="weui-select" v-empty-class="'weui-empty'">
+                   <select v-re-valid required v-model="form.类型" class="weui-select" v-empty-class="'weui-empty'">
                         <option selected value=''>请选择用户类型</option>
-                        <option value="1">司机</option>
-                        <option value="2">物流管理员</option>
-                        <option value="3">计量管理员</option>
+                        <option v-for="role in datas.roles" :key="role.id" :value="role.name">{{role.name}}</option>
                     </select>
                 </div>
             </div>
@@ -69,15 +67,25 @@ export default {
         类型:'',
         用户名: '',
         密码: ''
+      },
+      datas:{
+        roles:[]
       }
     }
   },
   computed:{
     isNeedPwd(){
-      return this.form.类型 == '2' || this.form.类型 == '3'
+      return this.form.类型 == '物流管理员' || this.form.类型 == '计量管理员'
     }
   },
   created(){
+    this.$axios.get(this.$api.wechat_tags).then(res=>{
+          if(res.data.code == 0){
+            if(res.data.content){
+              this.datas.roles = res.data.content.tags.filter(c=>c.name != "星标组")
+            }
+          }
+        })
     this.$axios.get(this.$api.user+'/'+this.$store.state.userToken.openid).then(res=>{
           if(res.data.code == 0){
             if(res.data.content){
@@ -98,7 +106,7 @@ export default {
             if(res.data.code == 0){
               this.$store.dispatch('success', true)
               this.$store.dispatch('update_usertoken', res.data.content)
-              let tourl = this.$route.query.redirect_url || '/vehicle/bind'
+              let tourl = this.$route.query.redirect_url || '/user/reg'
               this.$router.replace(tourl)
             }
           })
