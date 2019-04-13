@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    name:'menuedit',
+    name:'DialogConfirm',
     data(){
         return { inputdata:'' }
     },

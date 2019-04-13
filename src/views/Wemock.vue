@@ -2,107 +2,10 @@
     <div>
         <div class="weui-cells__title">微信菜单如果模拟</div>
         <div class="weui-cells">
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('userreg')">
+            <a class="weui-cell weui-cell_access" href="javascript:;"
+               v-for="(value,key,index) in menus" :key="index"  @click="gourl(value)">
                 <div class="weui-cell__bd">
-                    <p>用户注册</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bind')">
-                <div class="weui-cell__bd">
-                    <p>车号和单位绑定</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindlist')">
-                <div class="weui-cell__bd">
-                    <p>车号和单位绑定列表</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('binddpt')">
-                <div class="weui-cell__bd">
-                    <p>单位绑定</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('binddptlist')">
-                <div class="weui-cell__bd">
-                    <p>单位绑定列表</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindmartiral')">
-                <div class="weui-cell__bd">
-                    <p>品名绑定</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindmartirallist')">
-                <div class="weui-cell__bd">
-                    <p>品名绑定列表</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindcar')">
-                <div class="weui-cell__bd">
-                    <p>车号绑定</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('bindcarlist')">
-                <div class="weui-cell__bd">
-                    <p>车号绑定列表</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('veno')">
-                <div class="weui-cell__bd">
-                    <p>车号二维码</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('weigh')">
-                <div class="weui-cell__bd">
-                    <p>计量委托二维码</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('planlog')">
-                <div class="weui-cell__bd">
-                    <p>委托计划查询</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('planreport')">
-                <div class="weui-cell__bd">
-                    <p>委托申请</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('einvoice')">
-                <div class="weui-cell__bd">
-                    <p>电子发票</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;" @click="gourl('menugroup')">
-                <div class="weui-cell__bd">
-                    <p>微信菜单管理</p>
+                    <p>{{key}}</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
@@ -111,10 +14,14 @@
     </div>
 </template>
 <script>
+import { menu_targets } from '@/config.js'
 export default {
+    data(){
+       return { menus:menu_targets }
+    },
     methods:{
         gourl(url){
-            this.$router.replace({name:url})
+            this.$router.replace({path:url})
         }
     }
 }

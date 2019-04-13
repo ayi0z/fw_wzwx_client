@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    name:'dialogimg',
+    name:'DialogImg',
     props:['showing', 'alt', 'url']
 }
 </script>

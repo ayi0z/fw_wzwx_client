@@ -37,9 +37,7 @@ export default {
     },
     watch:{
         options(){
-            console.log(1)
             if(this.PICKER){
-                console.log(2)
                 this.PICKER.ReLoadDatas(this.options)
             }else{
                 this.inputext = ''
@@ -71,9 +69,11 @@ export default {
                         this.doChange(result)
                     },
                     onInputChange:exp=>{
-                        this.PICKER.loading(true)
                         this.inputext = exp
-                        this.$emit("inputchange", exp)
+                        if(this.$listeners.inputchange){
+                            this.PICKER.loading(true)
+                            this.$emit("inputchange", exp)
+                        }
                     },
                     onClose:()=>{
                         this.PICKER = false

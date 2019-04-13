@@ -11,6 +11,7 @@ export default {
         displaytext(){
             const nopts = this._doFormatOptions()
             const copt = nopts.find(c=>c.value == this.value)
+            if(!copt){ this.doConfirm() }
             return copt ? copt.label : this.placeholder
         }
     },
@@ -46,11 +47,11 @@ export default {
         doClick(){
             this.$weui.picker(this.options, {
                 onConfirm: result => {
-                    this.doChange(result)
+                    this.doConfirm(result)
                 }
             });
         },
-        doChange(value){
+        doConfirm(value){
             const nvalue = value ? (value[0] ? value[0].value : value) : ''
             if(this.value != nvalue){
                 this.$emit("change", nvalue)

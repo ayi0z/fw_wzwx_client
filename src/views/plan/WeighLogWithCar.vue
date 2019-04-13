@@ -46,70 +46,31 @@
                         </div>
                     </div>
                 </div>
-                <div class="weui-footer"  v-if="!datas || datas.length===0">
-                    <p class="weui-footer__text">未检索到数据</p>
+                <div class="weui-cells">
+                    <a class="weui-cell weui-cell_access" href="javascript:;"
+                        v-for="da in datas" :key="da.Id" @click="doViewDetail(da)">
+                        <div class="weui-cell__bd">
+                            <p>{{da.过磅申请号}}</p>
+                        </div>
+                        <div class="weui-cell__ft">{{da.车号}}</div>
+                    </a>
                 </div>
-                <div class="weui-cells" v-for="da in datas" :key="da.Id">
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd"><label class="weui-label">过磅申请号</label></div>
-                        <div class="weui-cell__bd">
-                          {{da.过磅申请号}}    
-                        </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd">
-                            <label class="weui-label">车牌号</label>
-                        </div>
-                        <div class="weui-cell__bd">
-                           {{da.车号}}
-                        </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd"><label class="weui-label">过磅品名</label></div>
-                        <div class="weui-cell__bd">
-                          {{da.品名}}    
-                        </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd">
-                            <label class="weui-label">发货单位</label>
-                        </div>
-                        <div class="weui-cell__bd">
-                            {{da.发货单位}}
-                        </div>
-                    </div>
-                    <div class="weui-cell">
-                        <div class="weui-cell__hd">
-                            <label class="weui-label">收货单位</label>
-                        </div>
-                        <div class="weui-cell__bd">
-                            {{da.收货单位}}
-                        </div>
-                    </div>
-                    <div class="weui-panel__ft">
-                        <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link"
-                            @click="doViewDetail(da)">
-                            <div class="weui-cell__bd">点击查看详情</div>
-                            <span class="weui-cell__ft"></span>
-                        </a>
-                    </div>
-                    <div class="weui-panel__ft">
-                        <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link"
-                            @click="doQrCode(da.车号, da.过磅申请号)">
-                            <div class="weui-cell__bd">生成二维码</div>
-                            <span class="weui-cell__ft"></span>
-                        </a>
-                    </div>
-                </div>
-                <qr-dialog v-show="qrcode.showing" :url="qrcode.url" :alt="qrcode.alt" @close="(va) => {qrcode.showing=va}"></qr-dialog>
+                <load-tip :datas="datas"></load-tip>
+                <detail-dialog  v-show="detail.showing" :data="detail.data" :before="doDialogDetailBefore"  @close="()=>{detail.showing = false}"></detail-dialog>
             </div>
         </div>
 </template>
 
 <script>
-import QrDialog from '@/components/Dialog-Img'
+import DetailDialog from '@/components/Dialog-Detail'
+import ListLoadTip from '@/components/ListLoadTip'
+import { tasktype } from "@/config";
 export default {
-    name:'qrweigh',
+    name:'WeighLogWithCar',
+    components:{
+        "load-tip":ListLoadTip,
+        'detail-dialog': DetailDialog
+    },
     data(){
         return {
             searchBar:{
@@ -120,16 +81,12 @@ export default {
                 BgDT:this.$util.DateFilter(new Date(), -2),
                 EdDT:this.$util.DateFilter(new Date())
             },
-            qrcode:{
+            detail:{
                 showing:false,
-                url:'',
-                alt:''
+                data:null
             },
             datas:[]
         }
-    },
-    components:{
-        'qr-dialog': QrDialog
     },
     computed:{
         carnos(){
@@ -145,7 +102,7 @@ export default {
                     }
                 })
         }
-        this.datas = this.$store.state.myweighs
+        // this.datas = this.$store.state.myweighs
     },
     methods: {
         doSearch(){
@@ -153,24 +110,23 @@ export default {
                 .then(res=>{
                     if(res.data.code == 0){
                         this.searchBar.focus_searchBar = false
-                        this.$store.dispatch("myweighs", res.data.content)
+                        // this.$store.dispatch("myweighs", res.data.content)
                         this.datas = res.data.content
                     }
                 })
         },
-        doQrCode(cno, id){
-            this.$axios.post(this.$api.ws_qrcode, {enstr:`${cno}^^^${id}`})
-                .then(res=>{
-                    if(res.data.code == 0){
-                        this.qrcode.showing = true
-                        this.qrcode.alt = `${cno} ${id}`
-                        this.qrcode.url = `data:image/jpeg;base64,${res.data.content}`
-                    }
-                })
+        doDialogDetailBefore(da){
+            if(da){
+                da.任务类型 = tasktype[da.任务类型] || da.任务类型
+                da.是否缴款 = da.是否缴款 ? "已缴款" : "未缴款"
+                da.是否开票 = da.是否开票 ? "已开票" : "未开票"
+            }
         },
         doViewDetail(da){
-            this.$store.dispatch("weigh_detail", da)
-            this.$router.push({name:'weighdetail'})
+            this.detail.showing = true
+            this.detail.data = da
+            // this.$store.dispatch("weigh_detail", da)
+            // this.$router.push({name:'weighdetail'})
         }
     }
 }

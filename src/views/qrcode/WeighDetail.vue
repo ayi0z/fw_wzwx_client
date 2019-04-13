@@ -72,6 +72,6 @@ export default {
     table
         tr 
             td
-                background-color: #e8e8e8;
-                padding: 0px 5px;
+                background-color: #e8e8e8
+                padding: 0px 5px
 </style>

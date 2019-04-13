@@ -1,30 +1,23 @@
 module.exports = {
-    // coderouter:{
-    //     "-40101": {
-    //         router: 'warn',
-    //         msg: '拒绝访问'
-    //     },
-    //     "-40102": {
-    //         router: 'warn',
-    //         msg: '未关注公众号，拒绝登陆'
-    //     },
-    //     "-40103": {
-    //         router: 'userreg',
-    //         msg: '无访问权限，用户未注册'
-    //     },
-    //     "-40104": {
-    //         router: 'userauth',
-    //         msg: '无访问权限，登陆票据无效'
-    //     },
-    //     "-40105": {
-    //         router: 'warn',
-    //         msg: '注册用户名或密码错误'
-    //     },
-    //     "-50101": {
-    //         router: 'warn',
-    //         msg: '连接微信服务器错误'
-    //     }
-    // },
+    menu_targets:{
+        "用户注册": "/user/reg",
+        "绑定-车号单位": "/vehicle/bind",
+        "列表-车号单位": "/vehicle/bindlist",
+        "绑定-单位": "/vehicle/binddpt",
+        "列表-单位": "/vehicle/binddptlist",
+        "绑定-车号": "/vehicle/bindcar",
+        "列表-车号": "/vehicle/bindcarlist",
+        "绑定-品名": "/vehicle/bindmartiral",
+        "列表-品名": "/vehicle/bindmartirallist",
+        "二维码-车牌号": "/qrcode/veno",
+        "二维码-计量委托": "/qrcode/weigh",
+        "过磅记录(车号)": "/plan/weighlogwithcar",
+        "过磅记录(单位)": "/plan/weighlogwithdpt",
+        "计量委托填报": "/plan/report",
+        "计量委托查询": "/plan/planlog",
+        "电子发票": "/invoice/einvoice",
+        "菜单管理": "/admin/menugroup"
+    },
     unittypes:[
         {
             value:1,

@@ -1,6 +1,6 @@
 {
     "api":{
-        "baseurl":"http://c758f02e.ngrok.io",
+        "baseurl":"http://localhost:5000/",
         "wechat_appid": "/api/wechat/appid",
         "wechat_loginopenid": "/api/wechat/loginopenid",
         "wechat_tags": "/api/wechat/tags",
@@ -15,22 +15,10 @@
         "ws_dpts": "/api/weis/dpts",
         "ws_mydpts": "/api/weis/mydpts",
         "ws_carplan": "/api/weis/carplan",
-        "ws_mycarplan": "/api/weis/mycarplan",
+        "ws_mycarweighs": "/api/weis/mycarweighs",
+        "ws_mydptweighs": "/api/weis/mydptweighs",
         "ws_martiral": "/api/weis/martiral",
         "ws_mymartiral": "/api/weis/mymartiral",
         "ws_einvoice":"/api/weis/einvoice"
-    },
-    "menu_targets":{
-        "用户注册": "/user/reg",
-        "车号单位绑定": "/vehicle/bind",
-        "车号单位绑定列表": "/vehicle/bindlist",
-        "单位绑定": "/vehicle/binddpt",
-        "单位绑定列表": "/vehicle/binddptlist",
-        "车牌号": "/qrcode/veno",
-        "过磅记录": "/qrcode/weigh",
-        "委托计划": "/plan/planlog",
-        "委托填报": "/plan/planreport",
-        "电子发票": "/invoice/einvoice",
-        "菜单管理": "/admin/menugroup"
     }
 }

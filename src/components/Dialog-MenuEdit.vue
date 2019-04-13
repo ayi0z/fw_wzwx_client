@@ -14,7 +14,7 @@
                         <div class="weui-cell__bd">
                             <select class="weui-select" v-re-valid required v-empty-class="'weui-empty'" v-model="form.url">
                                 <option value="">请选择链接目标</option>
-                                <option v-for="(tar, key) in $menu_targets" :key="key" :value="lochref + tar">{{key}}</option>
+                                <option v-for="(tar, key) in menu_targets" :key="key" :value="lochref + tar">{{key}}</option>
                             </select>
                         </div>
                     </div>
@@ -29,10 +29,12 @@
 </template>
 
 <script>
+import { menu_targets } from '@/config.js'
 export default {
-    name:'menuedit',
+    name:'DialogMenuEdit',
     data(){
         return{
+            menu_targets,
             lochref: window.location.origin,
             form:{
                 type:'view',

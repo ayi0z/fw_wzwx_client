@@ -90,30 +90,31 @@
             </div>
         </div>
         <div class="page__bd">
-            <div class="weui-panel search-result-panel">
-                <div class="weui-panel__bd">
-                    <div class="weui-cells">
-                        <div class="weui-footer"  v-if="!datas || datas.length===0">
-                            <p class="weui-footer__text">未检索到数据</p>
-                        </div>
-                        <a class="weui-cell weui-cell_access" href="javascript:;"
-                           v-for="da in datas" :key="da.过磅申请号" @click="doViewDetail(da)">
-                            <div class="weui-cell__bd">
-                                <p>{{da.过磅申请号}}</p>
-                            </div>
-                            <div class="weui-cell__ft">{{da.车号}}</div>
-                        </a>
+            <div class="weui-cells">
+                <a class="weui-cell weui-cell_access" href="javascript:;"
+                    v-for="da in datas" :key="da.过磅申请号" @click="doViewDetail(da)">
+                    <div class="weui-cell__bd">
+                        <p>{{da.过磅申请号}}</p>
                     </div>
-                </div>
+                    <div class="weui-cell__ft">{{da.车号}}</div>
+                </a>
             </div>
+            <load-tip :datas="datas"></load-tip>
         </div>
+        <detail-dialog  v-show="detail.showing" :data="detail.data" :before="doDialogDetailBefore"  @close="()=>{detail.showing = false}"></detail-dialog>
     </div>
 </template>
 
 <script>
-import { unittypes } from '@/config'
+import DetailDialog from '@/components/Dialog-Detail'
+import ListLoadTip from '@/components/ListLoadTip'
+import { unittypes, tasktype, weightype, plantype } from '@/config'
 export default {
-    name: 'veno',
+    name: 'PlanLog',
+    components:{
+        "load-tip":ListLoadTip,
+        'detail-dialog': DetailDialog
+    },
     data(){
         return {
             searchBar:{
@@ -130,6 +131,10 @@ export default {
                 DptType:'',
                 IsAll: true,
                 filter: true
+            },
+            detail:{
+                showing:false,
+                data:null
             },
             datas:[]
         }
@@ -151,8 +156,6 @@ export default {
                     }
                 })
         }
-        
-        this.datas = this.$store.state.planlog_datas
     },
     computed:{
         carnos(){
@@ -173,13 +176,21 @@ export default {
                     if(res.data.code == 0){
                         this.searchBar.focus_searchBar = false
                         this.datas = res.data.content
-                        this.$store.dispatch("planlog_datas", res.data.content)
                     }
                 })
         },
+        doDialogDetailBefore(da){
+            if(da){
+                da.任务类型 = tasktype[da.任务类型] || da.任务类型
+                da.过磅类型 = weightype[`C${da.过磅类型}`] || da.过磅类型
+                da.委托类型 = plantype[`C${da.委托类型}`] || da.委托类型 
+                da.处理标识 = da.处理标识 ? "已处理" : "未处理"
+                da.长期有效 = da.长期有效 ? "是" : "否"
+            }
+        },
         doViewDetail(da){
-            this.$store.dispatch("carplan_detail", da)
-            this.$router.push({name:'plandetail', params:{id: da.过磅申请号}})
+            this.detail.showing = true
+            this.detail.data = da
         },
     }
 }
@@ -197,8 +208,8 @@ export default {
         padding-left:0
         height: auto
         line-height: initial
-    .search-result-panel
-        margin-top: 45px
+    .page__bd
+        margin-top: 2.7em;
         z-index:1
     .searchbar-result
         margin-top:0

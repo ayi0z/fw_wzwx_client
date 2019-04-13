@@ -362,7 +362,6 @@ function inputPicker() {
         else{$picker.find(".wpis-loading").addClass("wpis-loading-hide")}
     }
     _sington.RenderInputText = (text)=>{
-        console.log(text)
         $picker.find("#weui-picker-input").val(text)
     }
 

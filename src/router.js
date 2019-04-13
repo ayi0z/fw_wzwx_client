@@ -63,7 +63,7 @@ const VRouter = new Router({
       component: () => import('./views/vehicle/BindMartiralList.vue'),
       meta: { requiresLogin: true }
     },  {
-      path: '/qrcode/veno',
+      path: '/qrcode/veno/',
       name: 'veno',
       component: () => import('./views/qrcode/VeNo.vue'),
       meta: { requiresLogin: true }
@@ -89,10 +89,14 @@ const VRouter = new Router({
       component: () => import('./views/plan/PlanLog.vue'),
       meta: { requiresLogin: true }
     }, {
-      path: '/plan/plandetail/:id',
-      name: 'plandetail',
-      props: true,
-      component: () => import('./views/plan/PlanDetail.vue'),
+      path: '/plan/weighlogwithcar',
+      name: 'weighlogwithcar',
+      component: () => import('./views/plan/WeighLogWithCar.vue'),
+      meta: { requiresLogin: true }
+    }, {
+      path: '/plan/weighlogwithdpt',
+      name: 'weighlogwithdpt',
+      component: () => import('./views/plan/WeighLogWithDpt.vue'),
       meta: { requiresLogin: true }
     }, {
       path: '/invoice/einvoice',
