@@ -94,7 +94,7 @@ export default {
                 OutDpt:'',
                 InDpt:'',
                 TraeType:'1',
-                LongTime:true,
+                LongTime:false,
                 PlanType:'',
                 Tasktype:''
             }
@@ -150,7 +150,7 @@ export default {
                                         OutDpt:'',
                                         InDpt:'',
                                         TraeType:'',
-                                        LongTime:true,
+                                        LongTime:false,
                                         PlanType:'',
                                         Tasktype:''
                                     }

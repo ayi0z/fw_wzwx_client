@@ -12,6 +12,8 @@
             </div>
             <div class="weui-dialog__ft">
                 <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="$emit('close', false)">关闭</a>
+                <a href="javascript:;" v-for="btn in btns" :key="btn.text"
+                    class="weui-dialog__btn" :class="btn.class" @click="btn.onclick">{{btn.text}}</a>
             </div>
         </div>
     </div>
@@ -29,6 +31,21 @@ export default {
         before:{
             type: Function,
             default: null
+        },
+        /**
+         * example:
+         * btns:[
+         *      {
+         *          text:'确认',
+         *          class:'weui-dialog__btn_primary',
+         *          onclick: ()=>{ ... }
+         *      }
+         * ]
+         * 
+         */
+        btns:{
+            type: Array,
+            default:null
         }
     },
     watch:{

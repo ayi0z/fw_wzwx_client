@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
 * 
@@ -18,7 +19,7 @@ import $ from '../util/util';
 import './scroll';
 import * as util from './util';
 
-let pickerTpl = '<div class="<%= className %>"> <div class=weui-mask></div> <div class="weui-picker weui-inputpicker"> <div class="weui-picker__hd weui-picker-input__hd"> <input id=weui-picker-input class="weui-input weui-picker__input" type=text placeholder="<%= placeholder %>"/> </div> <div class=weui-picker__bd></div> <div class=weui-picker__hd> <a href=javascript:; data-action=cancel class=weui-picker__action>取消</a> <a href=javascript:; data-action=select class=weui-picker__action id=weui-picker-confirm>确定</a> </div> </div> </div> '
+let pickerTpl = '<div class="<%= className %>"> <div class=weui-mask></div> <div class="weui-picker weui-inputpicker"> <div class="weui-picker__hd weui-picker-input__hd"> <input id=weui-picker-input class="weui-input weui-picker__input" type=text placeholder="<%= placeholder %>"/> <a href="javascript:" class="weui-search-bar__cancel-btn" style="display:block;line-height:1.47058824em;" id="weui-picker-input-search">搜索</a> </div> <div class=weui-picker__bd></div> <div class=weui-picker__hd> <a href=javascript:; data-action=cancel class=weui-picker__action>取消</a> <a href=javascript:; data-action=select class=weui-picker__action id=weui-picker-confirm>确定</a> </div> </div> </div> '
 let groupTpl = '<div class="wpis-loading wpis-loading-hide"><i class="weui-loading weui-icon_toast"></i></div><div class=weui-picker__group> <div class=weui-picker__mask></div> <div class=weui-picker__indicator></div> <div class=weui-picker__content></div> </div>'
 function Result(item) {
     if(typeof item != 'object'){
@@ -233,6 +234,7 @@ function inputPicker() {
         $picker.find('.weui-picker').addClass('weui-animate-slide-up');
     }
     function _hide(callback){
+        // eslint-disable-next-line no-func-assign
         _hide = $.noop; // 防止二次调用导致报错
 
         $picker.find('.weui-mask').addClass('weui-animate-fade-out');
@@ -339,8 +341,11 @@ function inputPicker() {
         .on('click', '#weui-picker-confirm', function () {
             defaults.onConfirm(result);
         })
-        .on('change', '#weui-picker-input', function (event) {
-            defaults.onInputChange(event.target.value);
+        // .on('change', '#weui-picker-input', function (event) {
+        //     defaults.onInputChange(event.target.value);
+        // })
+        .on('click', '#weui-picker-input-search', function (event) {
+            defaults.onInputChange($picker.find('#weui-picker-input').val());
         });
 
     _sington = $picker[0];

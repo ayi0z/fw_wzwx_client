@@ -55,7 +55,8 @@ axios.interceptors.response.use(function(response){
   if(response.data.code && response.data.code != 0)
   {
     let msg = response.data.msg ||  ''
-    router.push({ name: 'warn', params: { code:response.data.code, msg: msg } })
+    // router.push({ name: 'warn', params: { code:response.data.code, msg: msg } })
+    weui.topTips(msg)
   }
   return response
 }, function(error){

@@ -153,7 +153,7 @@ VRouter.beforeEach((to, from, next) => {
                     const authuri  = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${ruri}&response_type=code&scope=snsapi_userinfo&state=${store.state.authSate}&connect_redirect=1#wechat_redirect`
                     window.location.replace(authuri)
                   }else{
-                    next({ name: 'warn', params: { msg: "无法授权" } })
+                    next({ name: 'warn', params: { msg: "无法授权,APPID丢失" } })
                   }
               });
           } else if (to.meta.requiresLogin 

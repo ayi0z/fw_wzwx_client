@@ -59,7 +59,7 @@
                     <a class="weui-cell weui-cell_access" href="javascript:;"
                         v-for="da in datas" :key="da.Id" @click="doViewDetail(da)">
                         <div class="weui-cell__bd">
-                            <p>{{da.过磅申请号}}</p>
+                            <p>{{da.毛重时间}}</p>
                         </div>
                         <div class="weui-cell__ft">{{da.车号}}</div>
                     </a>

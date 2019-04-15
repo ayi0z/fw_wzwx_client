@@ -6,7 +6,7 @@
                     <div class="weui-search-bar__box">
                         <i class="weui-icon-search"></i>
                         <input type="search" ref="searchinput" class="weui-search-bar__input" placeholder="在此输入首字母检索" required
-                            v-model="searchBar.py" @blur="searchBar.focus_searchBar = searchBar.py" @change="doLoadMartirals"/>
+                            v-model="searchBar.py" @change="doLoadMartirals"/>
                         <a href="javascript:" class="weui-icon-clear" @click="doSearchBarClear"></a>
                     </div>
                     <label class="weui-search-bar__label" @click="doSearchBarFocus">
@@ -14,6 +14,7 @@
                         <span>点击输入首字母检索品名</span>
                     </label>
                 </form>
+                <a href="javascript:" class="weui-search-bar__cancel-btn" @click="doLoadMartirals">搜索</a>
                 <a href="javascript:" class="weui-search-bar__cancel-btn" @click="doSearchBarCancel">取消</a>
             </div>
             <div class="weui-cells weui-cells_checkbox search-result">

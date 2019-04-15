@@ -14,7 +14,7 @@
                         <a class="weui-cell weui-cell_access" href="javascript:;"
                             v-for="pl in form.plans" :key="pl.过磅申请号" @click="doDetail(pl)">
                             <div class="weui-cell__bd">
-                                <p>{{pl.物流任务号}}</p>
+                                <p>{{pl.过磅申请时间}}</p>
                             </div>
                             <div class="weui-cell__ft">点击查看详情</div>
                         </a>

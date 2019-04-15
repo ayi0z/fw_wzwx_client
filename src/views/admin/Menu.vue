@@ -122,12 +122,17 @@ export default {
                                     && res.data.content.conditionalmenu
                                           .find(c=>c.matchrule.group_id == this.$route.params.gid)
                         this.form = cmenu ? cmenu : this.form
+                        let pbtnslen = 3-this.form.button.length
+                        console.log(this.form.button, pbtnslen)
+                        for(var len=0;len<pbtnslen;len++){
+                            console.log(len)
+                            this.form.button.push({name:"",sub_button:[]})
+                        }
                     }else{
                         this.canEidt = !res.data.content.menu
                         this.form = res.data.content.menu ? res.data.content.menu : this.form
                         this.form['matchrule'] = {group_id: undefined}
                     }
-                    
                 }
             })
     },

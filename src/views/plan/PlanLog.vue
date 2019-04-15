@@ -94,26 +94,29 @@
                 <a class="weui-cell weui-cell_access" href="javascript:;"
                     v-for="da in datas" :key="da.过磅申请号" @click="doViewDetail(da)">
                     <div class="weui-cell__bd">
-                        <p>{{da.过磅申请号}}</p>
+                        <p>{{da.过磅申请时间}}</p>
                     </div>
                     <div class="weui-cell__ft">{{da.车号}}</div>
                 </a>
             </div>
             <load-tip :datas="datas"></load-tip>
         </div>
-        <detail-dialog  v-show="detail.showing" :data="detail.data" :before="doDialogDetailBefore"  @close="()=>{detail.showing = false}"></detail-dialog>
+        <detail-dialog  v-show="detail.showing" :data="detail.data" :btns="detail.btns" :before="doDialogDetailBefore" @close="()=>{detail.showing = false;dialogcfm.showing = false}"></detail-dialog>
+        <dialog-confirm :showing="dialogcfm.showing" :title="dialogcfm.title" :msg="dialogcfm.msg" @cancel="dialogcfm.cancel" @confirm="dialogcfm.confirm"></dialog-confirm>
     </div>
 </template>
 
 <script>
 import DetailDialog from '@/components/Dialog-Detail'
+import DialogConfirm from '@/components/Dialog-Confirm'
 import ListLoadTip from '@/components/ListLoadTip'
 import { unittypes, tasktype, weightype, plantype } from '@/config'
 export default {
     name: 'PlanLog',
     components:{
         "load-tip":ListLoadTip,
-        'detail-dialog': DetailDialog
+        'detail-dialog': DetailDialog,
+        'dialog-confirm': DialogConfirm
     },
     data(){
         return {
@@ -134,7 +137,21 @@ export default {
             },
             detail:{
                 showing:false,
-                data:null
+                data:null,
+                btns:[
+                    {
+                        text:'删除',
+                        class:'weui-btn_warn',
+                        onclick:this.doDelPlan
+                    }
+                ]
+            },
+            dialogcfm:{
+                showing:false,
+                title:'郑重提醒',
+                msg:'',
+                cancel:() => this.dialogcfm.showing = false,
+                confirm:()=>console.log('confirm')
             },
             datas:[]
         }
@@ -166,6 +183,24 @@ export default {
         }
     },
     methods:{
+        doDelPlan(){
+            if(this.detail.data){
+                console.log(this.detail.data)
+                this.dialogcfm.msg = '此操作将删除该计量委托，且不可恢复。是否确认删除？'
+                this.dialogcfm.confirm = () => { this.doConfirmDel(this.detail.data) } 
+                this.dialogcfm.showing = true
+            }
+        },
+        doConfirmDel(da){
+            this.$axios.delete(this.$api.ws_carplan,{data:{PlanId:da.过磅申请号}})
+                .then((res) => {
+                    if(res.data.code == 0){
+                        this.$store.dispatch('success', true)
+                        this.dialogcfm.showing = false
+                        this.doSearch()
+                    }
+                })
+        },
         doChangeQueryType(type){
             this.query.querytype = type
         },
