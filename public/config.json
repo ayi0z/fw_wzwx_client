@@ -1,6 +1,6 @@
 {
     "api":{
-        "baseurl":"http://localhost:5000",
+        "baseurl":"http://wgwzjl.baosteel.com:8081",
         "wechat_appid": "/api/wechat/appid",
         "wechat_loginopenid": "/api/wechat/loginopenid",
         "wechat_tags": "/api/wechat/tags",
@@ -19,6 +19,7 @@
         "ws_mydptweighs": "/api/weis/mydptweighs",
         "ws_martiral": "/api/weis/martiral",
         "ws_mymartiral": "/api/weis/mymartiral",
+        "ws_task": "/api/weis/task",
         "ws_einvoice":"/api/weis/einvoice"
     }
 }

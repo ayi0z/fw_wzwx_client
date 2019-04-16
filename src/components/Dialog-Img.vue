@@ -5,7 +5,7 @@
             <div class="weui-dialog__bd">
                 <img class="img-qrcode" :src="url" :alt="alt">
             </div>
-            <div class="weui-dialog__hd"><strong class="weui-dialog__title">{{alt}}</strong></div>
+            <div class="weui-dialog__hd"><strong class="weui-dialog__title"><span class="dialog-img-texts" v-for="txt in texts" :key="txt">{{txt}}</span></strong></div>
             <div class="weui-dialog__ft">
                 <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="$emit('close', false)">关闭</a>
             </div>
@@ -16,7 +16,12 @@
 <script>
 export default {
     name:'DialogImg',
-    props:['showing', 'alt', 'url']
+    props:['showing', 'alt', 'url'],
+    computed:{
+        texts(){
+            return this.alt.split('\n')
+        }
+    }
 }
 </script>
 <style lang="stylus" scoped>
@@ -25,5 +30,9 @@ export default {
         padding-top: 1.5em
     .weui-dialog__hd
         padding-top 0
+    .dialog-img-texts
+        display block
+        max-width 8em
+        word-wrap: break-word
 </style>
 

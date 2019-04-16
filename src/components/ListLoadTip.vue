@@ -39,4 +39,5 @@ export default {
 <style lang="stylus" scoped>
     .weui-loadmore_line
         margin-bottom: 3.5em
+        margin-top: 5.4em
 </style>

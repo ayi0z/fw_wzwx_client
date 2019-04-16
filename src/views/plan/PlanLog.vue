@@ -185,7 +185,6 @@ export default {
     methods:{
         doDelPlan(){
             if(this.detail.data){
-                console.log(this.detail.data)
                 this.dialogcfm.msg = '此操作将删除该计量委托，且不可恢复。是否确认删除？'
                 this.dialogcfm.confirm = () => { this.doConfirmDel(this.detail.data) } 
                 this.dialogcfm.showing = true

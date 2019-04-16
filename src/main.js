@@ -23,10 +23,10 @@ Vue.use(emptyClass)
 Vue.config.productionTip = false
 Vue.prototype.$hasInit = false
 
-store.dispatch('update_usertoken', {
-  openid:'oTAOO5pehW2x3PpuJQ3UeSMlKWhw',
-  loginToken:'CfDJ8KvKTqVkC65KgMmOTwaYfMb2wxUevDx7ZNUYp_UHCW8BjEDKdWP96bOKOARs2d1w_g_IyW1Tz1ecl-RPFgxZujdENMZA7HxMxx3HcrOtzEN6uTj2HqZ-LmGMfRQq5J-vp8UT-pNXrc0TaZ8EDSdT8iDj8660ynrGqCZ-6KBmkxnU_ByfMSxw5hTCb7LWsOhtwoZFXAC_mTnhUAWAr1zYDAFYSsBGEXC-VMSYtWaN99tsDcDupgWYbMucSR5X4zNGc06V_B9ZicEtjFmW4J2uhUU'
-})
+// store.dispatch('update_usertoken', {
+//   openid:'oTAOO5pehW2x3PpuJQ3UeSMlKWhw',
+//   loginToken:'CfDJ8KvKTqVkC65KgMmOTwaYfMb2wxUevDx7ZNUYp_UHCW8BjEDKdWP96bOKOARs2d1w_g_IyW1Tz1ecl-RPFgxZujdENMZA7HxMxx3HcrOtzEN6uTj2HqZ-LmGMfRQq5J-vp8UT-pNXrc0TaZ8EDSdT8iDj8660ynrGqCZ-6KBmkxnU_ByfMSxw5hTCb7LWsOhtwoZFXAC_mTnhUAWAr1zYDAFYSsBGEXC-VMSYtWaN99tsDcDupgWYbMucSR5X4zNGc06V_B9ZicEtjFmW4J2uhUU'
+// })
 axios.interceptors.request.use(function(config){
   store.dispatch('open_loading')
   config.transformRequest = data => qs.stringify(data)

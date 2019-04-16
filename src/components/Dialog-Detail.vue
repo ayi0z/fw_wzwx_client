@@ -81,6 +81,6 @@ export default {
                 padding 0px 5px
         tr
             :first-child
-                width: 5em;
+                width: 6em;
 </style>
 

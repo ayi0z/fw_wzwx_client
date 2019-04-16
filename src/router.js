@@ -68,9 +68,9 @@ const VRouter = new Router({
       component: () => import('./views/qrcode/VeNo.vue'),
       meta: { requiresLogin: true }
     }, {
-      path: '/qrcode/weigh',
-      name: 'weigh',
-      component: () => import('./views/qrcode/Weigh.vue'),
+      path: '/qrcode/plan',
+      name: 'plan',
+      component: () => import('./views/qrcode/Plan.vue'),
       meta: { requiresLogin: true }
     },{
       path: '/qrcode/weighdetail',
@@ -97,6 +97,11 @@ const VRouter = new Router({
       path: '/plan/weighlogwithdpt',
       name: 'weighlogwithdpt',
       component: () => import('./views/plan/WeighLogWithDpt.vue'),
+      meta: { requiresLogin: true }
+    }, {
+      path: '/plan/task',
+      name: 'task',
+      component: () => import('./views/plan/Task.vue'),
       meta: { requiresLogin: true }
     }, {
       path: '/invoice/einvoice',
