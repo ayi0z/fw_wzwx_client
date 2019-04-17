@@ -208,6 +208,8 @@ export default {
                 .then((res) => {
                     if(res.data.code == 0){
                         this.$store.dispatch('success', true)
+                        this.detail.showing = false
+                        this.detail.data = null
                         this.dialogcfm.showing = false
                         this.doSearch()
                     }

@@ -13,37 +13,37 @@
                         <button class="weui-vcode-btn" @click="doPickCarNo">选择</button>
                     </div>
                 </div>
-                <div class="weui-cell weui-cell_select">
+                <div class="weui-cell weui-cell_vcode">
                     <div class="weui-cell__hd">
                         <label class="weui-label">品名</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required v-model="form.MartiralName">
-                            <option value="">请选择品名</option>
-                            <option v-for="(m,index) in datas.martirals" :key="index" :value="m">{{m}}</option>
-                        </select>
+                        <input class="weui-input" type="text" v-re-valid required v-model="form.MartiralName" placeholder="请输入品名" />
+                    </div>
+                    <div class="weui-cell__ft">
+                        <button class="weui-vcode-btn" @click="doPickMartiral">选择</button>
                     </div>
                 </div>
-                <div class="weui-cell weui-cell_select">
+                <div class="weui-cell weui-cell_vcode">
                     <div class="weui-cell__hd">
                         <label class="weui-label">发货单位</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required v-model="form.OutDpt">
-                            <option value="">请选择发货单位</option>
-                            <option v-for="unit in outunits" :key="unit.单位" :value="unit.单位">{{unit.单位}}</option>
-                        </select>
+                        <input class="weui-input" type="text" v-re-valid required v-model="form.OutDpt" placeholder="请输入发货单位" />
+                    </div>
+                    <div class="weui-cell__ft">
+                        <button class="weui-vcode-btn" @click="doPickOutdpt">选择</button>
                     </div>
                 </div>
-                <div class="weui-cell weui-cell_select">
+                <div class="weui-cell weui-cell_vcode">
                     <div class="weui-cell__hd">
                         <label class="weui-label">收货单位</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <select class="weui-select" v-empty-class="'weui-empty'" v-re-valid required v-model="form.InDpt">
-                            <option value="">请选择收货单位</option>
-                            <option  v-for="unit in inunits" :key="unit.单位" :value="unit.单位">{{unit.单位}}</option>
-                        </select>
+                        <input class="weui-input" type="text" v-re-valid required v-model="form.InDpt" placeholder="请输入收货单位" />
+                    </div>
+                    <div class="weui-cell__ft">
+                        <button class="weui-vcode-btn" @click="doPickIndpt">选择</button>
                     </div>
                 </div>
             </div>
@@ -129,10 +129,20 @@ export default {
     },
     methods:{
         doPickCarNo(){
-            this.$weui.picker(this.datas.carnos,{
-                onConfirm: result =>{
-                    this.form.CarNo = result ? (result[0] ? result[0].value : this.form.CarNo) : this.form.CarNo
-                }
+            this._doPick(this.datas.carnos, result => (this.form.CarNo = result ? (result[0] ? result[0].value : this.form.CarNo) : this.form.CarNo))
+        },
+        doPickMartiral(){
+            this._doPick(this.datas.martirals, result => (this.form.MartiralName = result ? (result[0] ? result[0].value : this.form.MartiralName) : this.form.MartiralName))
+        },
+        doPickIndpt(){
+            this._doPick(this.inunits.map(c=>c.单位) , result => (this.form.InDpt = result ? (result[0] ? result[0].value : this.form.InDpt) : this.form.InDpt))
+        },
+        doPickOutdpt(){
+            this._doPick(this.outunits.map(c=>c.单位) , result => (this.form.OutDpt = result ? (result[0] ? result[0].value : this.form.OutDpt) : this.form.OutDpt))
+        },
+        _doPick(opts, onconfirm){
+            this.$weui.picker(opts,{
+                onConfirm: onconfirm
             })
         },
         doSave(){
