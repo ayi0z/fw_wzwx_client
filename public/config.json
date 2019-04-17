@@ -20,6 +20,7 @@
         "ws_martiral": "/api/weis/martiral",
         "ws_mymartiral": "/api/weis/mymartiral",
         "ws_task": "/api/weis/task",
+        "ws_fixedplan": "/api/weis/fixedplan",
         "ws_einvoice":"/api/weis/einvoice"
     }
 }

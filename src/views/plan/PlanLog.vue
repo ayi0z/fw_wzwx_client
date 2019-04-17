@@ -15,7 +15,7 @@
                     <a href="javascript:" class="weui-search-bar__cancel-btn" @click="searchBar.focus_searchBar = false">取消</a>
                 </div>
                 <div class="weui-cells searchbar-result" v-show="searchBar.focus_searchBar">
-                    <div class="weui-tab">
+                    <div class="weui-tab" v-if="isQueryByCarNoOrDpt">
                         <div class="weui-navbar">
                             <div class="weui-navbar__item" @click="doChangeQueryType(0)"
                                 :class="query.querytype==0 ? 'weui-bar__item_on':''">
@@ -62,6 +62,14 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="weui-cell" v-else>
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">车牌号</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" placeholder="请输入车牌号" type="text" v-model="query.CarNo"/>
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -157,24 +165,29 @@ export default {
         }
     },
     created(){
-        if(!this.$store.state.mycarnos || this.$store.state.mycarnos.length == 0){
-            this.$axios.get(this.$api.ws_mycars)
-                .then((res)=>{
-                    if(res.data.code == 0){
-                        this.$store.dispatch("mycarnos", res.data.content)
-                    }
-                })
-        }
-        if(!this.$store.state.mydpts || this.$store.state.mydpts.length == 0){
-            this.$axios.get(this.$api.ws_mydpts)
-                .then((res)=>{
-                    if(res.data.code == 0){
-                        this.$store.dispatch("mydpts", res.data.content)
-                    }
-                })
+        if(this.isQueryByCarNoOrDpt){
+            if(!this.$store.state.mycarnos || this.$store.state.mycarnos.length == 0){
+                this.$axios.get(this.$api.ws_mycars)
+                    .then((res)=>{
+                        if(res.data.code == 0){
+                            this.$store.dispatch("mycarnos", res.data.content)
+                        }
+                    })
+            }
+            if(!this.$store.state.mydpts || this.$store.state.mydpts.length == 0){
+                this.$axios.get(this.$api.ws_mydpts)
+                    .then((res)=>{
+                        if(res.data.code == 0){
+                            this.$store.dispatch("mydpts", res.data.content)
+                        }
+                    })
+            }
         }
     },
     computed:{
+        isQueryByCarNoOrDpt(){
+            return !(this.$attrs.isWithCusCarNo || false)
+        },
         carnos(){
             return this.$store.state.mycarnos;
         },

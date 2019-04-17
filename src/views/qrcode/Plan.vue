@@ -52,6 +52,12 @@
                                     <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.EdDT"/>
                                 </div>
                             </div>
+                            <div class="weui-cell weui-cell_switch">
+                                <div class="weui-cell__bd">仅查询未使用计划</div>
+                                <div class="weui-cell__ft">
+                                    <input class="weui-switch" v-model="query.filter" type="checkbox"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,11 +143,12 @@ export default {
                 mydpts:[]
             },
             query:{
-                querytype: 1,
                 Dpt:'',
                 DptType:'',
                 BgDT:this.$util.DateFilter(new Date(), -2),
-                EdDT:this.$util.DateFilter(new Date())
+                EdDT:this.$util.DateFilter(new Date()),
+                IsAll: true,
+                filter: true
             },
             detail:{
                 showing:false,
@@ -184,7 +191,8 @@ export default {
                 this.$weui.topTips('请设置单位')
                 return
             }
-            this.$axios.get(this.$api.ws_carplan, {params:this.query})
+            this.query.IsAll = !this.query.filter
+            this.$axios.get(this.$api.ws_fixedplan, {params:this.query})
                 .then(res=>{
                     if(res.data.code == 0){
                         this.searchBar.focus_searchBar = false

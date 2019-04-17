@@ -89,6 +89,12 @@ const VRouter = new Router({
       component: () => import('./views/plan/PlanLog.vue'),
       meta: { requiresLogin: true }
     }, {
+      path: '/plan/planlog/cuscarno',
+      name: 'planlogcuscarno',
+      props: {isWithCusCarNo:true},
+      component: () => import('./views/plan/PlanLog.vue'),
+      meta: { requiresLogin: true }
+    }, {
       path: '/plan/weighlogwithcar',
       name: 'weighlogwithcar',
       component: () => import('./views/plan/WeighLogWithCar.vue'),

@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                             <div class="weui-cell weui-cell_switch">
-                                <div class="weui-cell__bd">查询全部</div>
+                                <div class="weui-cell__bd">只显示未开票记录</div>
                                 <div class="weui-cell__ft">
                                     <input class="weui-switch" v-model="query.filter" type="checkbox"/>
                                 </div>
@@ -126,31 +126,31 @@ export default {
 
 
 <style lang="stylus" scoped>
-    // .search-bar
-    //     position: fixed;
-    //     z-index: 100;
-    //     width: 100%;
-    //     top:0
-    // .search-bar-focus
-    //     box-shadow: 0 0 17px 0px #4a4a4a;
-    // .weui-select
-    //     padding-left:0
-    //     height: auto
-    //     line-height: initial
-    // .search-result-panel
-    //     margin-top: 45px
-    //     z-index:1
-    // .weui-search-bar__input
-    //     text-align:center
-    // .weui-search-bar__box
-    //     padding:0
-    // .weui-tab__panel
-    //     padding-bottom:0
-    // .page__bd
-    //     margin-top:45px
-    // .searchbar-result
-    //     margin-top:0
-    //     padding-bottom:30px
-    // .searchbar-result .weui-cells
-    //     margin-top:0
+    .search-bar
+        position: fixed;
+        z-index: 100;
+        width: 100%;
+        top:0
+    .search-bar-focus
+        box-shadow: 0 0 17px 0px #4a4a4a;
+    .weui-select
+        padding-left:0
+        height: auto
+        line-height: initial
+    .search-result-panel
+        margin-top: 45px
+        z-index:1
+    .weui-search-bar__input
+        text-align:center
+    .weui-search-bar__box
+        padding:0
+    .weui-tab__panel
+        padding-bottom:0
+    .page__bd
+        margin-top:45px
+    .searchbar-result
+        margin-top:0
+        padding-bottom:30px
+    .searchbar-result .weui-cells
+        margin-top:0
 </style>

@@ -15,6 +15,7 @@ module.exports = {
         "过磅记录(单位)": "/plan/weighlogwithdpt",
         "计量委托填报": "/plan/report",
         "计量委托查询": "/plan/planlog",
+        "计量委托查询（计量管理员）": "/plan/planlog/cuscarno",
         "申请审核": "/plan/task",
         "电子发票": "/invoice/einvoice",
         "菜单管理": "/admin/menugroup"
