@@ -28,3 +28,23 @@
 .weui-btn_default{
     color: #4CAF50;
 }
+
+
+
+.wpis-loading
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.62);
+    z-index: 99999;
+    text-align: center;
+}
+.weui-icon_toast.weui-loading
+{
+    margin-top: 25%;
+}
+.wpis-loading-hide
+{
+    display: none;
+}

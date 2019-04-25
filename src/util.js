@@ -24,10 +24,11 @@
     return n[1] ? n : '0' + n
   }
 
-  const DateFilter = (date, inter)=>{
+  const DateFilter = (date, inter, sep)=>{
     date = date || new Date()
     inter = inter || 0
-    return formatDate(new Date(date.setDate(date.getDate() + inter)))
+    sep = sep || '-'
+    return formatDate(new Date(date.setDate(date.getDate() + inter)), sep)
   }
   
   export default { formatTime, formatDate, formatDateTime, DateFilter }

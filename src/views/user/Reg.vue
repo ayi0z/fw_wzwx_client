@@ -5,7 +5,7 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd"><label class="weui-label">邮箱</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="email" v-re-valid="{regexp:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-])+\.([a-zA-Z]{2,4})$/}" v-model="form.邮箱" placeholder="请输入邮箱"/>
+                    <input class="weui-input" type="email" v-model="form.邮箱" placeholder="请输入邮箱"/>
                 </div>
             </div>
             <div class="weui-cell">
@@ -50,6 +50,7 @@
         </div>
         <div class="weui-btn-area">
             <a class="weui-btn weui-btn_primary" href="javascript:" @click="doregister">提交</a>
+            <a class="weui-btn weui-btn_warn" v-if="this.layot.utype" href="javascript:" @click="dologoff">注销</a>
         </div>
     </div>
 </div>
@@ -70,6 +71,9 @@ export default {
       },
       datas:{
         roles:[]
+      },
+      layot:{
+        utype:''
       }
     }
   },
@@ -90,6 +94,7 @@ export default {
           if(res.data.code == 0){
             if(res.data.content){
               this.form = res.data.content
+              this.layot.utype = this.form.类型
             }
           }
         })
@@ -108,6 +113,16 @@ export default {
               this.$store.dispatch('update_usertoken', res.data.content)
               let tourl = this.$route.query.redirect_url || '/user/reg'
               this.$router.replace(tourl)
+            }
+          })
+    },
+    dologoff: function(){
+      this.$axios.delete(this.$api.user).then((res) => {
+            if(res.data.code == 0){
+              this.$store.dispatch('success', true)
+              this.$store.dispatch('clear_usertoken')
+              this.layot.utype = ''
+              this.$router.replace('/user/reg')
             }
           })
     }

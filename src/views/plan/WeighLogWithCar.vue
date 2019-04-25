@@ -32,7 +32,7 @@
                                     <label class="weui-label">开始时间</label>
                                 </div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.BgDT"/>
+                                    <we-picker-datetime v-model="query.BgDT"></we-picker-datetime>
                                 </div>
                             </div>
                             <div class="weui-cell">
@@ -40,7 +40,7 @@
                                     <label class="weui-label">结束时间</label>
                                 </div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.EdDT"/>
+                                    <we-picker-datetime v-model="query.EdDT"></we-picker-datetime>
                                 </div>
                             </div>
                         </div>
@@ -64,12 +64,14 @@
 <script>
 import DetailDialog from '@/components/Dialog-Detail'
 import ListLoadTip from '@/components/ListLoadTip'
+import WePickerDateTime from '@/components/WePickerDateTime'
 import { tasktype } from "@/config";
 export default {
     name:'WeighLogWithCar',
     components:{
         "load-tip":ListLoadTip,
-        'detail-dialog': DetailDialog
+        'detail-dialog': DetailDialog,
+        'we-picker-datetime': WePickerDateTime
     },
     data(){
         return {
@@ -102,7 +104,6 @@ export default {
                     }
                 })
         }
-        // this.datas = this.$store.state.myweighs
     },
     methods: {
         doSearch(){
@@ -110,7 +111,6 @@ export default {
                 .then(res=>{
                     if(res.data.code == 0){
                         this.searchBar.focus_searchBar = false
-                        // this.$store.dispatch("myweighs", res.data.content)
                         this.datas = res.data.content
                     }
                 })
@@ -125,8 +125,6 @@ export default {
         doViewDetail(da){
             this.detail.showing = true
             this.detail.data = da
-            // this.$store.dispatch("weigh_detail", da)
-            // this.$router.push({name:'weighdetail'})
         }
     }
 }

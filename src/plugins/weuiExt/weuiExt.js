@@ -15,7 +15,9 @@
 */
 
 import inputPicker from './inputPicker/picker';
+import datetimePicker from './datetimePicker/picker';
 
 export default {
-    inputPicker:inputPicker.inputPicker
+    inputPicker:inputPicker.inputPicker,
+    datetimePicker:datetimePicker.datePicker
 };

@@ -25,7 +25,7 @@ Vue.prototype.$hasInit = false
 
 // store.dispatch('update_usertoken', {
 //   openid:'oTAOO5pehW2x3PpuJQ3UeSMlKWhw',
-//   loginToken:'CfDJ8KvKTqVkC65KgMmOTwaYfMb2wxUevDx7ZNUYp_UHCW8BjEDKdWP96bOKOARs2d1w_g_IyW1Tz1ecl-RPFgxZujdENMZA7HxMxx3HcrOtzEN6uTj2HqZ-LmGMfRQq5J-vp8UT-pNXrc0TaZ8EDSdT8iDj8660ynrGqCZ-6KBmkxnU_ByfMSxw5hTCb7LWsOhtwoZFXAC_mTnhUAWAr1zYDAFYSsBGEXC-VMSYtWaN99tsDcDupgWYbMucSR5X4zNGc06V_B9ZicEtjFmW4J2uhUU'
+//   loginToken:'CfDJ8KvKTqVkC65KgMmOTwaYfMYK1zpGCuOCpY1A9evF_zCwEo1YCHpcMi9oVHb5VdJwfvlc9qrbn-y_nN2Ick636EOjjtH_UP7HUoAdlkEapeSzcZzY097VuGxFUUs4HHEwMeElzekndKHLycX-u3KentENaz_NC8s-jGFhET2sIdvQtojNM4C9kvSdd6e2SsiXpMWJ_XEH_cVxlLwpT24NuCS8DRRuCto7YxttpXJdWGeJK7nV8kY_tMqxpqCfH5kT0TL8Wta235ihf94iQpXT0RQ'
 // })
 axios.interceptors.request.use(function(config){
   store.dispatch('open_loading')
@@ -55,8 +55,15 @@ axios.interceptors.response.use(function(response){
   if(response.data.code && response.data.code != 0)
   {
     let msg = response.data.msg ||  ''
-    // router.push({ name: 'warn', params: { code:response.data.code, msg: msg } })
     weui.topTips(msg)
+    if(response.data.code == -40101){
+      store.dispatch('clear_usertoken')
+      location.replace(location.href)
+    }
+    if(response.data.code == -40104){
+      store.dispatch('clear_usertoken')
+      location.replace(location.href)
+    }
   }
   return response
 }, function(error){

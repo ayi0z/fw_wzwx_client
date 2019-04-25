@@ -16,12 +16,17 @@
                 <a class="weui-btn weui-btn_primary" href="javascript:" @click="doSave">立即绑定</a>
             </div>
         </div>
+        <bind-car-list ref="carlistpanel"></bind-car-list>
     </div>
 </template>
 
 <script>
+import BindCarListSlot from '@/views/vehicle/BindCarListSlot.vue'
 export default {
     name: "bind",
+    components:{
+        'bind-car-list': BindCarListSlot
+    },
     data: function(){
         return {
             车号:''
@@ -39,6 +44,7 @@ export default {
                     if(res.data.code == 0){
                         this.$store.dispatch('success', true)
                         this.车号 = ''
+                        this.$refs.carlistpanel.doLoadCars()
                     }
                 })
         }

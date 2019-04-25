@@ -62,8 +62,6 @@ export default {
                         // 校验结果写入 el 的data属性
                         el.setAttribute('data-re-valid', passed || false)
 
-
-
                         // 指令参数指定了校验不通过时的classname，如果指令参数没有设置，则添加默认classname
                         const errcss = binding.arg || 're-valid-err'
                         if (!passed) {

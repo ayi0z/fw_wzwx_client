@@ -3,7 +3,7 @@
         <div class="page__bd">
             <div class="weui-cells__title">我绑定的车牌号：</div>
             <div class="weui-cells weui-cells_checkbox">
-                <label class="weui-cell weui-check__label" v-for="(da,index) in datas"  :key="index" :for="'ch'+index">
+                <label class="weui-cell weui-check__label" v-for="(da,index) in datas" :key="index" :for="'ch'+index">
                     <div class="weui-cell__hd">
                         <input type="checkbox" class="weui-check" :value="da" v-model="checkedlist" :id="'ch'+index"/>
                         <i class="weui-icon-checked"></i>
@@ -11,35 +11,33 @@
                     <div class="weui-cell__bd">
                         <p>{{da}}</p>
                     </div>
+                    <div class="weui-cell__ft" @click.stop.prevent="doQrCode(da)">生成二维码</div>
                 </label> 
             </div>
-            <load-tip :datas="datas"></load-tip>
-            <btn-tab-bar :buttons="btns"></btn-tab-bar>
+            <div class="weui-btn-area">
+                <a class="weui-btn weui-btn_warn" href="javascript:" @click="doUnbind">立即解绑</a>
+            </div>
+            <qr-dialog v-show="qrcode.showing" :url="qrcode.url" :alt="qrcode.alt" @close="(va) => {qrcode.showing=va}"></qr-dialog>
         </div>
     </div>
 </template>
 
 <script>
-import ListLoadTip from '@/components/ListLoadTip'
-import BtnTabBar from '@/components/BtnTabBar'
+import QrDialog from '@/components/Dialog-Img'
 export default {
-    name: "BindCarList",
+    name: "BindCarListSlot",
     components:{
-        "load-tip":ListLoadTip,
-         "btn-tab-bar":BtnTabBar
+        'qr-dialog': QrDialog
     },
     data: function(){
         return {
             datas:[],
             checkedlist:[],
-            btns:[
-                {
-                    text:'立即解绑',
-                    action:()=>{
-                        this.doUnbind()
-                    }
-                }
-            ]
+            qrcode:{
+                showing:false,
+                alt:'车号二维码',
+                url:''
+            }
         }
     },
     mounted(){
@@ -51,6 +49,16 @@ export default {
                 .then((res) => {
                     if(res.data.code == 0){
                         this.datas = res.data.content
+                    }
+                })
+        },
+        doQrCode(cno){
+            this.$axios.post(this.$api.ws_qrcode, {enstr:cno})
+                .then(res=>{
+                    if(res.data.code == 0){
+                        this.qrcode.showing = true
+                        this.qrcode.alt = cno
+                        this.qrcode.url = `data:image/jpeg;base64,${res.data.content}`
                     }
                 })
         },

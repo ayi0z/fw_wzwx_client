@@ -77,7 +77,7 @@
                             <label class="weui-label">开始时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.BgDT"/>
+                            <we-picker-datetime v-model="query.BgDT"></we-picker-datetime>
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -85,7 +85,7 @@
                             <label class="weui-label">结束时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.EdDT"/>
+                            <we-picker-datetime v-model="query.EdDT"></we-picker-datetime>
                         </div>
                     </div>
                     <div class="weui-cell weui-cell_switch">
@@ -118,13 +118,15 @@
 import DetailDialog from '@/components/Dialog-Detail'
 import DialogConfirm from '@/components/Dialog-Confirm'
 import ListLoadTip from '@/components/ListLoadTip'
+import WePickerDateTime from '@/components/WePickerDateTime'
 import { unittypes, tasktype, weightype, plantype } from '@/config'
 export default {
     name: 'PlanLog',
     components:{
         "load-tip":ListLoadTip,
         'detail-dialog': DetailDialog,
-        'dialog-confirm': DialogConfirm
+        'dialog-confirm': DialogConfirm,
+        'we-picker-datetime': WePickerDateTime
     },
     data(){
         return {

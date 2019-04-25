@@ -160,6 +160,7 @@ VRouter.beforeEach((to, from, next) => {
                 .then((result) => {
                   const appid = result.data.content.appid
                   if(appid){
+                    console.log(`${window.location.origin}${to.fullPath}`)
                     const ruri = encodeURIComponent(`${window.location.origin}${to.fullPath}`)
                     const authuri  = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${ruri}&response_type=code&scope=snsapi_userinfo&state=${store.state.authSate}&connect_redirect=1#wechat_redirect`
                     window.location.replace(authuri)

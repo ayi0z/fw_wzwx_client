@@ -1,6 +1,6 @@
 {
     "api":{
-        "baseurl":"http://wgwzjl.baosteel.com:8081/",
+        "baseurl":"http://36a1c554.ngrok.io",
         "wechat_appid": "/api/wechat/appid",
         "wechat_loginopenid": "/api/wechat/loginopenid",
         "wechat_tags": "/api/wechat/tags",
@@ -15,6 +15,7 @@
         "ws_dpts": "/api/weis/dpts",
         "ws_mydpts": "/api/weis/mydpts",
         "ws_carplan": "/api/weis/carplan",
+        "ws_carplanext": "/api/weis/carplanext",
         "ws_mycarweighs": "/api/weis/mycarweighs",
         "ws_mydptweighs": "/api/weis/mydptweighs",
         "ws_martiral": "/api/weis/martiral",

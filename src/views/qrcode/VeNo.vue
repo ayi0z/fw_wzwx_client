@@ -48,11 +48,7 @@ export default {
                 plans:[]
             },
             query:{
-                querytype:0, 
-                CarNo:'',
-                BgDT:this.$util.DateFilter(new Date(), -2),
-                EdDT:this.$util.DateFilter(new Date()),
-                IsAll: true
+                CarNo:''
             },
             detail:{
                 showing:false,
@@ -83,11 +79,11 @@ export default {
                 data.长期有效 = data.长期有效 ? "是" : "否"
             }
         },
-        doLoadPlan(cno){
-            this.query.CarNo = cno
+        doLoadPlan(CarNo){
+            this.query.CarNo = CarNo
             this.form.plans = []
-            if(this.query.CarNo){
-                this.$axios.get(this.$api.ws_carplan, { params: this.query })
+            if(CarNo){
+                this.$axios.get(this.$api.ws_carplanext, { params: { CarNo } })
                     .then((res)=>{
                         if(res.data.code == 0){
                             this.form.plans = res.data.content

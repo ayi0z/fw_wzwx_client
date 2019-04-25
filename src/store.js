@@ -92,6 +92,9 @@ export default new Vuex.Store({
     update_usertoken({commit}, utoken){
       commit('userToken', utoken)
     },
+    clear_usertoken({commit}){
+      commit('userToken', { openid:null, loginToken:null })
+    },
     carplan_detail({commit}, plan){
       commit('carplan_detail', plan)
     },

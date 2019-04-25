@@ -41,7 +41,7 @@
                                     <label class="weui-label">开始时间</label>
                                 </div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.BgDT"/>
+                                    <we-picker-datetime v-model="query.BgDT"></we-picker-datetime>
                                 </div>
                             </div>
                             <div class="weui-cell">
@@ -49,7 +49,7 @@
                                     <label class="weui-label">结束时间</label>
                                 </div>
                                 <div class="weui-cell__bd">
-                                    <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.EdDT"/>
+                                    <we-picker-datetime v-model="query.EdDT"></we-picker-datetime>
                                 </div>
                             </div>
                         </div>
@@ -74,13 +74,15 @@
 import DetailDialog from '@/components/Dialog-Detail'
 import ListLoadTip from '@/components/ListLoadTip'
 import WePickerSelect from '@/components/WePickerSelect'
+import WePickerDateTime from '@/components/WePickerDateTime'
 import { tasktype,unittypes,weightype } from "@/config";
 export default {
     name:'WeighLogWithCar',
     components:{
         "load-tip":ListLoadTip,
         'detail-dialog': DetailDialog,
-        'we-select':WePickerSelect
+        'we-select':WePickerSelect,
+        'we-picker-datetime': WePickerDateTime
     },
     data(){
         return {
