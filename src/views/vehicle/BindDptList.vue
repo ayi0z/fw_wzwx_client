@@ -89,6 +89,7 @@ export default {
                 .then((res) => {
                     if(res.data.code == 0){
                         this.$store.dispatch('success', true)
+                        this.checkedunits = []
                     }
                     this.doLoadData()
                 })

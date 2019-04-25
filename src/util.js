@@ -31,4 +31,4 @@
     return formatDate(new Date(date.setDate(date.getDate() + inter)), sep)
   }
   
-  export default { formatTime, formatDate, formatDateTime, DateFilter }
+  export default { formatTime, formatDate, formatDateTime, DateFilter,formatNumber }

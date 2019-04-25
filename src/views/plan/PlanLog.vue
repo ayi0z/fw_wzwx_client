@@ -77,7 +77,7 @@
                             <label class="weui-label">开始时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <we-picker-datetime v-model="query.BgDT"></we-picker-datetime>
+                            <we-picker-datetime v-model="query.BgDT" id='planlogbgdt'></we-picker-datetime>
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -85,7 +85,7 @@
                             <label class="weui-label">结束时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <we-picker-datetime v-model="query.EdDT"></we-picker-datetime>
+                            <we-picker-datetime v-model="query.EdDT" id='planlogeddt'></we-picker-datetime>
                         </div>
                     </div>
                     <div class="weui-cell weui-cell_switch">
@@ -138,8 +138,8 @@ export default {
             query:{
                 querytype: 0,
                 CarNo:'',
-                BgDT:this.$util.DateFilter(new Date(), -2),
-                EdDT:this.$util.DateFilter(new Date()),
+                BgDT:`${this.$util.DateFilter(new Date(), -2)} 00:00:00`,
+                EdDT:`${this.$util.DateFilter(new Date())} 23:59:59`,
                 Dpt:'',
                 DptType:'',
                 IsAll: true,

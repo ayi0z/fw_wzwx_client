@@ -3,12 +3,6 @@
     <div class="page__bd">
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">邮箱</label></div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="email" v-model="form.邮箱" placeholder="请输入邮箱"/>
-                </div>
-            </div>
-            <div class="weui-cell">
                 <div class="weui-cell__hd">
                     <label class="weui-label">手机号</label>
                 </div>
@@ -31,6 +25,12 @@
                 <div class="weui-cell__hd"><label class="weui-label">身份证</label></div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" type="text" v-model="form.身份证" placeholder="请输入身份证"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">邮箱</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="email" v-model="form.邮箱" placeholder="请输入邮箱"/>
                 </div>
             </div>
         </div>

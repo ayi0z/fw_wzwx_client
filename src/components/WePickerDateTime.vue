@@ -24,6 +24,7 @@ export default {
         event:"change"
     },
     props:{
+        id: String,
         value:String,
         placeholder:String
     },
@@ -42,11 +43,13 @@ export default {
                 onClose:()=>{
                     this.Picker = null
                 },
-                id: 'wepickerdatetime'
+                id: this.id || 'wepickerdatetime'
             })
         },
         doChange(result){
-            this.$emit("change", `${result[0].value}-${result[1].value}-${result[2].value} ${result[3].value}:${result[4].value}:${result[5].value}`)
+            let datas = [result[0].value, result[1].value, result[2].value].map(this.$util.formatNumber).join('-')
+            let times = [result[3].value, result[4].value, result[5].value].map(this.$util.formatNumber).join(':')
+            this.$emit("change", `${datas} ${times}`)
         }
     }
 }

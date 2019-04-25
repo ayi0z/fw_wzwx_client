@@ -1,6 +1,6 @@
 {
     "api":{
-        "baseurl":"http://36a1c554.ngrok.io",
+        "baseurl":"http://wgwzjl.baosteel.com:8082",
         "wechat_appid": "/api/wechat/appid",
         "wechat_loginopenid": "/api/wechat/loginopenid",
         "wechat_tags": "/api/wechat/tags",

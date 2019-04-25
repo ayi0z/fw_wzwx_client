@@ -250,8 +250,7 @@ function picker() {
 
     // 初始化滚动的方法
     function scroll(items, level) {
-        // lineTemp[level] === undefined && 
-        if (defaults.defaultValue && defaults.defaultValue[level] !== undefined) {
+        if (lineTemp[level] === undefined && defaults.defaultValue && defaults.defaultValue[level] !== undefined) {
             // 没有缓存选项，而且存在defaultValue
             const defaultVal = defaults.defaultValue[level];
             let index = 0, len = items.length;
@@ -457,14 +456,14 @@ function datePicker(options) {
     const interval = cron.parse(defaults.cron, defaults.start, defaults.end);
     let obj;
     const S = []
-    for(var s=1;s<61;s++){
+    for(var s=0;s<60;s++){
         S.push({
             label: s + '秒',
             value: s
         })
     }
     const M = []
-    for(var m=1;m<61;m++){
+    for(var m=0;m<60;m++){
         M.push({
             label: m + '分',
             value: m,
@@ -472,7 +471,7 @@ function datePicker(options) {
         })
     }
     const H = []
-    for(var h=1; h<25; h++){
+    for(var h=0; h<24; h++){
         H.push({
             label: h + '时',
             value: h,
@@ -490,23 +489,15 @@ function datePicker(options) {
         if (!Y) {
             Y = {
                 label: year + '年',
-                // label: year,
                 value: year,
                 children: []
             };
             date.push(Y);
         }
-        // let YN = {
-        //     label: '-',
-        //     value: '-',
-        //     children: []
-        // }
-        // Y.children.push(YN);
         let M = findBy(Y.children, 'value', month);
         if (!M) {
             M = {
                 label: month + '月',
-                // label: month,
                 value: month,
                 children: []
             };
@@ -514,7 +505,6 @@ function datePicker(options) {
         }
         let D = {
             label: day + '日',
-            // label: day,
             value: day,
             children: H
         }
