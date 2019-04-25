@@ -3,26 +3,25 @@
         <div class="page__bd">
             <div class="weui-cells__title"><i class="weui-icon-info-circle"></i>点击车牌号可查看最近两天的计量委托</div>
             <div class="weui-cells">
-                <div v-for="cno in form.CarNos" :key="cno">
+                <div v-for="(value, cno) in form.plans" :key="cno">
                     <a class="weui-cell weui-cell_access carno-cell" href="javascript:;">
-                        <div class="weui-cell__bd" @click="doLoadPlan(cno)">
+                        <div class="weui-cell__bd" @click="value.showing=!value.showing">
                             <p>{{cno}}</p>
                         </div>
                         <div class="weui-cell__ft" @click="doQrCode(cno)">点击这里生成二维码</div>
                     </a>
-                    <div v-if="cno == query.CarNo">
+                    <div v-if="value.showing">
                         <a class="weui-cell weui-cell_access" href="javascript:;"
-                            v-for="pl in form.plans" :key="pl.过磅申请号" @click="doDetail(pl)">
+                            v-for="pl in value.plans" :key="pl.过磅申请号" @click="doDetail(pl)">
                             <div class="weui-cell__bd">
-                                <p>{{pl.过磅申请时间}}</p>
+                                <p :class="pl.已过12小时 == '是'?'plan-red':'plan-green'">{{pl.过磅申请时间}}</p>
                             </div>
                             <div class="weui-cell__ft">点击查看详情</div>
                         </a>
-                        <load-tip v-if="!form.plans || !form.plans.length"></load-tip>
                     </div>
                 </div>
             </div>
-            <load-tip :datas="form.CarNos"></load-tip>
+            <load-tip :datas="hasCarNos"></load-tip>
             <qr-dialog v-show="qrcode.showing" :url="qrcode.url" :alt="qrcode.alt" @close="(va) => {qrcode.showing=va}"></qr-dialog>
             <detail-dialog  v-show="detail.showing" :data="detail.data" :before="doDialogDetailBefore"  @close="()=>{detail.showing = false}"></detail-dialog>
         </div>
@@ -44,11 +43,7 @@ export default {
     data(){
         return {
             form:{
-                CarNos:[],
-                plans:[]
-            },
-            query:{
-                CarNo:''
+                plans:null
             },
             detail:{
                 showing:false,
@@ -61,11 +56,29 @@ export default {
             }
         }
     },
+    computed:{
+        hasCarNos:function() {
+            return this.form.plans ? true : false
+        }
+    },
     created(){
-        this.$axios.get(this.$api.ws_mycars)
+        this.$axios.get(this.$api.ws_activeplan)
             .then((res)=>{
                 if(res.data.code == 0){
-                    this.form.CarNos = res.data.content
+                    const acplans = res.data.content
+                    let now = Date.parse(new Date())
+                    this.form.plans = acplans.reduce((cur, next)=>{
+                        let ctime = Date.parse(new Date(next.创建时间))
+                        let diffhours = (now-ctime)/1000/60/60
+                        next["已过12小时"] = diffhours > 12 ? '是':'否'
+                        if(next.车号 in cur){
+                            cur[next.车号]['plans'].push(next)
+                        }else{
+                            cur[next.车号]= {showing:true}
+                            cur[next.车号]['plans'] = [ next ]
+                        }
+                        return cur
+                    }, {})
                 }
             })
     },
@@ -77,18 +90,6 @@ export default {
                 data.委托类型 = plantype[`C${data.委托类型}`] || data.委托类型
                 data.处理标识 = data.处理标识 ? "已处理" : "未处理"
                 data.长期有效 = data.长期有效 ? "是" : "否"
-            }
-        },
-        doLoadPlan(CarNo){
-            this.query.CarNo = CarNo
-            this.form.plans = []
-            if(CarNo){
-                this.$axios.get(this.$api.ws_carplanext, { params: { CarNo } })
-                    .then((res)=>{
-                        if(res.data.code == 0){
-                            this.form.plans = res.data.content
-                        }
-                    })
             }
         },
         doDetail(pl){
@@ -123,4 +124,8 @@ export default {
         vertical-align sub
     .weui-cells__title
         font-size 12px
+    .plan-red
+        color:#e22300
+    .plan-green
+        color #05a205
 </style>

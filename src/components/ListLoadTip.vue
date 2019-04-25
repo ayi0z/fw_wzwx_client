@@ -8,7 +8,7 @@ export default {
     name:'ListLoadTip',
     props:{
         datas:{
-            type: [Array,Object],
+            type: [Array,Object,Boolean,Number],
             default(){
                 return []
             }
@@ -29,6 +29,10 @@ export default {
                 return this.datas ? this.nomoremsg : this.emptymsg
             }else if(dataType == '[object Array]'){
                 return this.datas && this.datas.length ? this.nomoremsg : this.emptymsg
+            }else if(dataType == '[object Boolean]'){
+                return this.datas ? this.nomoremsg : this.emptymsg
+            }else if(dataType == '[object Number]'){
+                return this.datas ? this.nomoremsg : this.emptymsg
             }
             return "不知道有啥"
         }

@@ -25,7 +25,7 @@ Vue.prototype.$hasInit = false
 
 // store.dispatch('update_usertoken', {
 //   openid:'oTAOO5pehW2x3PpuJQ3UeSMlKWhw',
-//   loginToken:'CfDJ8KvKTqVkC65KgMmOTwaYfMYK1zpGCuOCpY1A9evF_zCwEo1YCHpcMi9oVHb5VdJwfvlc9qrbn-y_nN2Ick636EOjjtH_UP7HUoAdlkEapeSzcZzY097VuGxFUUs4HHEwMeElzekndKHLycX-u3KentENaz_NC8s-jGFhET2sIdvQtojNM4C9kvSdd6e2SsiXpMWJ_XEH_cVxlLwpT24NuCS8DRRuCto7YxttpXJdWGeJK7nV8kY_tMqxpqCfH5kT0TL8Wta235ihf94iQpXT0RQ'
+//   loginToken:'CfDJ8KvKTqVkC65KgMmOTwaYfMboFEo9GWidfCMWsRm5Zw1CWXEk2dGwlxtaFwPvcxOah5g4b-vKbKDOx43VI4dlAjEI9DYZk-5o3JPYEt6Em48rkJmp7f50WGtNkS3wFpQUsLTXsw2iqRz9CMwoMgFRPfgFkEc8ZLf59758f1r4_M4p97WhsITUxLagaKn46cswRIgZWqt5FPirKUAXJfgOshRrjg6HsXaOzL2keV_NfoCwTLAdZNyf09KXb1sB8HvfOdohdCf0nHWtge9Sv_0eRdIP97n7p0YpybwLsPCPc45Q'
 // })
 axios.interceptors.request.use(function(config){
   store.dispatch('open_loading')

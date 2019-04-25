@@ -107,7 +107,6 @@ export default {
             this.$axios.get(this.$api.ws_mymartiral),
             this.$axios.get(this.$api.ws_mycars)])
             .then(this.$axios.spread(function (mydpts, mymartiral, mycars) {
-                console.log(mydpts, mymartiral, mycars)
                 if(mydpts.data.code == 0){
                     vm.$store.dispatch("mydpts", mydpts.data.content)
                 }
@@ -170,7 +169,6 @@ export default {
     }
 }
 </script>
-
 
 <style lang="stylus" scoped>
     .weui-cell_select
