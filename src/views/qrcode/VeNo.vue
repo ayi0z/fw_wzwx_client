@@ -68,7 +68,7 @@ export default {
                     const acplans = res.data.content
                     let now = Date.parse(new Date())
                     this.form.plans = acplans.reduce((cur, next)=>{
-                        let ctime = Date.parse(new Date(next.创建时间))
+                        let ctime = Date.parse(new Date(next.创建时间.replace(/-/g, '/')))
                         let diffhours = (now-ctime)/1000/60/60
                         next["已过12小时"] = diffhours > 12 ? '是':'否'
                         if(next.车号 in cur){

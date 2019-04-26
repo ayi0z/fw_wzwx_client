@@ -4,7 +4,7 @@
         <div class="weui-dialog">
             <div class="weui-dialog__bd">
                 <table>
-                    <tr v-for="(value,key,index) in data" :key="index">
+                    <tr v-for="(value,key,index) in dataself" :key="index">
                         <td>{{key}}</td>
                         <td>{{value}}</td>
                     </tr>
@@ -22,6 +22,11 @@
 <script>
 export default {
     name:'DialogDetail',
+    data:function(){
+        return {
+            dataself:null
+        }
+    },
     props:{
         showing:{
             type: Boolean,
@@ -50,8 +55,9 @@ export default {
     },
     watch:{
         data(){
+            this.dataself = {...this.data}
             if(this.before){
-                this.before(this.data)
+                this.before(this.dataself)
             }
         }
     }
