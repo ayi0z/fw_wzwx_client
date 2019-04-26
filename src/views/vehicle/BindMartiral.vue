@@ -31,27 +31,25 @@
                     </div>
                 </label> 
             </div>
-            <load-tip :datas="datas"></load-tip>
-            <btn-tab-bar :buttons="btns"></btn-tab-bar>
-            <div class="weui-tabbar">
-                <p class="weui-tabbar__item weui-bar__item_on">
-                    <span style="display: inline-block;position: relative;">
-                        <a class="weui-btn weui-btn_primary" href="javascript:" @click="doSave">立即绑定</a>
-                    </span>
-                </p>
+            <load-tip v-show="!hasDatas" :datas="hasDatas" emptymsg="为检索到可绑定品名"></load-tip>
+            <div class="weui-btn-area" v-show="hasDatas">
+                <a class="weui-btn weui-btn_primary" href="javascript:" @click="doSave">立即绑定</a>
             </div>
         </div>
+        <bind-martirals-list ref="bindmartirallistpanel"></bind-martirals-list>
     </div>
 </template>
 
 <script>
 import ListLoadTip from '@/components/ListLoadTip'
-import BtnTabBar from '@/components/BtnTabBar'
+// import BtnTabBar from '@/components/BtnTabBar'
+import BindMartiralListSlot from '@/views/vehicle/BindMartiralListSlot'
 export default {
     name: "BindMartiral",
     components:{
         "load-tip":ListLoadTip,
-         "btn-tab-bar":BtnTabBar
+        //  "btn-tab-bar":BtnTabBar,
+         "bind-martirals-list":BindMartiralListSlot
     },
     data: function(){
         return {
@@ -60,15 +58,20 @@ export default {
             searchBar:{
                 focus_searchBar: false,
                 py:''
-            },
-            btns:[
-                {
-                    text:'立即绑定',
-                    action:()=>{
-                        this.doSave()
-                    }
-                }
-            ]
+            }//,
+            // btns:[
+            //     {
+            //         text:'立即绑定',
+            //         action:()=>{
+            //             this.doSave()
+            //         }
+            //     }
+            // ]
+        }
+    },
+    computed:{
+        hasDatas(){
+            return this.datas ? this.datas.length > 0 : false
         }
     },
     mounted(){
@@ -107,6 +110,7 @@ export default {
                     if(res.data.code == 0){
                         this.$store.dispatch('success', true)
                         this.checkedmartirals = []
+                        this.$refs.bindmartirallistpanel.doLoadMartirals()
                     }
                 })
         }
@@ -131,4 +135,8 @@ export default {
         padding auto
     .weui-tabbar
         background-color #fff
+    .search-result .weui-cell
+        padding-top 7px
+        padding-bottom 7px
+        font-size 14px
 </style>
