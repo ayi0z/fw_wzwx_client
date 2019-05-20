@@ -16,7 +16,7 @@
                 <a class="weui-btn weui-btn_primary" href="javascript:" @click="doSave">立即绑定</a>
             </div>
         </div>
-        <bind-car-list ref="carlistpanel"></bind-car-list>
+        <bind-car-list ref="carlistpanel" :lp="isLP"></bind-car-list>
     </div>
 </template>
 
@@ -30,6 +30,11 @@ export default {
     data: function(){
         return {
             车号:''
+        }
+    },
+    computed:{
+        isLP(){
+            return this.$attrs.islp
         }
     },
     methods:{

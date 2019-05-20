@@ -6,6 +6,7 @@ module.exports = {
         "绑定-单位": "/vehicle/binddpt",
         "列表-单位": "/vehicle/binddptlist",
         "绑定-车号": "/vehicle/bindcar",
+        "绑定-车号(留皮申请)": "/vehicle/bindcar/lp",
         "列表-车号": "/vehicle/bindcarlist",
         "绑定-品名": "/vehicle/bindmartiral",
         "列表-品名": "/vehicle/bindmartirallist",

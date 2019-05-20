@@ -38,6 +38,12 @@ const VRouter = new Router({
       component: () => import('./views/vehicle/BindCar.vue'),
       meta: { requiresLogin: true }
     }, {
+      path: '/vehicle/bindcar/lp',
+      name: 'bindcarlp',
+      props: {islp:true},
+      component: () => import('./views/vehicle/BindCar.vue'),
+      meta: { requiresLogin: true }
+    }, {
       path: '/vehicle/bindcarlist',
       name: 'bindcarlist',
       component: () => import('./views/vehicle/BindCarList.vue'),

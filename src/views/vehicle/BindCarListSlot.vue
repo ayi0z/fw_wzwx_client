@@ -14,6 +14,9 @@
                     <div class="weui-cell__ft" @click.stop.prevent="doQrCode(da)">生成二维码</div>
                 </label> 
             </div>
+            <div class="weui-btn-area" v-if="lp">
+                <a class="weui-btn weui-btn_primary" href="javascript:" @click="doReport">留皮计量申请</a>
+            </div>
             <div class="weui-btn-area">
                 <a class="weui-btn weui-btn_warn" href="javascript:" @click="doUnbind">立即解绑</a>
             </div>
@@ -29,6 +32,7 @@ export default {
     components:{
         'qr-dialog': QrDialog
     },
+    props:["lp"],
     data: function(){
         return {
             datas:[],
@@ -59,6 +63,20 @@ export default {
                         this.qrcode.showing = true
                         this.qrcode.alt = cno
                         this.qrcode.url = `data:image/jpeg;base64,${res.data.content}`
+                    }
+                })
+        },
+        doReport(){
+            if(!this.checkedlist || this.checkedlist.length==0){
+              this.$weui.topTips('请选择要申请的车牌号')
+              return
+            }
+            this.$axios.post(this.$api.ws_mylp, { 
+                carno: this.checkedlist
+             }).then((res) => {
+                    if(res.data.code == 0){
+                        this.$store.dispatch('success', true)
+                        this.checkedlist = []
                     }
                 })
         },

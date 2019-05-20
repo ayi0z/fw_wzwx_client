@@ -158,7 +158,7 @@ export default {
                                         MartiralName:'',
                                         OutDpt:'',
                                         InDpt:'',
-                                        TraeType:'',
+                                        TraeType:'1',
                                         LongTime:false,
                                         PlanType:'',
                                         Tasktype:''
