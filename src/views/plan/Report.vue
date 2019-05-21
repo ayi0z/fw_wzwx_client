@@ -7,7 +7,7 @@
                         <label class="weui-label">车牌号</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" v-re-valid required v-model="form.CarNo" placeholder="请输入车牌号" />
+                        <input class="weui-input" type="text" v-re-valid required v-model="form.CarNo" placeholder="请输入车牌号" readonly @focus="onfocus" @click="popcarkeyboard=true" />
                     </div>
                     <div class="weui-cell__ft">
                         <button class="weui-vcode-btn" @click="doPickCarNo">选择</button>
@@ -54,7 +54,7 @@
                         <p>{{rule.label}}</p>
                     </div>
                     <div class="weui-cell__ft">
-                        <input type="radio" class="weui-check" :value="rule.value" v-model="form.TraeType" :id="rule.value">
+                        <input type="radio" class="weui-check" :disabled="rule.value!=1" :value="rule.value" v-model="form.TraeType" :id="rule.value">
                         <span class="weui-icon-checked"></span>
                     </div>
                 </label>
@@ -74,15 +74,21 @@
                 <a class="weui-btn weui-btn_primary" href="javascript:" @click="doSave">提交</a>
             </div>
         </div>
+        <key-board :propshowing="popcarkeyboard" @close="(v)=>{popcarkeyboard = v}" v-model="form.CarNo"></key-board>
     </div>
 </template>
 
 <script>
 import { weighruls } from '@/config'
+import KeyBoard from '@/components/KeyBoard'
 export default {
     name:'PlanReport',
+    components:{
+        'key-board': KeyBoard
+    },
     data:function(){
         return{
+            popcarkeyboard:false,
             datas:{
                 weighruls:weighruls,
                 martirals:[],
@@ -127,6 +133,9 @@ export default {
         }
     },
     methods:{
+        onfocus(targ){
+            targ.target.blur()
+        },
         doPickCarNo(){
             this._doPick(this.datas.carnos, result => (this.form.CarNo = result ? (result[0] ? result[0].value : this.form.CarNo) : this.form.CarNo))
         },

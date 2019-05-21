@@ -9,7 +9,7 @@
                         <label class="weui-label">车牌号</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" v-model="form.车号" v-re-valid required placeholder="请输入车牌号">
+                        <input class="weui-input" type="text" v-model="form.车号" readonly @focus="onfocus" v-re-valid required placeholder="请输入车牌号" @click="popcarkeyboard=true">
                     </div>
                 </div>
             </div>
@@ -35,6 +35,7 @@
                 <a class="weui-btn weui-btn_primary" href="javascript:" @click="doSave">立即绑定</a>
             </div>
         </div>
+        <key-board :propshowing="popcarkeyboard" @close="(v)=>{popcarkeyboard = v}" v-model="form.车号"></key-board>
     </div>
 </template>
 
@@ -42,14 +43,17 @@
 import { unittypes } from '@/config'
 import WePickerSelect from '@/components/WePickerSelect'
 import WePickerInputSelect from '@/components/WePickerInputSelect'
+import KeyBoard from '@/components/KeyBoard'
 export default {
     name: "bind",
     components:{
         'we-select':WePickerSelect,
-        'we-input-select':WePickerInputSelect
+        'we-input-select':WePickerInputSelect,
+        'key-board': KeyBoard
     },
     data: function(){
         return {
+            popcarkeyboard:false,
             units:[],
             unittypes:unittypes,
             unitexp:'',
@@ -70,6 +74,9 @@ export default {
         this.doLoadUnits()
     },
     methods:{
+        onfocus(targ){
+            targ.target.blur()
+        },
         doInputLoad(exp){
             this.unitexp = exp
             this.doLoadUnits()

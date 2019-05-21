@@ -8,7 +8,7 @@
                         <label class="weui-label">车牌号</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" v-model="车号" v-re-valid required placeholder="请输入车牌号">
+                        <input class="weui-input" type="text" v-model="车号" readonly @focus="onfocus" @click="popcarkeyboard=true" v-re-valid required placeholder="请输入车牌号">
                     </div>
                 </div>
             </div>
@@ -17,18 +17,22 @@
             </div>
         </div>
         <bind-car-list ref="carlistpanel" :lp="isLP"></bind-car-list>
+        <key-board :propshowing="popcarkeyboard" @close="(v)=>{popcarkeyboard = v}" v-model="车号"></key-board>
     </div>
 </template>
 
 <script>
 import BindCarListSlot from '@/views/vehicle/BindCarListSlot.vue'
+import KeyBoard from '@/components/KeyBoard'
 export default {
     name: "bind",
     components:{
-        'bind-car-list': BindCarListSlot
+        'bind-car-list': BindCarListSlot,
+        'key-board': KeyBoard
     },
     data: function(){
         return {
+            popcarkeyboard:false,
             车号:''
         }
     },
@@ -38,6 +42,9 @@ export default {
         }
     },
     methods:{
+        onfocus(targ){
+            targ.target.blur()
+        },
         doSave(){
             if(!this.isReValidPassed()){
               this.$weui.topTips('请填写车牌号')

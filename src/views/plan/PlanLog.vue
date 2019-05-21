@@ -69,7 +69,7 @@
                             <label class="weui-label">车牌号</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" placeholder="请输入车牌号" type="text" v-model="query.CarNo"/>
+                            <input class="weui-input" placeholder="请输入车牌号" type="text" v-model="query.CarNo" readonly @focus="onfocus" @click="popcarkeyboard=true"/>
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -111,6 +111,7 @@
         </div>
         <detail-dialog  v-show="detail.showing" :data="detail.data" :btns="detail.btns" :before="doDialogDetailBefore" @close="()=>{detail.showing = false;dialogcfm.showing = false}"></detail-dialog>
         <dialog-confirm :showing="dialogcfm.showing" :title="dialogcfm.title" :msg="dialogcfm.msg" @cancel="dialogcfm.cancel" @confirm="dialogcfm.confirm"></dialog-confirm>
+        <key-board :propshowing="popcarkeyboard" @close="(v)=>{popcarkeyboard = v}" v-model="query.CarNo"></key-board>
     </div>
 </template>
 
@@ -119,6 +120,7 @@ import DetailDialog from '@/components/Dialog-Detail'
 import DialogConfirm from '@/components/Dialog-Confirm'
 import ListLoadTip from '@/components/ListLoadTip'
 import WePickerDateTime from '@/components/WePickerDateTime'
+import KeyBoard from '@/components/KeyBoard'
 import { unittypes, tasktype, weightype, plantype } from '@/config'
 export default {
     name: 'PlanLog',
@@ -126,10 +128,12 @@ export default {
         "load-tip":ListLoadTip,
         'detail-dialog': DetailDialog,
         'dialog-confirm': DialogConfirm,
-        'we-picker-datetime': WePickerDateTime
+        'we-picker-datetime': WePickerDateTime,
+        'key-board': KeyBoard
     },
     data(){
         return {
+            popcarkeyboard:false,
             searchBar:{
                 focus_searchBar: false,
                 unittypes: unittypes,
@@ -198,6 +202,9 @@ export default {
         }
     },
     methods:{
+        onfocus(targ){
+            targ.target.blur()
+        },
         doDelPlan(){
             if(this.detail.data){
                 this.dialogcfm.msg = '此操作将删除该计量委托，且不可恢复。是否确认删除？'
