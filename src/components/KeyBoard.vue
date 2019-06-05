@@ -2,6 +2,7 @@
     <div class="keyboard">
         <div class="weui-picker kb-picker" :class="pickerclass">
             <div class="weui-picker__hd">
+                <span :style="{color:warncolor}">{{warningmsg}}</span>
                 <a href="javascript:;" class="weui-picker__action" @click="close">关闭</a>
             </div>
             <div class="weui-picker__bd kb-picker-body">
@@ -21,18 +22,20 @@ export default {
         return {
             showing:true,
             isCartTmodel:true,
+            warningmsg:'',
+            warncolor:'',
             values:[],
             cartxt:[
                 ['京','沪','浙','苏','粤','鲁','晋','冀','豫'],
                 ['川','渝','辽','吉','黑','皖','鄂','津','贵'],
                 ['云','桂','琼','青','新','藏','蒙','宁','甘'],
-                [{txt:'切换',class:'kb-picker-btn'},'陕','闽','赣','湘','武钢', {txt:'删除',class:'kb-picker-btn'}]
+                ['陕','闽','赣','湘','武钢', {txt:'删除',class:'kb-picker-btn'}]
             ],
             chartxt:[
                 ['0','1','2','3','4','5','6','7','8','9'],
                 ['Q','W','E','R','T','Y','U','I','O','P'],
                 ['A','S','D','F','G','H','J','K','L'],
-                [{txt:'切换',class:'kb-picker-btn'}, 'Z','X','C','V','B','N','M', {txt:'删除',class:'kb-picker-btn'}]
+                [{txt:'清除',class:'kb-picker-btn'}, 'Z','X','C','V','B','N','M', {txt:'删除',class:'kb-picker-btn'}]
             ]
         }
     },
@@ -50,6 +53,12 @@ export default {
         propshowing(nv){
             this.showing = nv
             this.values = this.value.split('')
+            this.isCartTmodel = this.values.length === 0
+        },
+        values(nv){
+            let len = nv.join('').length
+            this.warningmsg = len == 7 ? '车牌号长度正确' : '请输入7位车牌号'
+            this.warncolor = len == 7 ? '#4dab43' : '#fb0000'
         }
     },
     computed:{
@@ -69,17 +78,27 @@ export default {
             if(da.txt){
                 if(da.txt === '删除'){
                     this.values.pop()
-                }else if(da.txt == '切换'){
-                    this.isCartTmodel = !this.isCartTmodel
+                    this.isCartTmodel = this.values.length === 0
+                }else if(da.txt == '清除'){
+                    this.values = []
+                    this.isCartTmodel = true
                 }
             }else{
                 if(this.isCartTmodel){
                     this.values = []
                 }
-
-                this.values.push(da)
+                if(this.values.join('').length < 7){
+                    this.values.push(da)
+                }
+                this.isCartTmodel = false
             }
+            // this.checkno()
             this.$emit('input', this.values.join(''))
+        },
+        checkno(){
+            let len = this.values.join('').length
+            this.warningmsg = len == 7 ? '车牌号正确' : '请输入7位车牌号'
+            this.warncolor = len == 7 ? '#4dab43' : '#fb0000'
         }
     }
 }

@@ -59,6 +59,11 @@ export default {
                         const maxlen = passed && el.getAttribute('maxlength')
                         passed = maxlen ? elValue.replace(/[^\x00-\xff]/g, 'aa').length <= maxlen : passed
 
+                        const minlenCN = passed && el.getAttribute('minlengthcn')
+                        passed = minlenCN ? elValue.length >= minlenCN : passed
+                        const maxlenCN = passed && el.getAttribute('maxlengthcn')
+                        passed = maxlenCN ? elValue.length <= maxlenCN : passed
+
                         // 校验结果写入 el 的data属性
                         el.setAttribute('data-re-valid', passed || false)
 

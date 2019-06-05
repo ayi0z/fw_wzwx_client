@@ -7,7 +7,7 @@
                         <label class="weui-label">车牌号</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" v-re-valid required v-model="form.CarNo" placeholder="请输入车牌号" readonly @focus="onfocus" @click="popcarkeyboard=true" />
+                        <input class="weui-input" type="text" v-re-valid maxlengthcn="7" minlengthcn="7" required v-model="form.CarNo" placeholder="请输入车牌号" readonly @focus="onfocus" @click="popcarkeyboard=true" />
                     </div>
                     <div class="weui-cell__ft">
                         <button class="weui-vcode-btn" @click="doPickCarNo">选择</button>
@@ -46,11 +46,22 @@
                         <button class="weui-vcode-btn" @click="doPickIndpt">选择</button>
                     </div>
                 </div>
+                <div class="weui-cell weui-cell_vcode">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">缴款单位</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" v-re-valid required v-model="form.PayDpt" placeholder="请输入缴款单位" />
+                    </div>
+                    <div class="weui-cell__ft">
+                        <button class="weui-vcode-btn" @click="doPickPaydpt">选择</button>
+                    </div>
+                </div>
             </div>
             <div class="weui-cells__title">皮重规则（单选）:</div>
             <div class="weui-cells weui-cells_radio">
                 <label class="weui-cell weui-check__label" v-for="rule in datas.weighruls" :key="rule.value" :for="rule.value">
-                    <div class="weui-cell__bd">
+                    <div class="weui-cell__bd" :class="rule.value!=1 ? 'disabled-color':''">
                         <p>{{rule.label}}</p>
                     </div>
                     <div class="weui-cell__ft">
@@ -92,13 +103,15 @@ export default {
             datas:{
                 weighruls:weighruls,
                 martirals:[],
-                carnos:[]
+                carnos:[],
+                mydpts: []
             },
             form:{
                 CarNo:'',
                 MartiralName:'',
                 OutDpt:'',
                 InDpt:'',
+                PayDpt:'',
                 TraeType:'1',
                 LongTime:false,
                 PlanType:'',
@@ -114,7 +127,7 @@ export default {
             this.$axios.get(this.$api.ws_mycars)])
             .then(this.$axios.spread(function (mydpts, mymartiral, mycars) {
                 if(mydpts.data.code == 0){
-                    vm.$store.dispatch("mydpts", mydpts.data.content)
+                    vm.datas.mydpts = mydpts.data.content || []
                 }
                 if(mymartiral.data.code == 0){
                     vm.datas.martirals = mymartiral.data.content
@@ -126,10 +139,13 @@ export default {
     },
     computed:{
         inunits(){
-            return this.$store.state.mydpts ? this.$store.state.mydpts.filter(c=>c.单位类型 == '收货单位') : []
+            return this.datas.mydpts ? this.datas.mydpts.filter(c=>c.单位类型 == '收货单位') : []
         },
         outunits(){
-            return this.$store.state.mydpts ? this.$store.state.mydpts.filter(c=>c.单位类型 == '发货单位') : []
+            return this.datas.mydpts ? this.datas.mydpts.filter(c=>c.单位类型 == '发货单位') : []
+        },
+        payunits(){
+            return this.datas.mydpts ? this.datas.mydpts.filter(c=>c.单位类型 == '缴款单位') : []
         }
     },
     methods:{
@@ -148,16 +164,28 @@ export default {
         doPickOutdpt(){
             this._doPick(this.outunits.map(c=>c.单位) , result => (this.form.OutDpt = result ? (result[0] ? result[0].value : this.form.OutDpt) : this.form.OutDpt))
         },
+        doPickPaydpt(){
+            this._doPick(this.payunits.map(c=>c.单位) , result => (this.form.PayDpt = result ? (result[0] ? result[0].value : this.form.PayDpt) : this.form.PayDpt))
+        },
         _doPick(opts, onconfirm){
             this.$weui.picker(opts,{
                 onConfirm: onconfirm
             })
+        },
+        _AttachDpts(dpt, dpttype){
+            let dpts = this.datas.mydpts || []
+            if(dpts.findIndex(c=> c.单位类型===dpttype && c.单位===dpt) === -1){
+                this.datas.mydpts.push({'单位':dpt, '单位类型':dpttype})
+            }
         },
         doSave(){
             if(!this.isReValidPassed()){
                 this.$weui.topTips('请检查红色标记数据是否正确')
                 return
             }
+            this._AttachDpts(this.form.InDpt, '收货单位')
+            this._AttachDpts(this.form.OutDpt, '发货单位')
+            this._AttachDpts(this.form.PayDpt, '缴款单位')
             this.$axios.post(this.$api.ws_carplan, {...this.form})
                 .then(res=>{
                     if(res.data.code == 0){
@@ -167,6 +195,7 @@ export default {
                                         MartiralName:'',
                                         OutDpt:'',
                                         InDpt:'',
+                                        PayDpt:'',
                                         TraeType:'1',
                                         LongTime:false,
                                         PlanType:'',
@@ -188,4 +217,6 @@ export default {
         box-shadow: inset -2px 0px 0px 0px #f70000
         border-radius :0
         width: 99%
+    .disabled-color
+        color #c3c3c3
 </style>
