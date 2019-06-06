@@ -121,6 +121,16 @@ const VRouter = new Router({
       component: () => import('./views/invoice/EInvoice.vue'),
       meta: { requiresLogin: true }
     }, {
+      path: '/invoice/payaccount',
+      name: 'payaccount',
+      component: () => import('./views/invoice/PayAccount.vue'),
+      meta: { requiresLogin: true }
+    }, {
+      path: '/invoice/payqrcode',
+      name: 'payqrcode',
+      component: () => import('./views/invoice/PayQrCode.vue'),
+      meta: { requiresLogin: true }
+    }, {
       path: '/admin/menugroup',
       name: 'menugroup',
       component: () => import('./views/admin/MenuGroup.vue'),

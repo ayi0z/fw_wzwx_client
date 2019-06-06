@@ -18,6 +18,8 @@ module.exports = {
         "计量委托查询": "/plan/planlog",
         "计量委托查询（计量管理员）": "/plan/planlog/cuscarno",
         "申请审核": "/plan/task",
+        "我的支付账户": "/invoice/payaccount",
+        "计量收费": "/invoice/payqrcode",
         "电子发票": "/invoice/einvoice",
         "菜单管理": "/admin/menugroup"
     },

@@ -51,7 +51,7 @@
                         <label class="weui-label">缴款单位</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" v-re-valid required v-model="form.PayDpt" placeholder="请输入缴款单位" />
+                        <input class="weui-input" type="text" v-model="form.PayDpt" placeholder="请输入缴款单位" />
                     </div>
                     <div class="weui-cell__ft">
                         <button class="weui-vcode-btn" @click="doPickPaydpt">选择</button>
@@ -173,9 +173,11 @@ export default {
             })
         },
         _AttachDpts(dpt, dpttype){
-            let dpts = this.datas.mydpts || []
-            if(dpts.findIndex(c=> c.单位类型===dpttype && c.单位===dpt) === -1){
-                this.datas.mydpts.push({'单位':dpt, '单位类型':dpttype})
+            if(dpt){
+                let dpts = this.datas.mydpts || []
+                if(dpts.findIndex(c=> c.单位类型===dpttype && c.单位===dpt) === -1){
+                    this.datas.mydpts.push({'单位':dpt, '单位类型':dpttype})
+                }
             }
         },
         doSave(){
