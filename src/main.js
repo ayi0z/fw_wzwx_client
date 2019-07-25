@@ -24,8 +24,9 @@ Vue.config.productionTip = false
 Vue.prototype.$hasInit = false
 
 // store.dispatch('update_usertoken', {
-//   openid:'oTAOO5pehW2x3PpuJQ3UeSMlKWhw',
-//   loginToken:'CfDJ8KvKTqVkC65KgMmOTwaYfMboFEo9GWidfCMWsRm5Zw1CWXEk2dGwlxtaFwPvcxOah5g4b-vKbKDOx43VI4dlAjEI9DYZk-5o3JPYEt6Em48rkJmp7f50WGtNkS3wFpQUsLTXsw2iqRz9CMwoMgFRPfgFkEc8ZLf59758f1r4_M4p97WhsITUxLagaKn46cswRIgZWqt5FPirKUAXJfgOshRrjg6HsXaOzL2keV_NfoCwTLAdZNyf09KXb1sB8HvfOdohdCf0nHWtge9Sv_0eRdIP97n7p0YpybwLsPCPc45Q'
+//   // openid:'oTAOO5pehW2x3PpuJQ3UeSMlKWhw',
+//   openid:'o_dS85jn5sUt8gCM83d1kjntOZo0',
+//   loginToken:'CfDJ8D6ku0UnyBdEvk8KQMzPVqtqQmkCtkqJbN9McY6o6xuSNLcGC_hQ6dwC2_Y5nE3gUdWMCrBBTDQwsBqdxnFQNUB4G_qi1vGPw-EVtbFPeD8D0Bmko6q0cJCzMvfv1j7FU8KB-DKKfYwaO6np7DC83mfbq5piQwaCEwERl5sztAa807qyavzEv9uGll_0iHZfOz2ygNZPIBnLioUmD8nkr5SYqZQpYoa6p6GrBdZYwKg-lrQAKX98nkRAZrVCzbABIgOczA3qXVlv1-4GDOjVZawlUPZR0iVDAnLCo_1eV0hO'
 // })
   axios.interceptors.request.use(function(config){
   store.dispatch('open_loading')

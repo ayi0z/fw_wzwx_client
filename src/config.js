@@ -21,6 +21,7 @@ module.exports = {
         "我的支付账户": "/invoice/payaccount",
         "计量收费": "/invoice/payqrcode",
         "电子发票": "/invoice/einvoice",
+        "我的缴费记录": "/invoice/paydetail",
         "菜单管理": "/admin/menugroup"
     },
     unittypes:[

@@ -19,10 +19,10 @@ export default {
     methods:{
         doReadPayQrCode(){
             this.text = '正在刷新支付二维码...'
-            this.$axios.get(this.$api.ws_payqrcode)
+            this.$axios.post(this.$api.ws_payqrcode, { PayRMB:0 })
                 .then(res=>{
                     if(res.data.code == 0){
-                        this.qrurl = res.data.content
+                        this.qrurl = res.data.content.url
                         this.text = '扫码支付  点击二维码可刷新'
                     }else{
                         this.text = '支付二维码获取失败'
