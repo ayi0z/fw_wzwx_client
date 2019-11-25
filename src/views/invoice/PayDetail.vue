@@ -20,7 +20,7 @@
                             <label class="weui-label">开始时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.BgDT"/>
+                            <we-picker-datetime v-model="query.BgDT" id='paydetailbgdt'></we-picker-datetime>
                         </div>
                     </div>
                     <div class="weui-cell">
@@ -28,7 +28,7 @@
                             <label class="weui-label">结束时间</label>
                         </div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" v-empty-class="'weui-empty'" type="date" v-model="query.EdDT"/>
+                            <we-picker-datetime v-model="query.EdDT" id='paydetaileddt'></we-picker-datetime>
                         </div>
                     </div>
                 </div>
@@ -61,10 +61,12 @@
 
 <script>
 import DetailDialog from '@/components/Dialog-Detail'
+import WePickerDateTime from '@/components/WePickerDateTime'
 export default {
     name:'einvoice',
     components:{
-        'detail-dialog': DetailDialog
+        'detail-dialog': DetailDialog,
+        'we-picker-datetime': WePickerDateTime
     },
     data(){
         return {
@@ -72,8 +74,8 @@ export default {
                 focus_searchBar: false
             },
             query:{
-                BgDT:this.$util.DateFilter(new Date(), -2),
-                EdDT:this.$util.DateFilter(new Date())
+                BgDT:`${this.$util.DateFilter(new Date(), -2)} 00:00:00`,
+                EdDT:`${this.$util.DateFilter(new Date())} 23:59:59`
             },
             form:{
                 datas:[]
