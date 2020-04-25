@@ -1,7 +1,7 @@
 <template>
     <div class="js_dialog" v-show="showing">
         <div class="weui-mask"></div>
-        <div class="weui-dialog" style="top:26%;right:-29%;left:auto;width: auto;">
+        <div class="weui-dialog" style="top:26%;left:auto;right:3px;width: auto;transform: translate(0%,-50%);-webkit-transform: translate(0%,-50%);">
             <div class="weui-dialog__bd">
                 <img class="img-qrcode" :src="url" :alt="alt">
             </div>

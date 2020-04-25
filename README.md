@@ -8,6 +8,8 @@ client/config.json ->
     "api":{
         "baseurl":"http://wgwzjl.baosteel.com",
 ```
+2. iis部署，需安装urlrewrite拓展，https://www.iis.net/downloads/microsoft/url-rewrite
+
 
 
 ## Project setup
